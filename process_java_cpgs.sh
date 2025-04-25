@@ -1,8 +1,8 @@
 #!/bin/bash
-OUTPUT_DIR="/mnt/d/CODING/University/Junior/Term 2/ML/Project/data/cpg-output"
+OUTPUT_DIR="/mnt/d/University/HK6/ML/Project/ML-Project/data/cpg-output"
 mkdir -p "$OUTPUT_DIR"
 
-for dir in /mnt/d/CODING/University/Junior/Term\ 2/ML/Project/data/java-src/*/; do
+for dir in /mnt/d/University/HK6/ML/Project/ML-Project/data/java-src/*/; do
   project_name=$(basename "$dir")
   echo "Processing $project_name..."
   
