@@ -1,0 +1,134 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpph7Zto_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpph7Zto_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpph7Zto_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpph7Zto_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  description: "read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes\n\n"
+  exploits:
+    - inputs:
+        - ordinal: 1
+          source_enum: 2
+          stage: pre_process
+          source: env_var_input
+          name: ANOUR_CHUGGER
+          stage_enum: 0
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/bad01.txt
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+        - name: /opt/stonesoup/workspace/testData/bad01.txt
+          stage_enum: 0
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          value: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          ordinal: 2
+          source: file_content_input
+    - inputs:
+        - id: source
+          name: ANOUR_CHUGGER
+          source: env_var_input
+          ordinal: 1
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/bad02.txt
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - source_enum: 3
+          stage_enum: 0
+          ordinal: 2
+          stage: pre_process
+          source: file_content_input
+          value_encoding: none
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: /opt/stonesoup/workspace/testData/bad02.txt
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: ANOUR_CHUGGER
+  benigns:
+    - inputs:
+        - ordinal: 1
+          value_encoding: none
+          stage: pre_process
+          id: source
+          source_enum: 2
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/good01.txt
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: ANOUR_CHUGGER
+          source: env_var_input
+        - source: file_content_input
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          source_enum: 3
+          value_encoding: none
+          name: /opt/stonesoup/workspace/testData/good01.txt
+          value: This file is not empty.
+          stage: pre_process
+          ordinal: 2
+    - inputs:
+        - ordinal: 1
+          value: /opt/stonesoup/workspace/testData/good02.txt
+          source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          name: ANOUR_CHUGGER
+          stage_enum: 0
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+        - value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuv
+          source: file_content_input
+          value_type_enum: 0
+          value_encoding: none
+          ordinal: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+          name: /opt/stonesoup/workspace/testData/good02.txt
+          stage_enum: 0
+    - inputs:
+        - ordinal: 1
+          name: ANOUR_CHUGGER
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/badfilename.txt
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          source: env_var_input
+          stage: pre_process
+          id: source
+          value_encoding: none
+          value_type_enum: 0

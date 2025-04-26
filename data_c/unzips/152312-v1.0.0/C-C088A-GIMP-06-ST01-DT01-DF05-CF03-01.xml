@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="C-GIMP" language="C" name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Creating test case using base program.
+Added an environment variable read to the function definition.
+Completed injection.
+</description>
+    <additional_information>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <run_command>$SS_TC_ROOT/$SS_TC_INSTALL/bin/gimp $SS_TC_ROOT/testData/input.jpg</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-88" name="CWE-88-A"/>
+        <features>
+            <taint_source file_name="/app/base/tile-manager.c" line_number="0" type="ENVIRONMENT_VARIABLE">
+                <method name="tile_manager_get_tile_coordinates"/>
+            </taint_source>
+            <data_type file_name="/app/base/tile-manager.c" line_number="0" type="ARRAY">
+                <method name="tile_manager_get_tile_coordinates"/>
+            </data_type>
+            <data_flow file_name="/app/base/tile-manager.c" line_number="0" type="ADDRESS_AS_CONSTANT">
+                <method name="tile_manager_get_tile_coordinates"/>
+            </data_flow>
+            <control_flow file_name="/app/base/tile-manager.c" line_number="0" type="INFINITE_LOOP">
+                <method name="theriomorphism_greenwell"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands cppflags="-DSTONESOUP_TRACE=1" libs="-ldl">
+        <command>env</command>
+        <command>./configure --prefix=&quot;$SS_TC_ROOT/$SS_TC_INSTALL&quot; --disable-alsatest --without-libmng --without-libexif --without-aa --without-librsvg --without-poppler --without-gvfs --without-libjasper --with-lcms --without-alsa --disable-python</command>
+        <command>make V=1 CC=&quot;$SS_CC&quot;</command>
+        <command>make install V=1</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-01" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>Open saved jpg file
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;file.*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-01" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-01/GIMP-GOOD-01.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_A0ulTlI1Dn" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">GOOD-01 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-01">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-01" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">input image opened.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-02" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>color invert an image
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">filename.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-02" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-02/GIMP-GOOD-02.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_0qoClxbByQ" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">GOOD-02 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-02">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-02" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">image colors inverted</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-03" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>create a layer, fill with black, use divde layer mode
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-03" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-03/GIMP-GOOD-03.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_4dMFMJRD9y" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">GOOD-03 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-03">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-03" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Layer created, and layer mode changed.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-04" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>view color histogram of image
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;file.*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-04" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-04/GIMP-GOOD-04.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_o5sO4g3ZrU" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">GOOD-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-04">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-04" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Histogram of image generated.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-05" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>add supernova filter
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">filename.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-05" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-05/GIMP-GOOD-05.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_y4fhiFiJzc" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">GOOD-05 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-05">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-05" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">supernova added</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-06" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>make selection with magic wand, paste into new image
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-06" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-06/GIMP-GOOD-06.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_WZqBFLsyBP" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-06-Default">
+                <formula name="GOOD-06-Default">GOOD-06 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-06">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-06" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Magic Wand selection pasted into new document.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-07" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>rotate image 180 degrees
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;file.*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-07" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-07/GIMP-GOOD-07.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_hREDcmRYK5" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-07-Default">
+                <formula name="GOOD-07-Default">GOOD-07 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-07">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-07" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Image rotated 180 degrees.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-08" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>add pagecurl filter
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">filename.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-08" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-08/GIMP-GOOD-08.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_hPCAGWHY2P" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-08-Default">
+                <formula name="GOOD-08-Default">GOOD-08 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-08">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-08" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">pagecurl added</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-09" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>use edgefinder filter
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-09" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-09/GIMP-GOOD-09.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_9KYzHo2W3u" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-09-Default">
+                <formula name="GOOD-09-Default">GOOD-09 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-09">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-09" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">pagecurl added</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-GOOD-10" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>pixelize image
+Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;file.*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-10" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-10/GIMP-GOOD-10.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_a3zyEd1V4K" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-10-Default">
+                <formula name="GOOD-10-Default">GOOD-10 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-10">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-10" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">image pixelized.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-BAD-01" reset_scheme="NONE" timeout="480" type="BAD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;*&quot; -exec cat /etc/passwd \;</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/temp/file.txt" type="USE_TEXT">None</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="SIKULI-GOOD-021txfPndq1d" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-02/GIMP-GOOD-02.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_UuT7l3iYLvMLrOcNubI0" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="arg_injection_formula_CWhASpHvLz">
+                <formula name="arg_injection_formula_CWhASpHvLz">weakness_started_Jq7nWzlU3VyLJ4zC2zVH AND ((NOT PERFORMER AND (etc_passwd_line_pattern_qkUgPHli8t OR etc_passwd_root_user_cZVCM21W5q OR netstat_output_l7c8OacEI3 OR netstat_output_qzKPvjOV4j OR netstat_output_n3K1qo1Wue OR netstat_output_PAfRjDUllW) AND NOT timeout_gVaeaMFArt) or (PERFORMER AND NOT ((etc_passwd_line_pattern_qkUgPHli8t OR etc_passwd_root_user_cZVCM21W5q OR netstat_output_l7c8OacEI3 OR netstat_output_qzKPvjOV4j OR netstat_output_n3K1qo1Wue OR netstat_output_PAfRjDUllW) OR timeout_gVaeaMFArt)))</formula>
+                <formula name="no_weakness_started_formula_0wjoe6AoVu">(NOT PERFORMER AND (etc_passwd_line_pattern_qkUgPHli8t OR etc_passwd_root_user_cZVCM21W5q OR netstat_output_l7c8OacEI3 OR netstat_output_qzKPvjOV4j OR netstat_output_n3K1qo1Wue OR netstat_output_PAfRjDUllW) AND NOT timeout_gVaeaMFArt) or (PERFORMER AND NOT ((etc_passwd_line_pattern_qkUgPHli8t OR etc_passwd_root_user_cZVCM21W5q OR netstat_output_l7c8OacEI3 OR netstat_output_qzKPvjOV4j OR netstat_output_n3K1qo1Wue OR netstat_output_PAfRjDUllW) OR timeout_gVaeaMFArt))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_gVaeaMFArt" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_rgwVMPFvpH" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_wbCm3mFxrV" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="REGEX" name="etc_passwd_line_pattern_qkUgPHli8t">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">.+:.+:[0-9]+:[0-9]+:.+:.+:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="etc_passwd_root_user_cZVCM21W5q">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">^root:.*</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_l7c8OacEI3">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active Internet connections</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_qzKPvjOV4j">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active UNIX domain sockets</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_n3K1qo1Wue">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">0.0.0.0:</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_PAfRjDUllW">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Proto Recv-Q Send-Q</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_Jq7nWzlU3VyLJ4zC2zVH">
+                    <actual encoding="STRING" input_id_ref="lttng_output_UuT7l3iYLvMLrOcNubI0" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-GIMP-06-ST01-DT01-DF05-CF03-01-BAD-02" reset_scheme="NONE" timeout="480" type="BAD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env AFFUSIONS_GLOMERULUS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="AFFUSIONS_GLOMERULUS" type="USE_TEXT">&quot;*&quot; -exec netstat -an \;</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/temp/file.txt" type="USE_TEXT">None</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="SIKULI-GOOD-1007jTifsA95" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-10/GIMP-GOOD-10.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_gZ7f9OHfMKU3j9fIV2pH" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="arg_injection_formula_VGFkberXNU">
+                <formula name="arg_injection_formula_VGFkberXNU">weakness_started_nc5TqaNbgnpMrqF95DHo AND ((NOT PERFORMER AND (etc_passwd_line_pattern_ns1xeL3z5t OR etc_passwd_root_user_fgvOLUOEz6 OR netstat_output_C3GqoBljSL OR netstat_output_DoENFvRCe1 OR netstat_output_IEUfAgQMTs OR netstat_output_fojFlP2VDE) AND NOT timeout_irduqnO0el) or (PERFORMER AND NOT ((etc_passwd_line_pattern_ns1xeL3z5t OR etc_passwd_root_user_fgvOLUOEz6 OR netstat_output_C3GqoBljSL OR netstat_output_DoENFvRCe1 OR netstat_output_IEUfAgQMTs OR netstat_output_fojFlP2VDE) OR timeout_irduqnO0el)))</formula>
+                <formula name="no_weakness_started_formula_DfC33oZwoo">(NOT PERFORMER AND (etc_passwd_line_pattern_ns1xeL3z5t OR etc_passwd_root_user_fgvOLUOEz6 OR netstat_output_C3GqoBljSL OR netstat_output_DoENFvRCe1 OR netstat_output_IEUfAgQMTs OR netstat_output_fojFlP2VDE) AND NOT timeout_irduqnO0el) or (PERFORMER AND NOT ((etc_passwd_line_pattern_ns1xeL3z5t OR etc_passwd_root_user_fgvOLUOEz6 OR netstat_output_C3GqoBljSL OR netstat_output_DoENFvRCe1 OR netstat_output_IEUfAgQMTs OR netstat_output_fojFlP2VDE) OR timeout_irduqnO0el))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_irduqnO0el" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_xakeggA4ku" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_gGuC8kamA4" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="REGEX" name="etc_passwd_line_pattern_ns1xeL3z5t">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">.+:.+:[0-9]+:[0-9]+:.+:.+:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="etc_passwd_root_user_fgvOLUOEz6">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">^root:.*</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_C3GqoBljSL">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active Internet connections</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_DoENFvRCe1">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active UNIX domain sockets</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_IEUfAgQMTs">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">0.0.0.0:</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_fojFlP2VDE">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Proto Recv-Q Send-Q</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_nc5TqaNbgnpMrqF95DHo">
+                    <actual encoding="STRING" input_id_ref="lttng_output_gZ7f9OHfMKU3j9fIV2pH" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

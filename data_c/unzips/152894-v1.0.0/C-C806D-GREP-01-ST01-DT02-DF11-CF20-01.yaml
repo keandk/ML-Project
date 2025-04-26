@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpQU1Tev_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpQU1Tev_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpQU1Tev_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpQU1Tev_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: SEXTO_INITIATIVE
+  exploits:
+    - inputs:
+        - name: SEXTO_INITIATIVE
+          id: source
+          value: AAAAAAAAAAAAAAA
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          source_enum: 2
+    - inputs:
+        - stage_enum: 0
+          id: source
+          source: env_var_input
+          value_encoding: none
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+          name: SEXTO_INITIATIVE
+          value: Short is now bad
+          ordinal: 1
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  benigns:
+    - inputs:
+        - id: source
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          name: SEXTO_INITIATIVE
+          source: env_var_input
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+          value_encoding: none
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          ordinal: 1
+          name: SEXTO_INITIATIVE
+    - inputs:
+        - name: SEXTO_INITIATIVE
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+          ordinal: 1
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

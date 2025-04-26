@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          stage: pre_process
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          id: source
+          source: env_var_input
+          ordinal: 1
+          source_enum: 2
+          name: DIETETICAL_UNCOGNIZED
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_encoding: none
+          ordinal: 1
+          source: env_var_input
+          source_enum: 2
+          id: source
+          name: DIETETICAL_UNCOGNIZED
+          stage: pre_process
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+  description: "Has a fixed heap buffer of size 64.  (malloc(64*sizeof(char))) When input has a larger size, the heap buffer will be over read\n\n"
+  benigns:
+    - inputs:
+        - value: AAAAAAAAAAAAAAAAAAAAAAA
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          id: source
+          source_enum: 2
+          value_type_enum: 0
+          name: DIETETICAL_UNCOGNIZED
+          source: env_var_input
+    - inputs:
+        - ordinal: 1
+          value: Hello World!
+          stage_enum: 0
+          stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          name: DIETETICAL_UNCOGNIZED
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+    - inputs:
+        - name: DIETETICAL_UNCOGNIZED
+          value: Short is good
+          stage_enum: 0
+          id: source
+          source: env_var_input
+          ordinal: 1
+          stage: pre_process
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+  base_inputs:
+    - source: env_var_input
+      ordinal: 1
+      stage_enum: 0
+      id: source
+      source_enum: 2
+      stage: pre_process
+      name: DIETETICAL_UNCOGNIZED
+code_complexity_features:
+  - feature: ENVIRONMENT_VARIABLE
+    feature_group: source_taint
+    function_name: av_str2id
+    line_number: 0
+    file_name: /tmp/tmpap6yui_ss_testcase/src-rose/libavformat/img2.c
+  - feature: typedef
+    function_name: av_str2id
+    line_number: 0
+    file_name: /tmp/tmpap6yui_ss_testcase/src-rose/libavformat/img2.c
+    feature_group: data_type
+  - feature_group: data_flow
+    function_name: av_str2id
+    feature: var_arg_list
+    file_name: /tmp/tmpap6yui_ss_testcase/src-rose/libavformat/img2.c
+    line_number: 0
+  - feature_group: control_flow
+    feature: infinite_loop
+    function_name: moet_maudlinize
+    file_name: /tmp/tmpap6yui_ss_testcase/src-rose/libavformat/img2.c
+    line_number: 0

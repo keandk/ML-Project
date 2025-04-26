@@ -1,0 +1,100 @@
+io_pair:
+  description: "Has a fixed stack buffer of size 64.  (char [64]) When input has a larger size, the stack buffer will be over read\n\n"
+  benigns:
+    - inputs:
+        - stage: co_process
+          id: source
+          port: 8887
+          address: ss-localhost
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value: AAAAAAAAAAAAAAAAAAAAAAA
+          value_encoding: none
+          value_type_enum: 0
+          stage_enum: 1
+          source: socket_input
+          source_enum: 5
+    - inputs:
+        - stage_enum: 1
+          port: 8887
+          ordinal: 1
+          value: Hello World!
+          value_type_enum: 0
+          source: socket_input
+          value_encoding: none
+          id: source
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          stage: co_process
+    - inputs:
+        - address: ss-localhost
+          source_enum: 5
+          stage_enum: 1
+          source: socket_input
+          stage: co_process
+          id: source
+          value: Short is good
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          port: 8887
+          value_type_enum: 0
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          stage_enum: 1
+          id: source
+          address: ss-localhost
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          ordinal: 1
+          port: 8887
+          value_encoding: none
+          stage: co_process
+    - inputs:
+        - address: ss-localhost
+          ordinal: 1
+          id: source
+          source_enum: 5
+          stage_enum: 1
+          source: socket_input
+          stage: co_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          value_type_enum: 0
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - function_name: avio_open2
+    line_number: 0
+    feature: callback
+    feature_group: control_flow
+    file_name: /tmp/tmpSNljnE_ss_testcase/src-rose/libavformat/aviobuf.c
+  - file_name: /tmp/tmpSNljnE_ss_testcase/src-rose/libavformat/aviobuf.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpSNljnE_ss_testcase/src-rose/libavformat/aviobuf.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmpSNljnE_ss_testcase/src-rose/libavformat/aviobuf.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression

@@ -1,0 +1,106 @@
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmp9lQzz6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+  - file_name: /tmp/tmp9lQzz6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmp9lQzz6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp9lQzz6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 2012
+      size: 40
+      flags: 950
+  description: "Malloc a buffer.  Copy the input string to the buffer.  Search for 'e' in the string.  Upon finding 'e', free the buffer, using a pointer that points to that 'e'.  If 'e' is the first character in the buffer, everything is OK.  However, if e is not the first character in the buffer, this will seg fault.\n\n"
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          value_type_enum: 0
+          id: source
+          key: 2012
+          size: 40
+          ordinal: 1
+          flags: 950
+          value: eAAA
+          source: shared_memory_input
+          value_encoding: none
+    - inputs:
+        - source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value: e12345 Hello world!
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          key: 2012
+          ordinal: 1
+          flags: 950
+          size: 40
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - size: 40
+          source: shared_memory_input
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          key: 2012
+          value_type_enum: 0
+          flags: 950
+          stage: pre_process
+          source_enum: 6
+          stage_enum: 0
+          value_encoding: none
+          value: e This string begins with an e
+          id: source
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          source: shared_memory_input
+          key: 2012
+          source_enum: 6
+          value_encoding: none
+          id: source
+          ordinal: 1
+          stage_enum: 0
+          stage: pre_process
+          value: aaa
+          size: 40
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+    - inputs:
+        - id: source
+          ordinal: 1
+          source: shared_memory_input
+          stage: pre_process
+          value_encoding: none
+          source_enum: 6
+          stage_enum: 0
+          key: 2012
+          size: 40
+          value: this string has doe not begin with an e
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950

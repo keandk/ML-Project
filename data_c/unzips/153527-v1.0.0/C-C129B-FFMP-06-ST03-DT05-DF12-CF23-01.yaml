@@ -1,0 +1,100 @@
+io_pair:
+  benigns:
+    - inputs:
+        - address: ss-localhost
+          value_type_enum: 0
+          stage_enum: 1
+          port: 8887
+          value: exampleofgoodinput
+          value_encoding: none
+          ordinal: 1
+          source: socket_input
+          source_enum: 5
+          stage: co_process
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - address: ss-localhost
+          source_enum: 5
+          source: socket_input
+          id: source
+          port: 8887
+          value_encoding: none
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: co_process
+          value: abcd12345ABCDE
+          stage_enum: 1
+    - inputs:
+        - value_encoding: none
+          source: socket_input
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          port: 8887
+          value: R0G3RR4881T
+          address: ss-localhost
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains non alphanumeric characters\n\n"
+  exploits:
+    - inputs:
+        - ordinal: 1
+          port: 8887
+          source_enum: 5
+          stage_enum: 1
+          source: socket_input
+          stage: co_process
+          address: ss-localhost
+          value: a-b+c*d
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+    - inputs:
+        - id: source
+          stage: co_process
+          source_enum: 5
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          address: ss-localhost
+          value: 3.14159
+          ordinal: 1
+          port: 8887
+          value_encoding: none
+          value_type_enum: 0
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+code_complexity_features:
+  - file_name: /tmp/tmpKVevWI_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpKVevWI_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+  - file_name: /tmp/tmpKVevWI_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: var_arg_list
+  - file_name: /tmp/tmpKVevWI_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: unemotiveness_systemized
+    line_number: 0
+    feature_group: control_flow
+    feature: set_jump_long_jump
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

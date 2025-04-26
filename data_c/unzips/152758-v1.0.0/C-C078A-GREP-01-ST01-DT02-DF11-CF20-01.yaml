@@ -1,0 +1,94 @@
+io_pair:
+  description: "Read a string from the input.  Do nslookup on that string, without checking first if it has any command separators.  This allows the user to run arbitrary commands.\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: ACTIONIZE_CODO
+  exploits:
+    - inputs:
+        - id: source
+          ordinal: 1
+          name: ACTIONIZE_CODO
+          source: env_var_input
+          source_enum: 2
+          value: 10; ls -la
+          value_encoding: none
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          value: localhost; echo Hello world
+          ordinal: 1
+          value_type_enum: 0
+          source: env_var_input
+          name: ACTIONIZE_CODO
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+  benigns:
+    - inputs:
+        - source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          stage_enum: 0
+          name: ACTIONIZE_CODO
+          ordinal: 1
+          value: 10
+          value_type_enum: 0
+          id: source
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - name: ACTIONIZE_CODO
+          source_enum: 2
+          id: source
+          source: env_var_input
+          stage: pre_process
+          stage_enum: 0
+          value: google.com
+          ordinal: 1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          value: localhost
+          value_encoding: none
+          name: ACTIONIZE_CODO
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 1
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpjNHnj7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpjNHnj7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpjNHnj7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpjNHnj7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

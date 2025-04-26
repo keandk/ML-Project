@@ -1,0 +1,112 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - address: ss-localhost
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          source_enum: 5
+          port: 8887
+          ordinal: 1
+          stage_enum: 1
+          value_encoding: none
+          value: "\"*\" -exec cat /etc/passwd \\;"
+          value_type_enum: 0
+          id: source
+        - name: /opt/stonesoup/workspace/testData/temp/file.txt
+          source_enum: 3
+          source: file_content_input
+          stage: pre_process
+          ordinal: 2
+          stage_enum: 0
+    - inputs:
+        - ordinal: 1
+          address: ss-localhost
+          value: "\"*\" -exec netstat -an \\;"
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          source: socket_input
+          id: source
+          stage: co_process
+          port: 8887
+          source_enum: 5
+          value_encoding: none
+          value_type_enum: 0
+        - source_enum: 3
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          stage_enum: 0
+          stage: pre_process
+          source: file_content_input
+          ordinal: 2
+  base_inputs:
+    - stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+      source_enum: 5
+      stage: co_process
+  benigns:
+    - inputs:
+        - address: ss-localhost
+          ordinal: 1
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          source_enum: 5
+          stage: co_process
+          value: "\"file.*\""
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+          port: 8887
+    - inputs:
+        - address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value_encoding: none
+          value: filename.txt
+          stage_enum: 1
+          ordinal: 1
+          source: socket_input
+          source_enum: 5
+          port: 8887
+          value_type_enum: 0
+          stage: co_process
+    - inputs:
+        - id: source
+          address: ss-localhost
+          value: "\"*\""
+          stage: co_process
+          value_encoding: none
+          ordinal: 1
+          port: 8887
+          stage_enum: 1
+          source: socket_input
+          source_enum: 5
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  description: "Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \\; ending the command, a user can insert other commands instead of just find\n\n"
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SOCKET
+    file_name: /tmp/tmpnEwLUn_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+  - file_name: /tmp/tmpnEwLUn_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+    file_name: /tmp/tmpnEwLUn_ss_testcase/src-rose/color.c
+  - file_name: /tmp/tmpnEwLUn_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

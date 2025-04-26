@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  description: "Read a string from the input.  Check first if it has any command separators and then run it though a URL decoding algorithm.  Then use this string to perform an nslookup by appending it to the end of the command. This allows the user to run arbitrary commands by suplying command separators encoded in url encoding.\n\n"
+  benigns:
+    - inputs:
+        - source: env_var_input
+          value_encoding: none
+          name: VINOSITY_DISPERSEDLY
+          id: source
+          value: 10
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          source_enum: 2
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+    - inputs:
+        - source: env_var_input
+          stage_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          source_enum: 2
+          id: source
+          name: VINOSITY_DISPERSEDLY
+          value: google.com
+          value_encoding: none
+    - inputs:
+        - source_enum: 2
+          ordinal: 1
+          source: env_var_input
+          stage_enum: 0
+          value_type_enum: 0
+          value_encoding: none
+          name: VINOSITY_DISPERSEDLY
+          stage: pre_process
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value: localhost
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+          value: 10%20%3B%20ls -la
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          name: VINOSITY_DISPERSEDLY
+          ordinal: 1
+          id: source
+    - inputs:
+        - name: VINOSITY_DISPERSEDLY
+          ordinal: 1
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          id: source
+          source: env_var_input
+          value: localhost%20%26%20echo Hello world
+          source_enum: 2
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      ordinal: 1
+      name: VINOSITY_DISPERSEDLY
+      id: source
+code_complexity_features:
+  - file_name: /tmp/tmpPlbpFz_ss_testcase/src-rose/crypto/bio/bio_err.c
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpPlbpFz_ss_testcase/src-rose/crypto/bio/bio_err.c
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature_group: data_type
+    feature: heap_pointer
+  - file_name: /tmp/tmpPlbpFz_ss_testcase/src-rose/crypto/bio/bio_err.c
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpPlbpFz_ss_testcase/src-rose/crypto/bio/bio_err.c
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop

@@ -1,0 +1,270 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  description: "Good inputs: 1) name of shipper for use in Sql databaseBad inputs:SQL argument injection \n\n"
+  exploits:
+    - inputs:
+        - id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 1
+          address: ss-localhost
+          stage: co_process
+          source: socket_input
+          ordinal: 1
+          port: 8887
+          value: BadShipper'), ('80','BadShipper2
+          source_enum: 5
+          value_encoding: none
+        - stage: pre_process
+          stage_enum: 0
+          value_type_enum: 1
+          server: ss-db-mysql
+          value_type: USE_CONTENTS_OF_FILE
+          database_enum: 0
+          value_encoding: none
+          value: northwind
+          source: database_content_input
+          ordinal: 2
+          database: mysql
+          source_enum: 0
+        - source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          name: SS_DBMYSQLDATABASE
+          source: env_var_input
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          ordinal: 3
+        - stage_enum: 2
+          ordinal: 1
+          source: database_content_input
+          value_type: USE_TEXT_DIRECTLY
+          server: ss-db-mysql
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_encoding: none
+          stage: post_process
+          database_enum: 0
+          source_enum: 0
+          database: mysql
+          value_type_enum: 0
+    - inputs:
+        - address: ss-localhost
+          ordinal: 1
+          port: 8887
+          source: socket_input
+          value: ShippersRUs'), ('20','BadShips'), ('65','ShipAttack'), ('45', 'MultiShip
+          id: source
+          stage: co_process
+          source_enum: 5
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage_enum: 1
+        - value_type_enum: 1
+          source: database_content_input
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          stage: pre_process
+          value_encoding: none
+          server: ss-db-mysql
+          database_enum: 0
+          ordinal: 2
+          database: mysql
+          stage_enum: 0
+          source_enum: 0
+        - source: env_var_input
+          ordinal: 3
+          name: SS_DBMYSQLDATABASE
+          value_encoding: none
+          value: SET_DYNAMIC_DB_NAME
+          stage_enum: 0
+          value_type_enum: 0
+          source_enum: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+        - source_enum: 0
+          ordinal: 1
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          database: mysql
+          source: database_content_input
+          stage: post_process
+          database_enum: 0
+          stage_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          server: ss-db-mysql
+  benigns:
+    - inputs:
+        - stage: co_process
+          value_encoding: none
+          value: shipper1
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          id: source
+          value_type_enum: 0
+          source_enum: 5
+        - database: mysql
+          source_enum: 0
+          value: northwind
+          source: database_content_input
+          stage_enum: 0
+          server: ss-db-mysql
+          database_enum: 0
+          stage: pre_process
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          ordinal: 2
+          value_type_enum: 1
+        - source_enum: 2
+          stage: pre_process
+          value_encoding: none
+          value: SET_DYNAMIC_DB_NAME
+          name: SS_DBMYSQLDATABASE
+          ordinal: 3
+          stage_enum: 0
+          value_type_enum: 0
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+        - stage_enum: 2
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          database: mysql
+          value_type_enum: 0
+          source: database_content_input
+          source_enum: 0
+          database_enum: 0
+          stage: post_process
+          value_encoding: none
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          server: ss-db-mysql
+    - inputs:
+        - value_type_enum: 0
+          stage_enum: 1
+          ordinal: 1
+          source_enum: 5
+          stage: co_process
+          id: source
+          port: 8887
+          source: socket_input
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: NewShipper
+        - value: northwind
+          database: mysql
+          source_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          database_enum: 0
+          source: database_content_input
+          value_type_enum: 1
+          server: ss-db-mysql
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          ordinal: 2
+        - source_enum: 2
+          stage: pre_process
+          ordinal: 3
+          name: SS_DBMYSQLDATABASE
+          value_type_enum: 0
+          stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          source: env_var_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+        - value_encoding: none
+          ordinal: 1
+          stage_enum: 2
+          source_enum: 0
+          database: mysql
+          database_enum: 0
+          server: ss-db-mysql
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          stage: post_process
+          value_type: USE_TEXT_DIRECTLY
+          source: database_content_input
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 5
+          ordinal: 1
+          source: socket_input
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          id: source
+          stage_enum: 1
+          stage: co_process
+          value: ShippingCompany
+          value_encoding: none
+          port: 8887
+        - database: mysql
+          server: ss-db-mysql
+          value_encoding: none
+          value_type: USE_CONTENTS_OF_FILE
+          ordinal: 2
+          stage: pre_process
+          stage_enum: 0
+          source: database_content_input
+          value: northwind
+          value_type_enum: 1
+          source_enum: 0
+          database_enum: 0
+        - stage_enum: 0
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          name: SS_DBMYSQLDATABASE
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source: env_var_input
+        - value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          source: database_content_input
+          source_enum: 0
+          value_encoding: none
+          stage_enum: 2
+          stage: post_process
+          value_type: USE_TEXT_DIRECTLY
+          database: mysql
+          server: ss-db-mysql
+          value_type_enum: 0
+          database_enum: 0
+          ordinal: 1
+  base_inputs:
+    - source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+code_complexity_features:
+  - file_name: /tmp/tmpnX31j8_ss_testcase/src-rose/crypto/evp/e_camellia.c
+    function_name: stonesoup_handle_taint
+    feature_group: source_taint
+    line_number: 0
+    feature: SOCKET
+  - file_name: /tmp/tmpnX31j8_ss_testcase/src-rose/crypto/evp/e_camellia.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpnX31j8_ss_testcase/src-rose/crypto/evp/e_camellia.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression
+  - file_name: /tmp/tmpnX31j8_ss_testcase/src-rose/crypto/evp/e_camellia.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: recursive

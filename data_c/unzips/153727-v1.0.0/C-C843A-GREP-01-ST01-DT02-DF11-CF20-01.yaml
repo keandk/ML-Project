@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpBgwki7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpBgwki7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpBgwki7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpBgwki7_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: WAKE_PERMUTATED
+  description: "Creates a union that can be either an int or a char *.\n  If input is a non-zero number, set union to that number, else set union to the input string.\n  Try to access the union as a string, regardless of how it is set.\nSeg fault if the input is a non-zero number.\n\n"
+  benigns:
+    - inputs:
+        - name: WAKE_PERMUTATED
+          source_enum: 2
+          stage: pre_process
+          value: AAA
+          ordinal: 1
+          stage_enum: 0
+          id: source
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          ordinal: 1
+          stage_enum: 0
+          source_enum: 2
+          name: WAKE_PERMUTATED
+          value_type_enum: 0
+          id: source
+          value: This is not a number
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+    - inputs:
+        - id: source
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          name: WAKE_PERMUTATED
+          source_enum: 2
+          ordinal: 1
+          source: env_var_input
+          stage_enum: 0
+          value_encoding: none
+          value: not a number not a number not a number
+          value_type_enum: 0
+  exploits:
+    - inputs:
+        - source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          name: WAKE_PERMUTATED
+          value_encoding: none
+          ordinal: 1
+          value: 012
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source_enum: 2
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          stage: pre_process
+          value_encoding: none
+          source: env_var_input
+          value: 40000
+          value_type: USE_TEXT_DIRECTLY
+          name: WAKE_PERMUTATED
+          value_type_enum: 0

@@ -1,0 +1,106 @@
+io_pair:
+  description: "Read a string from the input.  Do nslookup on that string, without checking first if it has any command separators.  This allows the user to run arbitrary commands.\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 6799
+      size: 28
+      flags: 950
+  exploits:
+    - inputs:
+        - source: shared_memory_input
+          source_enum: 6
+          size: 28
+          value_type_enum: 0
+          value_encoding: none
+          stage: pre_process
+          flags: 950
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          value: 10; ls -la
+          value_type: USE_TEXT_DIRECTLY
+          key: 6799
+    - inputs:
+        - id: source
+          key: 6799
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          source: shared_memory_input
+          source_enum: 6
+          ordinal: 1
+          stage: pre_process
+          size: 28
+          value: localhost; echo Hello world
+          value_type_enum: 0
+          stage_enum: 0
+  benigns:
+    - inputs:
+        - value_encoding: none
+          source_enum: 6
+          source: shared_memory_input
+          stage: pre_process
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          key: 6799
+          flags: 950
+          value: 10
+          size: 28
+          value_type_enum: 0
+    - inputs:
+        - id: source
+          key: 6799
+          ordinal: 1
+          source: shared_memory_input
+          size: 28
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          value: google.com
+          flags: 950
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          key: 6799
+          size: 28
+          flags: 950
+          value: localhost
+          source: shared_memory_input
+          source_enum: 6
+          value_encoding: none
+          stage: pre_process
+          stage_enum: 0
+          id: source
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpb490Ma_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpb490Ma_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpb490Ma_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpb490Ma_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

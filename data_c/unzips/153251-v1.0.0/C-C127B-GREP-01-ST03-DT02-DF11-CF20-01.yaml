@@ -1,0 +1,100 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpF32MYR_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpF32MYR_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpF32MYR_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpF32MYR_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  description: "Has a heap buffer of size 64.  Reads in an ascii string from an environment variable and copies the final 63 characters into the heap buffer.  Then  reads the variable back from the heap buffer in reverse order, but incorrectly uses the size of the original string.  If the original string is longer than 63characters, this will result in an underread.\n\n"
+  benigns:
+    - inputs:
+        - id: source
+          ordinal: 1
+          source_enum: 5
+          stage: co_process
+          stage_enum: 1
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          port: 8887
+          value_type_enum: 0
+          value_encoding: none
+          source: socket_input
+    - inputs:
+        - source_enum: 5
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          ordinal: 1
+          source: socket_input
+          id: source
+          port: 8887
+          value_encoding: none
+          value: This is probably not going to overflow a buffer of some sort.
+          address: ss-localhost
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 5
+          value_type_enum: 0
+          port: 8887
+          source: socket_input
+          stage: co_process
+          ordinal: 1
+          id: source
+          value_encoding: none
+          value: This statement has less than 64 characters, then nothing bad.
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          source: socket_input
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage: co_process
+          stage_enum: 1
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0
+          address: ss-localhost
+    - inputs:
+        - source: socket_input
+          value: The quick brown fox jumps over the lazy dog.  Why?  I don't know, because he was in a rush and trying to get somewhere.
+          value_encoding: none
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          port: 8887
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          address: ss-localhost

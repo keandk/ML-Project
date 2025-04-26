@@ -1,0 +1,122 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153166,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case allocates a buffer on the heap, copies the input string into it, and then capitalizes each letter in the buffer. It searches that buffer to see if it contains the letter 'E', using a while loop that increments the pointer to the buffer each time through the loop. When it finds a letter 'E', or reaches the end of the buffer, it frees the buffer, using the pointer that it may have incremented. If the input is the empty string, or has the letter 'E' (or 'e') as its first character, the free happens successfully. If the input is non-empty and does not have the letter 'E' as its first character, the free does not happen at the start of the buffer, resulting in a segfault.   \nMetadata\n - Base program: Gimp\n - Source Taint: SHARED_MEMORY\n - Data Type: HEAP_POINTER\n - Data Flow: BUFFER_ADDRESS_POINTER\n - Control Flow: INTERPROCEDURAL_10",
+        "state": "bad",
+        "application": "cpe:2.3:a:gimp:gimp:2.8.8:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "gimp-v2.8.8"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C761A-GIMP-07-ST04-DT04-DF17-CF14-01.xml"
+          },
+          "length": 83397,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "5e195604c31fcf2d6d0e360f0c3082d0be51ed1baa97718e4d3a2a882a5d1ea3"
+          }
+        },
+        {
+          "location": {
+            "uri": "scripts/shm_setup.c"
+          },
+          "length": 3155,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "15d311b07d65d83f38876f4ee427c355e2048145d6db756d5d71877405f24822"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/app/base/tile.c"
+          },
+          "length": 14504,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "2bf2d8388472c97bbca666252f20a9d2ff18f81b6784f1d917b54c49e90f9b6d"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "761",
+              "name": "Free of Pointer not at Start of Buffer"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-761",
+          "message": {
+            "text": "Free of Pointer not at Start of Buffer."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/app/base/tile.c",
+                  "index": 2
+                },
+                "region": {
+                  "startLine": 144,
+                  "endLine": 146
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "761",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

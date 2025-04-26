@@ -1,0 +1,270 @@
+code_complexity_features:
+  - line_number: 0
+    feature: SOCKET
+    file_name: /tmp/tmpDVSiYh_ss_testcase/src-rose/libavdevice/avdevice.c
+    function_name: stonesoup_handle_taint
+    feature_group: source_taint
+  - file_name: /tmp/tmpDVSiYh_ss_testcase/src-rose/libavdevice/avdevice.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: void_pointer
+  - file_name: /tmp/tmpDVSiYh_ss_testcase/src-rose/libavdevice/avdevice.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: address_as_variable
+    feature_group: data_flow
+  - file_name: /tmp/tmpDVSiYh_ss_testcase/src-rose/libavdevice/avdevice.c
+    feature_group: control_flow
+    function_name: stonesoup_handle_taint
+    feature: pointer_to_function
+    line_number: 0
+io_pair:
+  base_inputs:
+    - stage: co_process
+      id: source
+      ordinal: 1
+      port: 8887
+      address: ss-localhost
+      source: socket_input
+      source_enum: 5
+      stage_enum: 1
+  benigns:
+    - inputs:
+        - port: 8887
+          source: socket_input
+          value: USA
+          stage_enum: 1
+          value_encoding: none
+          value_type_enum: 0
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          ordinal: 1
+          id: source
+          stage: co_process
+        - database: mysql
+          value_encoding: none
+          source: database_content_input
+          value: northwind
+          server: ss-db-mysql
+          value_type_enum: 1
+          stage: pre_process
+          source_enum: 0
+          stage_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          database_enum: 0
+          ordinal: 2
+        - stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 3
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+          name: SS_DBMYSQLDATABASE
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          database_enum: 0
+          stage_enum: 2
+          value_type_enum: 0
+          stage: post_process
+          server: ss-db-mysql
+          source_enum: 0
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          database: mysql
+          source: database_content_input
+          value_encoding: none
+    - inputs:
+        - stage_enum: 1
+          value_type_enum: 0
+          id: source
+          stage: co_process
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          port: 8887
+          value_encoding: none
+          value: Germany
+          ordinal: 1
+          address: ss-localhost
+        - value_encoding: none
+          stage: pre_process
+          stage_enum: 0
+          server: ss-db-mysql
+          value_type_enum: 1
+          database: mysql
+          source: database_content_input
+          value_type: USE_CONTENTS_OF_FILE
+          ordinal: 2
+          database_enum: 0
+          value: northwind
+          source_enum: 0
+        - value_type: USE_TEXT_DIRECTLY
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          stage: pre_process
+          source_enum: 2
+          value_type_enum: 0
+          source: env_var_input
+          name: SS_DBMYSQLDATABASE
+          stage_enum: 0
+          ordinal: 3
+        - value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          server: ss-db-mysql
+          value_encoding: none
+          stage: post_process
+          value_type_enum: 0
+          source_enum: 0
+          ordinal: 1
+          database_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: database_content_input
+          stage_enum: 2
+          database: mysql
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          ordinal: 1
+          value_encoding: none
+          value: Finland
+          stage_enum: 1
+          value_type_enum: 0
+          source_enum: 5
+          source: socket_input
+          id: source
+          address: ss-localhost
+          stage: co_process
+        - server: ss-db-mysql
+          stage: pre_process
+          value_type_enum: 1
+          stage_enum: 0
+          database: mysql
+          value_encoding: none
+          ordinal: 2
+          value_type: USE_CONTENTS_OF_FILE
+          source: database_content_input
+          database_enum: 0
+          source_enum: 0
+          value: northwind
+        - ordinal: 3
+          stage_enum: 0
+          name: SS_DBMYSQLDATABASE
+          source: env_var_input
+          value_encoding: none
+          value: SET_DYNAMIC_DB_NAME
+          source_enum: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - stage: post_process
+          server: ss-db-mysql
+          ordinal: 1
+          source_enum: 0
+          stage_enum: 2
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          database: mysql
+          value_type_enum: 0
+          value_encoding: none
+          database_enum: 0
+          source: database_content_input
+          value_type: USE_TEXT_DIRECTLY
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+  exploits:
+    - inputs:
+        - id: source
+          value_type_enum: 0
+          stage_enum: 1
+          stage: co_process
+          source: socket_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          port: 8887
+          ordinal: 1
+          value: x' or 'x'='x
+          address: ss-localhost
+        - source_enum: 0
+          stage_enum: 0
+          database_enum: 0
+          database: mysql
+          value: northwind
+          stage: pre_process
+          value_type_enum: 1
+          source: database_content_input
+          ordinal: 2
+          value_type: USE_CONTENTS_OF_FILE
+          server: ss-db-mysql
+          value_encoding: none
+        - source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: SS_DBMYSQLDATABASE
+          stage: pre_process
+          stage_enum: 0
+          source: env_var_input
+          ordinal: 3
+        - stage_enum: 2
+          source: database_content_input
+          ordinal: 1
+          source_enum: 0
+          database: mysql
+          value_encoding: none
+          value_type_enum: 0
+          stage: post_process
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type: USE_TEXT_DIRECTLY
+          database_enum: 0
+          server: ss-db-mysql
+    - inputs:
+        - source_enum: 5
+          source: socket_input
+          value_type_enum: 0
+          port: 8887
+          id: source
+          address: ss-localhost
+          stage: co_process
+          value_encoding: none
+          value: "x'; Select * from Orders; -- "
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          ordinal: 1
+        - ordinal: 2
+          source_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          server: ss-db-mysql
+          value_type_enum: 1
+          stage_enum: 0
+          database: mysql
+          value_encoding: none
+          database_enum: 0
+          source: database_content_input
+          stage: pre_process
+        - stage_enum: 0
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: SS_DBMYSQLDATABASE
+          stage: pre_process
+          ordinal: 3
+          source: env_var_input
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+        - value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          database_enum: 0
+          server: ss-db-mysql
+          value_type_enum: 0
+          source: database_content_input
+          stage: post_process
+          database: mysql
+          ordinal: 1
+          value_encoding: none
+          source_enum: 0
+          stage_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="C-TREE" language="C" name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Creating test case using base program.
+Added a Socket Server to accept communication from untrusted source.
+Completed injection.
+</description>
+    <additional_information>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <run_command>$SS_TC_ROOT/$SS_TC_INSTALL/bin/tree</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-170" name="CWE-170-A"/>
+        <features>
+            <taint_source file_name="/color.c" line_number="0" type="SOCKET">
+                <method name="stonesoup_handle_taint"/>
+            </taint_source>
+            <data_type file_name="/color.c" line_number="0" type="SIMPLE">
+                <method name="stonesoup_handle_taint"/>
+            </data_type>
+            <data_flow file_name="/color.c" line_number="0" type="BASIC">
+                <method name="stonesoup_handle_taint"/>
+            </data_flow>
+            <control_flow file_name="/color.c" line_number="0" type="SEQUENCE">
+                <method name="stonesoup_handle_taint"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands cppflags="-DSTONESOUP_TRACE=1" libs="-lpthread -lmongoose -ldl">
+        <command>make install CC=&quot;$SS_CC&quot; LD=&quot;$SS_LNK&quot; CFLAGS=&quot;$CFLAGS&quot; CPPFLAGS=&quot;$CPPFLAGS&quot; LDFLAGS=&quot;$LDFLAGS&quot; prefix=&quot;$SS_TC_ROOT/$SS_TC_INSTALL&quot; LIBS=&quot;$LIBS&quot;</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-GOOD-01" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good01.txt" type="USE_TEXT">This file is not empty.</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q input/good-01</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_HmwPLe9IiQ" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/good01.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-01" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-01/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_CCQ2TRFzed" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">STDOUT-REPORT-01 AND STDOUT-CONTENT-LENGTH-01 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-01">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">5 directories, 10 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-01">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-01" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-GOOD-02" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good02.txt" type="USE_TEXT">abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuv</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -L 2 input/good-02</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_ksN2Rm8NPo" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/good02.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-02" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-02/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_UAZS9rjJO3" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">STDOUT-REPORT-02 AND STDOUT-CONTENT-LENGTH-02 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-02">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">5 directories, 4 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-02">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-02" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-GOOD-03" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -J input/good-03</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_Pk0nTFfcuG" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/badfilename.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-03" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-03/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_KFGJbVaf7Q" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">STDOUT-REPORT-03 AND STDOUT-CONTENT-LENGTH-03 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-03">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">{&quot;type&quot;:&quot;report&quot;,&quot;directories&quot;:7,&quot;files&quot;:367}</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-03">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-03" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-GOOD-04" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good01.txt" type="USE_TEXT">This file is not empty.</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -P &quot;test*&quot; -F input/good-03</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_u0JAF9UBbP" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/good01.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-04" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-04/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_U77hcKV9CK" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">STDOUT-REPORT-04 AND STDOUT-CONTENT-LENGTH-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-04">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">7 directories, 62 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-04">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-04" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-GOOD-05" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good02.txt" type="USE_TEXT">abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuv</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -H &quot;&quot; input/good-01</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_o574TZBlQA" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/good02.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-05" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-05/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_zjVV2vlJoo" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">STDOUT-REPORT-05 AND STDOUT-CONTENT-LENGTH-05 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-05">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">5 directories, 10 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-05">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-05" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-BAD-01" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>DOS_UNCONTROLLED_EXIT</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/bad01.txt" type="USE_TEXT">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -P &quot;test*&quot; -F input/good-03</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_i7FM2SqZoHfZmK2Fhqzp" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/bad01.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-04xri6obIde0" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-04/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_o1vCVRRzh7c0Av4WJXgF" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="segfault_formula_4lEcTnYCif">
+                <formula name="segfault_formula_4lEcTnYCif">weakness_started_4nMqUDbfQF6Mmlj1mYS8 AND ((NOT PERFORMER AND (segfault_code_LLvGieod7W OR segfault_code_AtUfJHi1ro OR segfault_code_6edoiLnpEu OR segfault_code_t89m2mw3Ie OR segfault_code_JvVZevKgqe OR segfault_msg_y36pgXaPij OR illegal_inst_msg_FdbzHzW311) AND NOT timeout_9gSM1p0au6) or (PERFORMER AND NOT ((segfault_code_LLvGieod7W OR segfault_code_AtUfJHi1ro OR segfault_code_6edoiLnpEu OR segfault_code_t89m2mw3Ie OR segfault_code_JvVZevKgqe OR segfault_msg_y36pgXaPij OR illegal_inst_msg_FdbzHzW311) OR timeout_9gSM1p0au6 OR controlled_exit_hes9cr73i4)))</formula>
+                <formula name="no_weakness_started_formula_sQAKaJu5sG">(NOT PERFORMER AND (segfault_code_LLvGieod7W OR segfault_code_AtUfJHi1ro OR segfault_code_6edoiLnpEu OR segfault_code_t89m2mw3Ie OR segfault_code_JvVZevKgqe OR segfault_msg_y36pgXaPij OR illegal_inst_msg_FdbzHzW311) AND NOT timeout_9gSM1p0au6) or (PERFORMER AND NOT ((segfault_code_LLvGieod7W OR segfault_code_AtUfJHi1ro OR segfault_code_6edoiLnpEu OR segfault_code_t89m2mw3Ie OR segfault_code_JvVZevKgqe OR segfault_msg_y36pgXaPij OR illegal_inst_msg_FdbzHzW311) OR timeout_9gSM1p0au6 OR controlled_exit_hes9cr73i4))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_9gSM1p0au6" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_hes9cr73i4" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_3PMyaLSnGo" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_LLvGieod7W">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">132</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_AtUfJHi1ro">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">134</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_6edoiLnpEu">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">135</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_t89m2mw3Ie">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">136</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_JvVZevKgqe">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">139</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="segfault_msg_y36pgXaPij">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Segmentation fault</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="illegal_inst_msg_FdbzHzW311">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Illegal instruction</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_4nMqUDbfQF6Mmlj1mYS8">
+                    <actual encoding="STRING" input_id_ref="lttng_output_o1vCVRRzh7c0Av4WJXgF" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C170A-CTRE-01-ST03-DT02-DF11-CF20-01-BAD-02" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes
+
+</description>
+            <technical_impact>DOS_UNCONTROLLED_EXIT</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf '' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/bad02.txt" type="USE_TEXT">abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -H &quot;&quot; input/good-01</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_T7XFr8hULta3NqeD6TGa" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;/opt/stonesoup/workspace/testData/bad02.txt&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-05CWei1Qn5QB" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-05/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_Rbz972wdGyxN4doHnZaC" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="segfault_formula_qf0UVCxpqQ">
+                <formula name="segfault_formula_qf0UVCxpqQ">weakness_started_zeqXzsrTvpBr4GlSUxY6 AND ((NOT PERFORMER AND (segfault_code_CETj5k3i8j OR segfault_code_Y13f78qY5s OR segfault_code_V8zX6PqrIV OR segfault_code_jk51XYgd4R OR segfault_code_S8EgzrtB1d OR segfault_msg_vUoXWOv9Xg OR illegal_inst_msg_5AleckwQng) AND NOT timeout_x1ms7fyRQk) or (PERFORMER AND NOT ((segfault_code_CETj5k3i8j OR segfault_code_Y13f78qY5s OR segfault_code_V8zX6PqrIV OR segfault_code_jk51XYgd4R OR segfault_code_S8EgzrtB1d OR segfault_msg_vUoXWOv9Xg OR illegal_inst_msg_5AleckwQng) OR timeout_x1ms7fyRQk OR controlled_exit_UiMP4YGm7a)))</formula>
+                <formula name="no_weakness_started_formula_tLegs8gL4y">(NOT PERFORMER AND (segfault_code_CETj5k3i8j OR segfault_code_Y13f78qY5s OR segfault_code_V8zX6PqrIV OR segfault_code_jk51XYgd4R OR segfault_code_S8EgzrtB1d OR segfault_msg_vUoXWOv9Xg OR illegal_inst_msg_5AleckwQng) AND NOT timeout_x1ms7fyRQk) or (PERFORMER AND NOT ((segfault_code_CETj5k3i8j OR segfault_code_Y13f78qY5s OR segfault_code_V8zX6PqrIV OR segfault_code_jk51XYgd4R OR segfault_code_S8EgzrtB1d OR segfault_msg_vUoXWOv9Xg OR illegal_inst_msg_5AleckwQng) OR timeout_x1ms7fyRQk OR controlled_exit_UiMP4YGm7a))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_x1ms7fyRQk" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_UiMP4YGm7a" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_voENwlBtsc" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_CETj5k3i8j">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">132</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_Y13f78qY5s">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">134</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_V8zX6PqrIV">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">135</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_jk51XYgd4R">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">136</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_S8EgzrtB1d">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">139</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="segfault_msg_vUoXWOv9Xg">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Segmentation fault</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="illegal_inst_msg_5AleckwQng">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Illegal instruction</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_zeqXzsrTvpBr4GlSUxY6">
+                    <actual encoding="STRING" input_id_ref="lttng_output_Rbz972wdGyxN4doHnZaC" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

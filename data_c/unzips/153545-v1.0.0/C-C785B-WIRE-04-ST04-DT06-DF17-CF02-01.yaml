@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  benigns:
+    - inputs:
+        - value: /etc/passwd
+          source: shared_memory_input
+          stage: pre_process
+          id: source
+          ordinal: 1
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          stage_enum: 0
+          size: 20
+          key: 7689
+          flags: 950
+    - inputs:
+        - ordinal: 1
+          key: 7689
+          flags: 950
+          value_type_enum: 0
+          value_encoding: none
+          source_enum: 6
+          id: source
+          size: 20
+          stage: pre_process
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: /etc/ssh/ssh_config
+          source: shared_memory_input
+    - inputs:
+        - id: source
+          key: 7689
+          flags: 950
+          source: shared_memory_input
+          stage_enum: 0
+          ordinal: 1
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          size: 20
+          value: /usr/bin/gcc
+          value_encoding: none
+  base_inputs:
+    - source_enum: 6
+      stage_enum: 0
+      stage: pre_process
+      id: source
+      key: 7689
+      flags: 950
+      size: 20
+      ordinal: 1
+      source: shared_memory_input
+  exploits:
+    - inputs:
+        - ordinal: 1
+          stage_enum: 0
+          size: 20
+          value_encoding: none
+          source: shared_memory_input
+          key: 7689
+          source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          value: ../testData
+          stage: pre_process
+          value_type_enum: 0
+          flags: 950
+          id: source
+    - inputs:
+        - source_enum: 6
+          value_encoding: none
+          value: ../testOutput
+          stage: pre_process
+          flags: 950
+          ordinal: 1
+          value_type_enum: 0
+          size: 20
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          key: 7689
+          source: shared_memory_input
+          id: source
+  description: "Has a buffer declared on the heap. malloc(20*sizeOf(char)) If input is resolved to more  than 20 chars it will overflow\n\n"
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SHARED_MEMORY
+    line_number: 0
+    function_name: filter_toolbar_new
+    file_name: /tmp/tmpmk8VEm_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+  - line_number: 0
+    feature_group: data_type
+    feature: typedef
+    file_name: /tmp/tmpmk8VEm_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    function_name: filter_toolbar_new
+  - feature_group: data_flow
+    feature: buffer_address_array_index
+    line_number: 0
+    function_name: filter_toolbar_new
+    file_name: /tmp/tmpmk8VEm_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+  - function_name: filter_toolbar_new
+    feature_group: control_flow
+    feature: indirectly_recursive
+    line_number: 0
+    file_name: /tmp/tmpmk8VEm_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c

@@ -1,0 +1,100 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  benigns:
+    - inputs:
+        - stage_enum: 1
+          source: socket_input
+          value_encoding: none
+          value: exampleofgoodinput
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          value_type_enum: 0
+          id: source
+          address: ss-localhost
+          ordinal: 1
+          stage: co_process
+          source_enum: 5
+    - inputs:
+        - address: ss-localhost
+          source_enum: 5
+          stage: co_process
+          source: socket_input
+          stage_enum: 1
+          id: source
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value: abcd12345ABCDE
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - value: R0G3RR4881T
+          stage: co_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          source_enum: 5
+          value_type_enum: 0
+          id: source
+          address: ss-localhost
+          source: socket_input
+          stage_enum: 1
+          ordinal: 1
+  exploits:
+    - inputs:
+        - stage_enum: 1
+          source: socket_input
+          id: source
+          source_enum: 5
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          value: "{a+b|c+d}"
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: co_process
+    - inputs:
+        - ordinal: 1
+          source: socket_input
+          value: "!a*b(c*d-1)"
+          id: source
+          value_encoding: none
+          source_enum: 5
+          value_type_enum: 0
+          stage: co_process
+          address: ss-localhost
+          port: 8887
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains * or -.  + causes infinte loop\n\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+code_complexity_features:
+  - file_name: /tmp/tmpYRkVmq_ss_testcase/src-rose/epan/emem.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpYRkVmq_ss_testcase/src-rose/epan/emem.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmpYRkVmq_ss_testcase/src-rose/epan/emem.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_variable
+  - feature: sequence
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    file_name: /tmp/tmpYRkVmq_ss_testcase/src-rose/epan/emem.c

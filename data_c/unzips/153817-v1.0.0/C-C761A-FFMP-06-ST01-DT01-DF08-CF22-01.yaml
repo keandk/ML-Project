@@ -1,0 +1,94 @@
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: OCCIPITALIS_LAENNEC
+  description: "Malloc a buffer.  Copy the input string to the buffer.  Search for 'e' in the string.  Upon finding 'e', free the buffer, using a pointer that points to that 'e'.  If 'e' is the first character in the buffer, everything is OK.  However, if e is not the first character in the buffer, this will seg fault.\n\n"
+  benigns:
+    - inputs:
+        - source: env_var_input
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: eAAA
+          source_enum: 2
+          stage_enum: 0
+          name: OCCIPITALIS_LAENNEC
+          ordinal: 1
+          id: source
+          stage: pre_process
+    - inputs:
+        - value_type_enum: 0
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          name: OCCIPITALIS_LAENNEC
+          value: e12345 Hello world!
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          ordinal: 1
+          value_encoding: none
+    - inputs:
+        - value_encoding: none
+          id: source
+          value: e This string begins with an e
+          source_enum: 2
+          source: env_var_input
+          ordinal: 1
+          stage: pre_process
+          name: OCCIPITALIS_LAENNEC
+          stage_enum: 0
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  exploits:
+    - inputs:
+        - name: OCCIPITALIS_LAENNEC
+          stage: pre_process
+          source_enum: 2
+          value: aaa
+          stage_enum: 0
+          source: env_var_input
+          ordinal: 1
+          id: source
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - id: source
+          source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+          ordinal: 1
+          value: this string has doe not begin with an e
+          value_type: USE_TEXT_DIRECTLY
+          name: OCCIPITALIS_LAENNEC
+          value_encoding: none
+          value_type_enum: 0
+          stage: pre_process
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpFYmqo5_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+    feature_group: source_taint
+  - file_name: /tmp/tmpFYmqo5_ss_testcase/src-rose/libavfilter/avfilter.c
+    feature_group: data_type
+    function_name: avfilter_configuration
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmpFYmqo5_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_2
+  - function_name: avfilter_configuration
+    line_number: 0
+    feature_group: control_flow
+    file_name: /tmp/tmpFYmqo5_ss_testcase/src-rose/libavfilter/avfilter.c
+    feature: macros

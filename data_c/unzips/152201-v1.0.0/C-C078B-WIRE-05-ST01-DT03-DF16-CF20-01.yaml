@@ -1,0 +1,94 @@
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: JOHANNIST_REAGITATED
+  description: "Read a string from the input.  Check first if it has any command separators and then run it though a URL decoding algorithm.  Then use this string to perform an nslookup by appending it to the end of the command. This allows the user to run arbitrary commands by suplying command separators encoded in url encoding.\n\n"
+  benigns:
+    - inputs:
+        - value: 10
+          value_type: USE_TEXT_DIRECTLY
+          name: JOHANNIST_REAGITATED
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          ordinal: 1
+          stage: pre_process
+          stage_enum: 0
+          source_enum: 2
+          id: source
+    - inputs:
+        - source_enum: 2
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          value: google.com
+          name: JOHANNIST_REAGITATED
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value: localhost
+          value_type_enum: 0
+          value_encoding: none
+          id: source
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          name: JOHANNIST_REAGITATED
+  exploits:
+    - inputs:
+        - value: 10%20%3B%20ls -la
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          name: JOHANNIST_REAGITATED
+    - inputs:
+        - stage_enum: 0
+          name: JOHANNIST_REAGITATED
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value: localhost%20%26%20echo Hello world
+          source: env_var_input
+          stage: pre_process
+          source_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          id: source
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpw7T8rq_ss_testcase/src-rose/epan/emem.c
+    function_name: emem_tree_parent
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpw7T8rq_ss_testcase/src-rose/epan/emem.c
+    function_name: emem_tree_parent
+    line_number: 0
+    feature: void_pointer
+    feature_group: data_type
+  - file_name: /tmp/tmpw7T8rq_ss_testcase/src-rose/epan/emem.c
+    function_name: emem_tree_parent
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpw7T8rq_ss_testcase/src-rose/epan/emem.c
+    function_name: emem_tree_parent
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

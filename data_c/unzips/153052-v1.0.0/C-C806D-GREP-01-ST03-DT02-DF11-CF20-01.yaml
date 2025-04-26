@@ -1,0 +1,100 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpecmYzY_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpecmYzY_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpecmYzY_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpecmYzY_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value: AAAAAAAAAAAAAAA
+          source: socket_input
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage: co_process
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value: Short is now bad
+          value_encoding: none
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - id: source
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          value_encoding: none
+    - inputs:
+        - stage: co_process
+          id: source
+          source: socket_input
+          value_type_enum: 0
+          value_encoding: none
+          stage_enum: 1
+          address: ss-localhost
+          source_enum: 5
+          port: 8887
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+    - inputs:
+        - stage_enum: 1
+          source_enum: 5
+          value_type_enum: 0
+          source: socket_input
+          stage: co_process
+          ordinal: 1
+          id: source
+          port: 8887
+          value_encoding: none
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong

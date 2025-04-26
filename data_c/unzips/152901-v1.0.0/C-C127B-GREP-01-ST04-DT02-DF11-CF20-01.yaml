@@ -1,0 +1,106 @@
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpRGgLTr_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+  - file_name: /tmp/tmpRGgLTr_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpRGgLTr_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpRGgLTr_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          id: source
+          flags: 950
+          value_type_enum: 0
+          source: shared_memory_input
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          size: 131
+          key: 4130
+          value_encoding: none
+          ordinal: 1
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          flags: 950
+          value_type_enum: 0
+          key: 4130
+          size: 131
+          source: shared_memory_input
+          stage: pre_process
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value: The quick brown fox jumps over the lazy dog.  Why?  I don't know, because he was in a rush and trying to get somewhere.
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 4130
+      size: 131
+      flags: 950
+  description: "Has a heap buffer of size 64.  Reads in an ascii string from an environment variable and copies the final 63 characters into the heap buffer.  Then  reads the variable back from the heap buffer in reverse order, but incorrectly uses the size of the original string.  If the original string is longer than 63characters, this will result in an underread.\n\n"
+  benigns:
+    - inputs:
+        - id: source
+          ordinal: 1
+          flags: 950
+          stage: pre_process
+          stage_enum: 0
+          key: 4130
+          value_encoding: none
+          size: 131
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          source_enum: 6
+    - inputs:
+        - source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value: This is probably not going to overflow a buffer of some sort.
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          key: 4130
+          ordinal: 1
+          flags: 950
+          size: 131
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          source: shared_memory_input
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          size: 131
+          value_encoding: none
+          key: 4130
+          value_type_enum: 0
+          value: This statement has less than 64 characters, then nothing bad.
+          source_enum: 6
+          flags: 950

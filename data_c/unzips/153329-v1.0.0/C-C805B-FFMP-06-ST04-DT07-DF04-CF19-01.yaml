@@ -1,0 +1,106 @@
+io_pair:
+  benigns:
+    - inputs:
+        - stage: pre_process
+          source_enum: 6
+          key: 8433
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          flags: 950
+          size: 53
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: Hello
+          value_type_enum: 0
+          source: shared_memory_input
+    - inputs:
+        - value_encoding: none
+          stage: pre_process
+          key: 8433
+          value: a
+          id: source
+          stage_enum: 0
+          source: shared_memory_input
+          value_type_enum: 0
+          ordinal: 1
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          size: 53
+          source_enum: 6
+    - inputs:
+        - ordinal: 1
+          stage_enum: 0
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          key: 8433
+          value_type_enum: 0
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          value: ok_str
+          value_encoding: none
+          flags: 950
+          size: 53
+  description: "Good inputs:1) envrionment variable is set to a value whose length is less than or equal to 8 charsBad inputs:1) environment variable is not set2) environment variable is set to a value whose length is greater than 8 chars\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 8433
+      size: 53
+      flags: 950
+      stage: pre_process
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          value_encoding: none
+          stage: pre_process
+          source_enum: 6
+          source: shared_memory_input
+          value: This_input_is_too_long_to_be_contained_in_buffer
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          size: 53
+          key: 8433
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - size: 53
+          id: source
+          flags: 950
+          ordinal: 1
+          key: 8433
+          value_encoding: none
+          source_enum: 6
+          source: shared_memory_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          value_type_enum: 0
+          stage: pre_process
+code_complexity_features:
+  - feature: SHARED_MEMORY
+    file_name: /tmp/tmpyYA3HE_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: source_taint
+  - file_name: /tmp/tmpyYA3HE_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmpyYA3HE_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_50
+  - file_name: /tmp/tmpyYA3HE_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: control_flow
+    feature: recursive
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

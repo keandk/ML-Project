@@ -1,0 +1,94 @@
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: FOSSILS_PRUNABLE
+  description: "Malloc a buffer.  Copy the input string to the buffer.  If the first character is 'a' or higher, free the buffer. Use the buffer.  This will cause a seg fault if the buffer was previously freed.\n\n"
+  exploits:
+    - inputs:
+        - source_enum: 2
+          source: env_var_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage_enum: 0
+          value_type_enum: 0
+          ordinal: 1
+          name: FOSSILS_PRUNABLE
+          value: abc
+          stage: pre_process
+    - inputs:
+        - stage: pre_process
+          value: this string begins with a lower-case letter
+          source_enum: 2
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          stage_enum: 0
+          name: FOSSILS_PRUNABLE
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+  benigns:
+    - inputs:
+        - name: FOSSILS_PRUNABLE
+          source: env_var_input
+          ordinal: 1
+          id: source
+          stage: pre_process
+          stage_enum: 0
+          source_enum: 2
+          value_encoding: none
+          value_type_enum: 0
+          value: AAA
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - ordinal: 1
+          source: env_var_input
+          stage: pre_process
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          name: FOSSILS_PRUNABLE
+          value: 12345 Hello world!
+          stage_enum: 0
+          source_enum: 2
+    - inputs:
+        - stage: pre_process
+          id: source
+          stage_enum: 0
+          value: "[Good-bye cruel world!]"
+          value_type: USE_TEXT_DIRECTLY
+          name: FOSSILS_PRUNABLE
+          value_encoding: none
+          value_type_enum: 0
+          ordinal: 1
+          source_enum: 2
+          source: env_var_input
+code_complexity_features:
+  - file_name: /tmp/tmp0VZvCv_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmp0VZvCv_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmp0VZvCv_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp0VZvCv_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

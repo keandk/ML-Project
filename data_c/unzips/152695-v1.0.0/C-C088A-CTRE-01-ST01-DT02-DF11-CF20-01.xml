@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="C-TREE" language="C" name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Creating test case using base program.
+Added an environment variable read to the function definition.
+Completed injection.
+</description>
+    <additional_information>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <run_command>$SS_TC_ROOT/$SS_TC_INSTALL/bin/tree</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-88" name="CWE-88-A"/>
+        <features>
+            <taint_source file_name="/color.c" line_number="0" type="ENVIRONMENT_VARIABLE">
+                <method name="initlinedraw"/>
+            </taint_source>
+            <data_type file_name="/color.c" line_number="0" type="SIMPLE">
+                <method name="initlinedraw"/>
+            </data_type>
+            <data_flow file_name="/color.c" line_number="0" type="BASIC">
+                <method name="initlinedraw"/>
+            </data_flow>
+            <control_flow file_name="/color.c" line_number="0" type="SEQUENCE">
+                <method name="initlinedraw"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands cppflags="-DSTONESOUP_TRACE=1" libs="-ldl">
+        <command>make install CC=&quot;$SS_CC&quot; LD=&quot;$SS_LNK&quot; CFLAGS=&quot;$CFLAGS&quot; CPPFLAGS=&quot;$CPPFLAGS&quot; LDFLAGS=&quot;$LDFLAGS&quot; prefix=&quot;$SS_TC_ROOT/$SS_TC_INSTALL&quot; LIBS=&quot;$LIBS&quot;</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-GOOD-01" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">&quot;file.*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q input/good-01</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-01" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-01/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_Rh3D2LYTw8" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">STDOUT-REPORT-01 AND STDOUT-CONTENT-LENGTH-01 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-01">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">5 directories, 10 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-01">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-01" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-GOOD-02" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">filename.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -L 2 input/good-02</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-02" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-02/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_BjVCdpQ1Rx" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">STDOUT-REPORT-02 AND STDOUT-CONTENT-LENGTH-02 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-02">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">5 directories, 4 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-02">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-02" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-GOOD-03" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">&quot;*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -J input/good-03</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-03" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-03/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_73KFJyhfQe" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">STDOUT-REPORT-03 AND STDOUT-CONTENT-LENGTH-03 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-03">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">{&quot;type&quot;:&quot;report&quot;,&quot;directories&quot;:7,&quot;files&quot;:367}</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-03">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-03" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-GOOD-04" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">&quot;file.*&quot;</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -P &quot;test*&quot; -F input/good-03</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-04" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-04/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_7WkrJKooby" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">STDOUT-REPORT-04 AND STDOUT-CONTENT-LENGTH-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-04">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">7 directories, 62 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-04">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-04" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-GOOD-05" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">filename.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -H &quot;&quot; input/good-01</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-05" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-05/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_lH77a3HPS3" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">STDOUT-REPORT-05 AND STDOUT-CONTENT-LENGTH-05 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-REPORT-05">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">5 directories, 10 files</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-CONTENT-LENGTH-05">
+                    <actual input_id_ref="STDOUT-CONTENT-LENGTH-EVAL-05" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">SIMILAR</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-BAD-01" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">&quot;*&quot; -exec cat /etc/passwd \;</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/temp/file.txt" type="USE_TEXT">None</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -H &quot;&quot; input/good-01</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-05MGxIEmhtvu" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-05/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_GPoC5La5Rttva9AaF7LH" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="arg_injection_formula_8wMwn9ayCM">
+                <formula name="arg_injection_formula_8wMwn9ayCM">weakness_started_RHWi1NFMVqS9Nx3elYd4 AND ((NOT PERFORMER AND (etc_passwd_line_pattern_7OxOO9fRbr OR etc_passwd_root_user_XBus7UCm3I OR netstat_output_h9j1JQ44QZ OR netstat_output_YjsbjY5Fw3 OR netstat_output_wpRSdX31j7 OR netstat_output_IcAvyXyWPq) AND NOT timeout_8zSnhlVKbD) or (PERFORMER AND NOT ((etc_passwd_line_pattern_7OxOO9fRbr OR etc_passwd_root_user_XBus7UCm3I OR netstat_output_h9j1JQ44QZ OR netstat_output_YjsbjY5Fw3 OR netstat_output_wpRSdX31j7 OR netstat_output_IcAvyXyWPq) OR timeout_8zSnhlVKbD)))</formula>
+                <formula name="no_weakness_started_formula_keoqyXq4Wj">(NOT PERFORMER AND (etc_passwd_line_pattern_7OxOO9fRbr OR etc_passwd_root_user_XBus7UCm3I OR netstat_output_h9j1JQ44QZ OR netstat_output_YjsbjY5Fw3 OR netstat_output_wpRSdX31j7 OR netstat_output_IcAvyXyWPq) AND NOT timeout_8zSnhlVKbD) or (PERFORMER AND NOT ((etc_passwd_line_pattern_7OxOO9fRbr OR etc_passwd_root_user_XBus7UCm3I OR netstat_output_h9j1JQ44QZ OR netstat_output_YjsbjY5Fw3 OR netstat_output_wpRSdX31j7 OR netstat_output_IcAvyXyWPq) OR timeout_8zSnhlVKbD))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_8zSnhlVKbD" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_PZ6xXekUxm" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_dCt4uVoznM" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="REGEX" name="etc_passwd_line_pattern_7OxOO9fRbr">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">.+:.+:[0-9]+:[0-9]+:.+:.+:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="etc_passwd_root_user_XBus7UCm3I">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">^root:.*</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_h9j1JQ44QZ">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active Internet connections</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_YjsbjY5Fw3">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active UNIX domain sockets</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_wpRSdX31j7">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">0.0.0.0:</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_IcAvyXyWPq">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Proto Recv-Q Send-Q</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_RHWi1NFMVqS9Nx3elYd4">
+                    <actual encoding="STRING" input_id_ref="lttng_output_GPoC5La5Rttva9AaF7LH" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088A-CTRE-01-ST01-DT02-DF11-CF20-01-BAD-02" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \; ending the command, a user can insert other commands instead of just find
+
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env DOORMATS_WRECKAGE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="DOORMATS_WRECKAGE" type="USE_TEXT">&quot;*&quot; -exec netstat -an \;</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/temp/file.txt" type="USE_TEXT">None</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">--charset ASCII --sort=name -n -q -L 2 input/good-02</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="STDOUT-CONTENT-LENGTH-EVAL-02uDV8QEixUO" type="USE_TEXT">if [[ $(wc -c &quot;$SS_LOG_EXECUTE_STDOUT&quot; | cut -d &quot; &quot; -f 1) -eq $(wc -c &quot;$SS_TC_ROOT/$SS_TC_SCORE/good-02/output.txt&quot; | cut -d &quot; &quot; -f 1) ]]; then echo &quot;SIMILAR&quot;; else echo &quot;DIFFERENT&quot;; fi;</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_sC2AXqc9lMa0K29ABFSn" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="arg_injection_formula_rFWzw3gf88">
+                <formula name="arg_injection_formula_rFWzw3gf88">weakness_started_ESIgOwbPopQHDdzkyoWH AND ((NOT PERFORMER AND (etc_passwd_line_pattern_Q5corgO2s9 OR etc_passwd_root_user_XiW2rrFOyE OR netstat_output_wWtHv8bw8j OR netstat_output_QzUhSQo0ab OR netstat_output_64uDNgBAkL OR netstat_output_lNBgpeJrif) AND NOT timeout_reRUl6Qy1y) or (PERFORMER AND NOT ((etc_passwd_line_pattern_Q5corgO2s9 OR etc_passwd_root_user_XiW2rrFOyE OR netstat_output_wWtHv8bw8j OR netstat_output_QzUhSQo0ab OR netstat_output_64uDNgBAkL OR netstat_output_lNBgpeJrif) OR timeout_reRUl6Qy1y)))</formula>
+                <formula name="no_weakness_started_formula_O3PoNKTQRj">(NOT PERFORMER AND (etc_passwd_line_pattern_Q5corgO2s9 OR etc_passwd_root_user_XiW2rrFOyE OR netstat_output_wWtHv8bw8j OR netstat_output_QzUhSQo0ab OR netstat_output_64uDNgBAkL OR netstat_output_lNBgpeJrif) AND NOT timeout_reRUl6Qy1y) or (PERFORMER AND NOT ((etc_passwd_line_pattern_Q5corgO2s9 OR etc_passwd_root_user_XiW2rrFOyE OR netstat_output_wWtHv8bw8j OR netstat_output_QzUhSQo0ab OR netstat_output_64uDNgBAkL OR netstat_output_lNBgpeJrif) OR timeout_reRUl6Qy1y))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_reRUl6Qy1y" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_x34aS7BeNe" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_WIxzDzpxK3" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="REGEX" name="etc_passwd_line_pattern_Q5corgO2s9">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">.+:.+:[0-9]+:[0-9]+:.+:.+:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="etc_passwd_root_user_XiW2rrFOyE">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">^root:.*</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_wWtHv8bw8j">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active Internet connections</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_QzUhSQo0ab">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Active UNIX domain sockets</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_64uDNgBAkL">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">0.0.0.0:</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="netstat_output_lNBgpeJrif">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Proto Recv-Q Send-Q</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_ESIgOwbPopQHDdzkyoWH">
+                    <actual encoding="STRING" input_id_ref="lttng_output_sC2AXqc9lMa0K29ABFSn" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

@@ -1,0 +1,154 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a filename to read in the file contents using an fread operation within the function\nCompleted injection.\n"
+io_pair:
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          value: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          name: PSEUDOMILITARY_SKEINED
+          source: env_var_input
+        - source: file_content_input
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          name: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          ordinal: 2
+          value: eAAA
+          value_type_enum: 0
+          source_enum: 3
+          stage_enum: 0
+          value_encoding: none
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+          value_type_enum: 0
+          ordinal: 1
+          value_encoding: none
+          name: PSEUDOMILITARY_SKEINED
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          value_type: USE_TEXT_DIRECTLY
+        - stage: pre_process
+          source: file_content_input
+          source_enum: 3
+          value_type_enum: 0
+          name: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          value: e12345 Hello world!
+          id: source
+          stage_enum: 0
+          ordinal: 2
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_encoding: none
+          source_enum: 2
+          source: env_var_input
+          value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          name: PSEUDOMILITARY_SKEINED
+          value: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+        - value: e This string begins with an e
+          name: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          source: file_content_input
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 2
+          value_type_enum: 0
+          value_encoding: none
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      value: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+      value_encoding: none
+      value_type: USE_TEXT_DIRECTLY
+      value_type_enum: 0
+      ordinal: 1
+      name: PSEUDOMILITARY_SKEINED
+    - source: file_content_input
+      source_enum: 3
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 2
+      name: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+  description: "Malloc a buffer.  Copy the input string to the buffer.  Search for 'e' in the string.  Upon finding 'e', free the buffer, using a pointer that points to that 'e'.  If 'e' is the first character in the buffer, everything is OK.  However, if e is not the first character in the buffer, this will seg fault.\n\n"
+  exploits:
+    - inputs:
+        - name: PSEUDOMILITARY_SKEINED
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          source_enum: 2
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          value: aaa
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          name: PSEUDOMILITARY_SKEINED
+          source: env_var_input
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/acervately_overcritically/joselyn_oustiti.txt
+          value: this string has doe not begin with an e
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+code_complexity_features:
+  - feature_group: source_taint
+    feature: FILE_CONTENTS
+    file_name: /tmp/tmpEVYYsS_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: CONF_modules_unload
+    line_number: 0
+  - file_name: /tmp/tmpEVYYsS_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature: heap_pointer
+    feature_group: data_type
+  - feature_group: data_flow
+    file_name: /tmp/tmpEVYYsS_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature: address_as_constant
+  - file_name: /tmp/tmpEVYYsS_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: polysemant_unhid
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop

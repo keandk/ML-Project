@@ -1,0 +1,100 @@
+code_complexity_features:
+  - function_name: stonesoup_handle_taint
+    file_name: /tmp/tmpGN5rXS_ss_testcase/src-rose/color.c
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpGN5rXS_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpGN5rXS_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpGN5rXS_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  description: "Malloc a pointer, and free it.  If input begins with ascii character 'a' or higher, free it a second time.  Causes seg fault.\n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          address: ss-localhost
+          id: source
+          source_enum: 5
+          stage: co_process
+          source: socket_input
+          stage_enum: 1
+          ordinal: 1
+          value_encoding: none
+          value: AAA
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          value: 12345 Hello world!
+          value_encoding: none
+          ordinal: 1
+          source_enum: 5
+          value_type_enum: 0
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          stage: co_process
+          stage_enum: 1
+    - inputs:
+        - value: "[Good-bye cruel world!]"
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0
+          source: socket_input
+          value_encoding: none
+          stage: co_process
+  exploits:
+    - inputs:
+        - stage_enum: 1
+          port: 8887
+          ordinal: 1
+          source: socket_input
+          address: ss-localhost
+          stage: co_process
+          source_enum: 5
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: aaa
+          value_type_enum: 0
+    - inputs:
+        - port: 8887
+          ordinal: 1
+          value_type_enum: 0
+          source_enum: 5
+          stage_enum: 1
+          address: ss-localhost
+          stage: co_process
+          value: this string begins with a lower-case letter
+          value_encoding: none
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input

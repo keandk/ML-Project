@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpeqof0M_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpeqof0M_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpeqof0M_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_function_return_value
+  - function_name: av_packet_split_side_data
+    line_number: 0
+    feature: recursive
+    feature_group: control_flow
+    file_name: /tmp/tmpeqof0M_ss_testcase/src-rose/libavcodec/avpacket.c
+io_pair:
+  description: "Read a string from the input.  Check first if it has any command separators and then run it though a URL decoding algorithm.  Then use this string to perform an nslookup by appending it to the end of the command. This allows the user to run arbitrary commands by suplying command separators encoded in url encoding.\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 8710
+      size: 35
+      flags: 950
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          key: 8710
+          size: 35
+          stage_enum: 0
+          value: 10
+          flags: 950
+          value_encoding: none
+          value_type_enum: 0
+          stage: pre_process
+          source_enum: 6
+          id: source
+          source: shared_memory_input
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: google.com
+          stage: pre_process
+          value_type_enum: 0
+          source_enum: 6
+          source: shared_memory_input
+          id: source
+          stage_enum: 0
+          key: 8710
+          size: 35
+          ordinal: 1
+          flags: 950
+    - inputs:
+        - source: shared_memory_input
+          stage_enum: 0
+          flags: 950
+          source_enum: 6
+          stage: pre_process
+          key: 8710
+          value_encoding: none
+          id: source
+          ordinal: 1
+          size: 35
+          value: localhost
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          key: 8710
+          stage_enum: 0
+          source_enum: 6
+          source: shared_memory_input
+          id: source
+          stage: pre_process
+          ordinal: 1
+          flags: 950
+          value_encoding: none
+          size: 35
+          value: 10%20%3B%20ls -la
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source_enum: 6
+          source: shared_memory_input
+          id: source
+          stage_enum: 0
+          size: 35
+          stage: pre_process
+          ordinal: 1
+          key: 8710
+          flags: 950
+          value: localhost%20%26%20echo Hello world
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0

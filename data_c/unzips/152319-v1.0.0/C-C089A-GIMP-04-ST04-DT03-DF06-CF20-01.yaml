@@ -1,0 +1,276 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 4265
+      size: 30
+      flags: 950
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+  exploits:
+    - inputs:
+        - stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value: x' or 'x'='x
+          id: source
+          flags: 950
+          size: 30
+          ordinal: 1
+          source: shared_memory_input
+          value_encoding: none
+          key: 4265
+          source_enum: 6
+          value_type_enum: 0
+        - stage_enum: 0
+          source: database_content_input
+          stage: pre_process
+          server: ss-db-mysql
+          ordinal: 2
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          value_type_enum: 1
+          database_enum: 0
+          database: mysql
+          source_enum: 0
+        - source_enum: 2
+          source: env_var_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: SS_DBMYSQLDATABASE
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          ordinal: 3
+          value_type_enum: 0
+          stage: pre_process
+        - source_enum: 0
+          stage: post_process
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          source: database_content_input
+          value_type_enum: 0
+          value_encoding: none
+          database_enum: 0
+          database: mysql
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          server: ss-db-mysql
+          stage_enum: 2
+    - inputs:
+        - key: 4265
+          value: "x'; Select * from Orders; -- "
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          value_encoding: none
+          value_type_enum: 0
+          size: 30
+        - source: database_content_input
+          stage: pre_process
+          value_encoding: none
+          source_enum: 0
+          value_type_enum: 1
+          server: ss-db-mysql
+          database_enum: 0
+          database: mysql
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          stage_enum: 0
+          ordinal: 2
+        - stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          source_enum: 2
+          value_encoding: none
+          value_type_enum: 0
+          name: SS_DBMYSQLDATABASE
+          source: env_var_input
+          stage: pre_process
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+        - value_type: USE_TEXT_DIRECTLY
+          stage_enum: 2
+          value_type_enum: 0
+          stage: post_process
+          server: ss-db-mysql
+          ordinal: 1
+          database: mysql
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          source_enum: 0
+          value_encoding: none
+          database_enum: 0
+          source: database_content_input
+  benigns:
+    - inputs:
+        - source_enum: 6
+          stage_enum: 0
+          key: 4265
+          size: 30
+          ordinal: 1
+          value_type_enum: 0
+          id: source
+          stage: pre_process
+          value_encoding: none
+          value: USA
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          flags: 950
+        - database: mysql
+          ordinal: 2
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          source_enum: 0
+          source: database_content_input
+          server: ss-db-mysql
+          value_type_enum: 1
+          database_enum: 0
+        - source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: SS_DBMYSQLDATABASE
+          stage: pre_process
+          ordinal: 3
+        - stage_enum: 2
+          ordinal: 1
+          database_enum: 0
+          database: mysql
+          source_enum: 0
+          server: ss-db-mysql
+          stage: post_process
+          value_type: USE_TEXT_DIRECTLY
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type_enum: 0
+          source: database_content_input
+          value_encoding: none
+    - inputs:
+        - value_encoding: none
+          source_enum: 6
+          value: Germany
+          id: source
+          stage: pre_process
+          stage_enum: 0
+          source: shared_memory_input
+          ordinal: 1
+          size: 30
+          key: 4265
+          flags: 950
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - value_type: USE_CONTENTS_OF_FILE
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 1
+          ordinal: 2
+          database: mysql
+          database_enum: 0
+          value_encoding: none
+          server: ss-db-mysql
+          source_enum: 0
+          source: database_content_input
+          value: northwind
+        - stage_enum: 0
+          name: SS_DBMYSQLDATABASE
+          source_enum: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 3
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+          value: SET_DYNAMIC_DB_NAME
+        - stage_enum: 2
+          source_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          value_encoding: none
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          server: ss-db-mysql
+          database_enum: 0
+          database: mysql
+          source: database_content_input
+          stage: post_process
+    - inputs:
+        - key: 4265
+          stage_enum: 0
+          source_enum: 6
+          source: shared_memory_input
+          value: Finland
+          stage: pre_process
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          size: 30
+          value_encoding: none
+          value_type_enum: 0
+          ordinal: 1
+        - server: ss-db-mysql
+          source: database_content_input
+          value_type: USE_CONTENTS_OF_FILE
+          source_enum: 0
+          database_enum: 0
+          value_type_enum: 1
+          database: mysql
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          value: northwind
+          ordinal: 2
+        - value_encoding: none
+          stage_enum: 0
+          stage: pre_process
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value: SET_DYNAMIC_DB_NAME
+          value_type_enum: 0
+          name: SS_DBMYSQLDATABASE
+          ordinal: 3
+        - stage_enum: 2
+          value_encoding: none
+          source: database_content_input
+          source_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type_enum: 0
+          server: ss-db-mysql
+          database: mysql
+          stage: post_process
+          database_enum: 0
+code_complexity_features:
+  - function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: source_taint
+    file_name: /tmp/tmp53ot5F_ss_testcase/src-rose/app/core/gimpviewable.c
+    feature: SHARED_MEMORY
+  - line_number: 0
+    feature: void_pointer
+    file_name: /tmp/tmp53ot5F_ss_testcase/src-rose/app/core/gimpviewable.c
+    feature_group: data_type
+    function_name: gimp_viewable_get_children
+  - file_name: /tmp/tmp53ot5F_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_function_return_value
+  - file_name: /tmp/tmp53ot5F_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

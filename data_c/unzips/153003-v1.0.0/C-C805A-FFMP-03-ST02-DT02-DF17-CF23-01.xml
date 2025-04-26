@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="C-FFMP" language="C" name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Creating test case using base program.
+Added an environment variable read to get a filename to read in the file contents using an fread operation within the function
+Completed injection.
+</description>
+    <additional_information>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <run_command>$SS_TC_ROOT/$SS_TC_INSTALL/bin/ffmpeg</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-805" name="CWE-805-A"/>
+        <features>
+            <taint_source file_name="/cmdutils.c" line_number="0" type="FILE_CONTENTS">
+                <method name="setup_find_stream_info_opts"/>
+            </taint_source>
+            <data_type file_name="/cmdutils.c" line_number="0" type="SIMPLE">
+                <method name="setup_find_stream_info_opts"/>
+            </data_type>
+            <data_flow file_name="/cmdutils.c" line_number="0" type="BUFFER_ADDRESS_ARRAY_INDEX">
+                <method name="setup_find_stream_info_opts"/>
+            </data_flow>
+            <control_flow file_name="/cmdutils.c" line_number="0" type="SET_JUMP_LONG_JUMP">
+                <method name="setup_find_stream_info_opts"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands cppflags="-DSTONESOUP_TRACE=1" libs="-ldl">
+        <command>env</command>
+        <command>./configure --prefix=&quot;$SS_TC_ROOT/$SS_TC_INSTALL&quot; --enable-pic --disable-static --enable-shared --disable-yasm --disable-doc --enable-pthreads --disable-w32threads --disable-os2threads --enable-zlib --enable-openssl --disable-asm --extra-cflags=&quot;$SS_CFLAGS&quot; --extra-ldflags=&quot;$SS_LDFLAGS&quot; --extra-libs=&quot;$SS_LIBS&quot;</command>
+        <command>mv config.mak config.mak.bak</command>
+        <command>awk -v compiler=&quot;$SS_CC&quot; '/CC=gcc/{gsub(/gcc/, compiler)};{print}' config.mak.bak &gt; config.mak &amp;&amp; true</command>
+        <command>make V=1</command>
+        <command>make install V=1</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-01" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>remove the audio from a video
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">Hello</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-an -i grsm_0001-shorter.mov good-01/grsm_0001_no_audio.mov</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_HB3Yszb59p" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">(GOOD-01-CENTOS OR GOOD-01-UBUNTU OR GOOD-01-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-01-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-01/grsm_0001_no_audio.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-01/grsm_0001_no_audio-centos.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-01-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-01/grsm_0001_no_audio.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-01/grsm_0001_no_audio-ubuntu.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-01-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-01/grsm_0001_no_audio.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-01/grsm_0001_no_audio-debian.mov</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-02" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>change the frame rate and aspect ration of a video
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">shortst</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-r 20 -aspect 16:9 -i elis_m0001-shorter.mov good-02/elis_m0001_rate_aspect.mov</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_cf1uaYqEcM" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">(GOOD-02-CENTOS OR GOOD-02-UBUNTU OR GOOD-02-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-02-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-02/elis_m0001_rate_aspect.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-02/elis_m0001_rate_aspect-centos.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-02-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-02/elis_m0001_rate_aspect.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-02/elis_m0001_rate_aspect-ubuntu.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-02-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-02/elis_m0001_rate_aspect.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-02/elis_m0001_rate_aspect-debian.mov</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-03" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>remove the audio and change the video format from .mov to .mp4 using the mpeg4 codec
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">a</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-an -i bost_people_0001-shorter.mov -vcodec mpeg4 -strict -2 good-03/bost_people_0001.mp4</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_SJX84X7Pwb" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">(GOOD-03-CENTOS OR GOOD-03-UBUNTU OR GOOD-03-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-03-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-03/bost_people_0001.mp4</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-03/bost_people_0001-centos.mp4</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-03-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-03/bost_people_0001.mp4</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-03/bost_people_0001-ubuntu.mp4</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-03-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-03/bost_people_0001.mp4</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-03/bost_people_0001-debian.mp4</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-04" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>copy the audio file and convert the number of audio channels to 2.
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">Hello</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-i ApacheTomcat-SomewhereInMyMind.mp3 -acodec copy -ac 2 good-04/ApacheTomcat_dualchannelaudio.mp3</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_xZ7m9MEfaw" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">GOOD-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-04">
+                    <actual output_type="FILE_CONTENTS">good-04/ApacheTomcat_dualchannelaudio.mp3</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-04/ApacheTomcat_dualchannelaudio.mp3</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-05" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>remove original audio from a file and combine the audio from another file to create a new video and audio file
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">shortst</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-an -i grsm_0001-shorter.mov -i ApacheTomcat-SomewhereInMyMind.mp3 -acodec copy good-05/combined.mov</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_Wrgm5k0Q7v" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">(GOOD-05-CENTOS OR GOOD-05-UBUNTU OR GOOD-05-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-05-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-05/combined.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/combined-centos.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-05-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-05/combined.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/combined-ubuntu.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-05-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-05/combined.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/combined-debian.mov</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-06" reset_scheme="NONE" timeout="600" type="GOOD">
+            <description>Convert the size of a video to vga (640x480)
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">a</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-i good-06/combined.mov -strict -2 -s vga good-06/combined_vga_sized.mov</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_k6138WURX1" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-06-Default">
+                <formula name="GOOD-06-Default">(GOOD-06-CENTOS OR GOOD-06-UBUNTU OR GOOD-06-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-06-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-06/combined_vga_sized.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-06/combined_vga_sized-centos.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-06-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-06/combined_vga_sized.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-06/combined_vga_sized-ubuntu.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-06-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-06/combined_vga_sized.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-06/combined_vga_sized-debian.mov</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-07" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Covert a .wav file to .mp2 at 22050Hz
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">Hello</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-i good-07/Bow_To_My_firewall.wav -ar 22050 good-07/Bow_To_My_firewall.mp2</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_u19ptPvXE5" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-07-Default">
+                <formula name="GOOD-07-Default">GOOD-07 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-07">
+                    <actual output_type="FILE_CONTENTS">good-07/Bow_To_My_firewall.mp2</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-07/Bow_To_My_firewall.mp2</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-08" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Change the bitrate and do it in two passes
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">shortst</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-b 300 -pass 2 -i grsm_0001-shorter.mov good-08/grsm_0001_bitrate.mov</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_R3BfL2UB7Z" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-08-Default">
+                <formula name="GOOD-08-Default">(GOOD-08-CENTOS OR GOOD-08-UBUNTU OR GOOD-08-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-08-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-08/grsm_0001_bitrate.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-08/grsm_0001_bitrate-centos.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-08-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-08/grsm_0001_bitrate.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-08/grsm_0001_bitrate-ubuntu.mov</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-08-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-08/grsm_0001_bitrate.mov</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-08/grsm_0001_bitrate-debian.mov</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-09" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Convert images into a video
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">a</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-f image2 -i good-09/%03d.jpg -r 12 -s vga good-09/images.avi</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_Fzq2HMsXL7" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-09-Default">
+                <formula name="GOOD-09-Default">(GOOD-09-CENTOS OR GOOD-09-UBUNTU OR GOOD-09-DEBIAN) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-09-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-09/images.avi</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-09/images-centos.avi</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-09-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-09/images.avi</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-09/images-ubuntu.avi</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-09-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-09/images.avi</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-09/images-debian.avi</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-GOOD-10" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Extract every fifth frame and convert it to an image
+Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">Hello</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-i elis_m0001-shorter.mov -r 5 -s vga good-10/elise-%04d.jpg</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_hNniXflyHU" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-10-Default">
+                <formula name="GOOD-10-Default">((GOOD-10-1-CENTOS AND GOOD-10-2-CENTOS) OR (GOOD-10-1-UBUNTU AND GOOD-10-2-UBUNTU) OR (GOOD-10-1-DEBIAN AND GOOD-10-2-DEBIAN)) AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-10-1-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-10/elise-0001.jpg</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-10/elise-0001-centos.jpg</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-10-2-CENTOS">
+                    <actual output_type="FILE_CONTENTS">good-10/elise-0028.jpg</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-10/elise-0028-centos.jpg</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-10-1-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-10/elise-0001.jpg</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-10/elise-0001-ubuntu.jpg</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-10-2-UBUNTU">
+                    <actual output_type="FILE_CONTENTS">good-10/elise-0028.jpg</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-10/elise-0028-ubuntu.jpg</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-10-1-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-10/elise-0001.jpg</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-10/elise-0001-debian.jpg</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-10-2-DEBIAN">
+                    <actual output_type="FILE_CONTENTS">good-10/elise-0028.jpg</actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-10/elise-0028-debian.jpg</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-BAD-01" reset_scheme="NONE" timeout="600" type="BAD">
+            <description>Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>DOS_UNCONTROLLED_EXIT</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-i good-06/combined.mov -strict -2 -s vga good-06/combined_vga_sized.mov</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_tNxp6r5KEk1sa2enktLf" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="segfault_formula_lYdVF1PTFl">
+                <formula name="segfault_formula_lYdVF1PTFl">weakness_started_cyBunjW1Q6T9HcnSkqjy AND ((NOT PERFORMER AND (segfault_code_bcE6uzoo35 OR segfault_code_c3e5F5MBVA OR segfault_code_jv8pOnG2QJ OR segfault_code_q3JMQ8XQJ9 OR segfault_code_AWCOYrtmZ4 OR segfault_msg_ePfPHaLTg1 OR illegal_inst_msg_7KCoQHYnob) AND NOT timeout_4CXmar8yhB) or (PERFORMER AND NOT ((segfault_code_bcE6uzoo35 OR segfault_code_c3e5F5MBVA OR segfault_code_jv8pOnG2QJ OR segfault_code_q3JMQ8XQJ9 OR segfault_code_AWCOYrtmZ4 OR segfault_msg_ePfPHaLTg1 OR illegal_inst_msg_7KCoQHYnob) OR timeout_4CXmar8yhB)))</formula>
+                <formula name="no_weakness_started_formula_nzy7yAvJvs">(NOT PERFORMER AND (segfault_code_bcE6uzoo35 OR segfault_code_c3e5F5MBVA OR segfault_code_jv8pOnG2QJ OR segfault_code_q3JMQ8XQJ9 OR segfault_code_AWCOYrtmZ4 OR segfault_msg_ePfPHaLTg1 OR illegal_inst_msg_7KCoQHYnob) AND NOT timeout_4CXmar8yhB) or (PERFORMER AND NOT ((segfault_code_bcE6uzoo35 OR segfault_code_c3e5F5MBVA OR segfault_code_jv8pOnG2QJ OR segfault_code_q3JMQ8XQJ9 OR segfault_code_AWCOYrtmZ4 OR segfault_msg_ePfPHaLTg1 OR illegal_inst_msg_7KCoQHYnob) OR timeout_4CXmar8yhB))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_4CXmar8yhB" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_TD0B9il1VV" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_qvMKxGTYwW" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_bcE6uzoo35">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">132</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_c3e5F5MBVA">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">134</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_jv8pOnG2QJ">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">135</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_q3JMQ8XQJ9">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">136</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_AWCOYrtmZ4">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">139</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="segfault_msg_ePfPHaLTg1">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Segmentation fault</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="illegal_inst_msg_7KCoQHYnob">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Illegal instruction</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_cyBunjW1Q6T9HcnSkqjy">
+                    <actual encoding="STRING" input_id_ref="lttng_output_tNxp6r5KEk1sa2enktLf" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C805A-FFMP-03-ST02-DT02-DF17-CF23-01-BAD-02" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>Good inputs:1) environment variable is not set2) envrionment variable is set to a value whose length is less than or equal to 8 charactersBad inputs:1) environment variable is set to a value whose length is greater than 8 chars
+
+</description>
+            <technical_impact>DOS_UNCONTROLLED_EXIT</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SWACKING_STUBBINESS;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SWACKING_STUBBINESS" type="USE_TEXT">/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/draughtmanship_commendableness/europeanised_fedarie.txt" type="USE_TEXT">zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="MALLOC_CHECK_" type="USE_TEXT">0</environment_variable>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-f image2 -i good-09/%03d.jpg -r 12 -s vga good-09/images.avi</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_WSVtpgJ3PdF5UqdFrU2r" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="segfault_formula_Hh0IBN7Djg">
+                <formula name="segfault_formula_Hh0IBN7Djg">weakness_started_IdxcaawKruinwgIT27LD AND ((NOT PERFORMER AND (segfault_code_vdUfVgO8gt OR segfault_code_qNCrROfcMH OR segfault_code_hUJpQBDkU2 OR segfault_code_rOlMObZhNn OR segfault_code_hWXZzTKcR4 OR segfault_msg_1ZDnk3XbMj OR illegal_inst_msg_7JXhwkrqHe) AND NOT timeout_JTpDm95IwN) or (PERFORMER AND NOT ((segfault_code_vdUfVgO8gt OR segfault_code_qNCrROfcMH OR segfault_code_hUJpQBDkU2 OR segfault_code_rOlMObZhNn OR segfault_code_hWXZzTKcR4 OR segfault_msg_1ZDnk3XbMj OR illegal_inst_msg_7JXhwkrqHe) OR timeout_JTpDm95IwN)))</formula>
+                <formula name="no_weakness_started_formula_8I1d68x36E">(NOT PERFORMER AND (segfault_code_vdUfVgO8gt OR segfault_code_qNCrROfcMH OR segfault_code_hUJpQBDkU2 OR segfault_code_rOlMObZhNn OR segfault_code_hWXZzTKcR4 OR segfault_msg_1ZDnk3XbMj OR illegal_inst_msg_7JXhwkrqHe) AND NOT timeout_JTpDm95IwN) or (PERFORMER AND NOT ((segfault_code_vdUfVgO8gt OR segfault_code_qNCrROfcMH OR segfault_code_hUJpQBDkU2 OR segfault_code_rOlMObZhNn OR segfault_code_hWXZzTKcR4 OR segfault_msg_1ZDnk3XbMj OR illegal_inst_msg_7JXhwkrqHe) OR timeout_JTpDm95IwN))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_JTpDm95IwN" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_3O0a4TZJ1T" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_cukEEk5Bs4" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_vdUfVgO8gt">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">132</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_qNCrROfcMH">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">134</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_hUJpQBDkU2">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">135</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_rOlMObZhNn">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">136</expected>
+                </compare_check>
+                <compare_check check_type="EXACT_MATCH" name="segfault_code_hWXZzTKcR4">
+                    <actual encoding="STRING" output_type="RETURN_CODE">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">139</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="segfault_msg_1ZDnk3XbMj">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Segmentation fault</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="illegal_inst_msg_7JXhwkrqHe">
+                    <actual encoding="STRING" output_type="STANDARD_ERROR">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Illegal instruction</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_IdxcaawKruinwgIT27LD">
+                    <actual encoding="STRING" input_id_ref="lttng_output_WSVtpgJ3PdF5UqdFrU2r" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

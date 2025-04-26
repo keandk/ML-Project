@@ -1,0 +1,106 @@
+code_complexity_features:
+  - file_name: /tmp/tmpN3o_PJ_ss_testcase/src-rose/color.c
+    feature_group: source_taint
+    function_name: initlinedraw
+    line_number: 0
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpN3o_PJ_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpN3o_PJ_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpN3o_PJ_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  benigns:
+    - inputs:
+        - ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          size: 40
+          key: 7410
+          source: shared_memory_input
+          value: AAAAAAAAAAA
+          value_encoding: none
+          value_type_enum: 0
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          id: source
+    - inputs:
+        - stage: pre_process
+          source: shared_memory_input
+          source_enum: 6
+          value_encoding: none
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          key: 7410
+          size: 40
+          flags: 950
+          value: 12345 Hello world!
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - source: shared_memory_input
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          flags: 950
+          value: This string does not have 10 characters
+          source_enum: 6
+          value_encoding: none
+          stage: pre_process
+          size: 40
+          key: 7410
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          key: 7410
+          size: 40
+          flags: 950
+          value: 0123456789
+    - inputs:
+        - source_enum: 6
+          key: 7410
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          size: 40
+          value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          value: 10 chars..
+          flags: 950
+          value_encoding: none
+  description: "Malloc a function pointer.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 7410
+      size: 40
+      flags: 950
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

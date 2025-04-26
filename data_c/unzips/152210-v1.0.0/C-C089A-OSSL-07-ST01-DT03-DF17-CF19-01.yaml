@@ -1,0 +1,264 @@
+code_complexity_features:
+  - file_name: /tmp/tmpisemZR_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    feature_group: source_taint
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+  - function_name: CONF_modules_unload
+    line_number: 0
+    feature: void_pointer
+    feature_group: data_type
+    file_name: /tmp/tmpisemZR_ss_testcase/src-rose/crypto/conf/conf_mod.c
+  - file_name: /tmp/tmpisemZR_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - function_name: CONF_modules_unload
+    line_number: 0
+    feature: recursive
+    feature_group: control_flow
+    file_name: /tmp/tmpisemZR_ss_testcase/src-rose/crypto/conf/conf_mod.c
+io_pair:
+  exploits:
+    - inputs:
+        - id: source
+          value: x' or 'x'='x
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          ordinal: 1
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+          name: SNOBBISH_THRESHINGTIME
+          stage_enum: 0
+          source_enum: 2
+        - server: ss-db-mysql
+          ordinal: 2
+          source: database_content_input
+          database: mysql
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          stage: pre_process
+          database_enum: 0
+          source_enum: 0
+          value_type_enum: 1
+          value: northwind
+          stage_enum: 0
+        - source: env_var_input
+          value_encoding: none
+          stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          stage: pre_process
+          source_enum: 2
+          value_type_enum: 0
+          name: SS_DBMYSQLDATABASE
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+        - value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          ordinal: 1
+          stage: post_process
+          server: ss-db-mysql
+          stage_enum: 2
+          source: database_content_input
+          database_enum: 0
+          value_type_enum: 0
+          value_encoding: none
+          database: mysql
+          source_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source: env_var_input
+          stage: pre_process
+          id: source
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: "x'; Select * from Orders; -- "
+          value_type_enum: 0
+          source_enum: 2
+          ordinal: 1
+          name: SNOBBISH_THRESHINGTIME
+          stage_enum: 0
+        - ordinal: 2
+          value_encoding: none
+          database_enum: 0
+          source_enum: 0
+          stage: pre_process
+          server: ss-db-mysql
+          value_type_enum: 1
+          value_type: USE_CONTENTS_OF_FILE
+          source: database_content_input
+          stage_enum: 0
+          database: mysql
+          value: northwind
+        - name: SS_DBMYSQLDATABASE
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+          source: env_var_input
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          value_encoding: none
+          stage: pre_process
+        - source: database_content_input
+          database: mysql
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          stage: post_process
+          value_type_enum: 0
+          server: ss-db-mysql
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 0
+          stage_enum: 2
+          database_enum: 0
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: SNOBBISH_THRESHINGTIME
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage_enum: 0
+          value_type_enum: 0
+          source_enum: 2
+          name: SNOBBISH_THRESHINGTIME
+          stage: pre_process
+          value_encoding: none
+          source: env_var_input
+          ordinal: 1
+          value: USA
+        - value_encoding: none
+          server: ss-db-mysql
+          database_enum: 0
+          stage_enum: 0
+          source_enum: 0
+          value_type_enum: 1
+          ordinal: 2
+          database: mysql
+          stage: pre_process
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          source: database_content_input
+        - source: env_var_input
+          value_encoding: none
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          ordinal: 3
+          value: SET_DYNAMIC_DB_NAME
+          name: SS_DBMYSQLDATABASE
+          stage: pre_process
+          value_type_enum: 0
+        - source: database_content_input
+          database_enum: 0
+          stage_enum: 2
+          value_encoding: none
+          source_enum: 0
+          server: ss-db-mysql
+          database: mysql
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage: post_process
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type_enum: 0
+    - inputs:
+        - value_type_enum: 0
+          ordinal: 1
+          value: Germany
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          stage_enum: 0
+          name: SNOBBISH_THRESHINGTIME
+          stage: pre_process
+          source_enum: 2
+          id: source
+          value_encoding: none
+        - value_encoding: none
+          database: mysql
+          stage: pre_process
+          stage_enum: 0
+          source: database_content_input
+          source_enum: 0
+          database_enum: 0
+          value_type_enum: 1
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          server: ss-db-mysql
+          ordinal: 2
+        - value_type_enum: 0
+          name: SS_DBMYSQLDATABASE
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          stage_enum: 0
+          source: env_var_input
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+        - database_enum: 0
+          database: mysql
+          ordinal: 1
+          value_type_enum: 0
+          source: database_content_input
+          stage: post_process
+          server: ss-db-mysql
+          source_enum: 0
+          value_encoding: none
+          stage_enum: 2
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source: env_var_input
+          stage: pre_process
+          id: source
+          source_enum: 2
+          ordinal: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: SNOBBISH_THRESHINGTIME
+          value: Finland
+          stage_enum: 0
+        - database: mysql
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          database_enum: 0
+          stage: pre_process
+          ordinal: 2
+          source: database_content_input
+          server: ss-db-mysql
+          value_type_enum: 1
+          value: northwind
+          source_enum: 0
+          stage_enum: 0
+        - value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          value_type_enum: 0
+          source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          ordinal: 3
+          value_encoding: none
+          name: SS_DBMYSQLDATABASE
+        - stage: post_process
+          ordinal: 1
+          source: database_content_input
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          stage_enum: 2
+          source_enum: 0
+          value_encoding: none
+          database_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          database: mysql
+          value_type_enum: 0
+          server: ss-db-mysql
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

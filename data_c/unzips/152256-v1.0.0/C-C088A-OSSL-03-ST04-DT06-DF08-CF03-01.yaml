@@ -1,0 +1,118 @@
+code_complexity_features:
+  - file_name: /tmp/tmp2N_Cne_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature: SHARED_MEMORY
+    feature_group: source_taint
+  - file_name: /tmp/tmp2N_Cne_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmp2N_Cne_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_2
+  - function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: control_flow
+    file_name: /tmp/tmp2N_Cne_ss_testcase/src-rose/crypto/cryptlib.c
+    feature: infinite_loop
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  benigns:
+    - inputs:
+        - source: shared_memory_input
+          value_encoding: none
+          ordinal: 1
+          key: 8181
+          size: 29
+          value_type_enum: 0
+          source_enum: 6
+          flags: 950
+          value: "\"file.*\""
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage_enum: 0
+          stage: pre_process
+    - inputs:
+        - source_enum: 6
+          stage: pre_process
+          value_type_enum: 0
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          source: shared_memory_input
+          ordinal: 1
+          id: source
+          key: 8181
+          size: 29
+          value_encoding: none
+          value: filename.txt
+    - inputs:
+        - stage_enum: 0
+          id: source
+          flags: 950
+          stage: pre_process
+          source_enum: 6
+          source: shared_memory_input
+          value: "\"*\""
+          ordinal: 1
+          size: 29
+          key: 8181
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+  description: "Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \\; ending the command, a user can insert other commands instead of just find\n\n"
+  exploits:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          key: 8181
+          ordinal: 1
+          flags: 950
+          value_encoding: none
+          size: 29
+          value: "\"*\" -exec cat /etc/passwd \\;"
+          value_type_enum: 0
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          ordinal: 2
+    - inputs:
+        - ordinal: 1
+          stage_enum: 0
+          key: 8181
+          source: shared_memory_input
+          source_enum: 6
+          flags: 950
+          value: "\"*\" -exec netstat -an \\;"
+          stage: pre_process
+          id: source
+          size: 29
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - stage: pre_process
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          source: file_content_input
+          source_enum: 3
+          ordinal: 2
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 8181
+      size: 29
+      flags: 950

@@ -1,0 +1,254 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a filename to read in the file contents using an fread operation within the function\nCompleted injection.\n"
+io_pair:
+  description: "This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text \"hello\" with \"Hello\".  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      value: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+      value_encoding: none
+      value_type: USE_TEXT_DIRECTLY
+      value_type_enum: 0
+      ordinal: 1
+      name: EXPECTORANTS_CUSHAG
+    - source: file_content_input
+      source_enum: 3
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 2
+      name: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          source: env_var_input
+          name: EXPECTORANTS_CUSHAG
+          source_enum: 2
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - name: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value: --cmd 'silent !cat /etc/passwd' /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          ordinal: 2
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+          source: file_content_input
+          stage_enum: 0
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+        - ordinal: 1
+          source_enum: 3
+          value_encoding: none
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source: file_content_input
+          stage_enum: 0
+        - stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          source_enum: 3
+          value: !<!> hello World!
+          value_type_enum: 0
+          ordinal: 2
+          stage_enum: 0
+          source: file_content_input
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          name: EXPECTORANTS_CUSHAG
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value: --cmd 'silent !ls -la .' /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - source: file_content_input
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          source_enum: 3
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_encoding: none
+        - source: file_content_input
+          ordinal: 2
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+          value_type_enum: 0
+          stage: pre_process
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          source_enum: 3
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+  benigns:
+    - inputs:
+        - value_encoding: none
+          source_enum: 2
+          value_type_enum: 0
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          name: EXPECTORANTS_CUSHAG
+          stage: pre_process
+        - stage_enum: 0
+          id: source
+          source_enum: 3
+          ordinal: 2
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          name: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+          source: file_content_input
+        - stage_enum: 0
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+          source: file_content_input
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+        - value_encoding: none
+          source_enum: 3
+          value: !<!> hello World!
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 2
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          source: file_content_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source: env_var_input
+          value_encoding: none
+          stage_enum: 0
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          ordinal: 1
+          value_type_enum: 0
+          name: EXPECTORANTS_CUSHAG
+        - stage_enum: 0
+          stage: pre_process
+          source: file_content_input
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          value_type_enum: 0
+          value_encoding: none
+        - source_enum: 3
+          value_type_enum: 0
+          stage_enum: 0
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          source: file_content_input
+          stage: pre_process
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+        - name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          source: file_content_input
+          ordinal: 2
+          source_enum: 3
+          stage: pre_process
+    - inputs:
+        - name: EXPECTORANTS_CUSHAG
+          stage_enum: 0
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+        - ordinal: 2
+          value_type_enum: 0
+          id: source
+          source_enum: 3
+          stage_enum: 0
+          source: file_content_input
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample3.txt
+          name: /opt/stonesoup/workspace/testData/telemetering_nickneven/kokowai_onionskin.txt
+          stage: pre_process
+        - source_enum: 3
+          stage_enum: 0
+          stage: pre_process
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          ordinal: 1
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_encoding: none
+          value_type_enum: 0
+          source: file_content_input
+          value_type: USE_TEXT_DIRECTLY
+        - value_type_enum: 0
+          stage_enum: 0
+          ordinal: 2
+          source: file_content_input
+          value_encoding: none
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample3.txt
+          stage: pre_process
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          value: !<!> "Hello again, hello.  Just called to say hello.\n\nYou had me at \"hello\".\n\n"
+code_complexity_features:
+  - file_name: /tmp/tmpDR75K0_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: source_taint
+    feature: FILE_CONTENTS
+  - file_name: /tmp/tmpDR75K0_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpDR75K0_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpDR75K0_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: control_flow
+    feature: pointer_to_function

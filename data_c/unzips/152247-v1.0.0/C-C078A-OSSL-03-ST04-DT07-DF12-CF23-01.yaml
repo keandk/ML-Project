@@ -1,0 +1,106 @@
+io_pair:
+  exploits:
+    - inputs:
+        - source: shared_memory_input
+          source_enum: 6
+          id: source
+          flags: 950
+          key: 1184
+          size: 28
+          stage: pre_process
+          stage_enum: 0
+          ordinal: 1
+          value_encoding: none
+          value: 10; ls -la
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          ordinal: 1
+          id: source
+          source: shared_memory_input
+          source_enum: 6
+          key: 1184
+          flags: 950
+          size: 28
+          value: localhost; echo Hello world
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 1184
+      size: 28
+      flags: 950
+  description: "Read a string from the input.  Do nslookup on that string, without checking first if it has any command separators.  This allows the user to run arbitrary commands.\n\n"
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 6
+          source: shared_memory_input
+          size: 28
+          ordinal: 1
+          flags: 950
+          stage: pre_process
+          value_encoding: none
+          value: 10
+          id: source
+          stage_enum: 0
+          key: 1184
+    - inputs:
+        - source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          id: source
+          flags: 950
+          ordinal: 1
+          size: 28
+          stage: pre_process
+          key: 1184
+          value: google.com
+          value_encoding: none
+          value_type_enum: 0
+          source: shared_memory_input
+    - inputs:
+        - value: localhost
+          size: 28
+          source_enum: 6
+          value_encoding: none
+          flags: 950
+          value_type_enum: 0
+          source: shared_memory_input
+          stage_enum: 0
+          id: source
+          stage: pre_process
+          ordinal: 1
+          key: 1184
+          value_type: USE_TEXT_DIRECTLY
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpq80RzZ_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - feature_group: data_type
+    file_name: /tmp/tmpq80RzZ_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature: union
+  - file_name: /tmp/tmpq80RzZ_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_flow
+    feature: var_arg_list
+  - function_name: ciscoes_unpreventative
+    line_number: 0
+    feature_group: control_flow
+    feature: set_jump_long_jump
+    file_name: /tmp/tmpq80RzZ_ss_testcase/src-rose/crypto/cryptlib.c

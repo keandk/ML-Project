@@ -1,0 +1,100 @@
+io_pair:
+  benigns:
+    - inputs:
+        - value: Hello
+          value_encoding: none
+          source_enum: 5
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          id: source
+          address: ss-localhost
+          stage: co_process
+          source: socket_input
+          port: 8887
+          stage_enum: 1
+    - inputs:
+        - ordinal: 1
+          stage_enum: 1
+          source_enum: 5
+          id: source
+          stage: co_process
+          port: 8887
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          value: a
+          value_encoding: none
+          address: ss-localhost
+          value_type_enum: 0
+    - inputs:
+        - id: source
+          ordinal: 1
+          source_enum: 5
+          address: ss-localhost
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 1
+          stage: co_process
+          source: socket_input
+          port: 8887
+          value: ok_str
+  base_inputs:
+    - stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+      source_enum: 5
+      stage: co_process
+  exploits:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          source_enum: 5
+          value: This_input_is_too_long_to_be_contained_in_buffer
+          value_type_enum: 0
+          value_encoding: none
+          stage_enum: 1
+          id: source
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+    - inputs:
+        - value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          value_type_enum: 0
+          stage_enum: 1
+          address: ss-localhost
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          source_enum: 5
+          value_encoding: none
+          id: source
+          ordinal: 1
+          source: socket_input
+  description: "Good inputs:1) envrionment variable is set to a value whose length is less than or equal to 8 charsBad inputs:1) environment variable is not set2) environment variable is set to a value whose length is greater than 8 chars\n\n"
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpCEthSi_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpCEthSi_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - feature: basic
+    file_name: /tmp/tmpCEthSi_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+  - file_name: /tmp/tmpCEthSi_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: sequence
+    feature_group: control_flow

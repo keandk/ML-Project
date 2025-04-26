@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpt5zvj6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+  - file_name: /tmp/tmpt5zvj6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpt5zvj6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpt5zvj6_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  description: "Has a buffer declared on the heap. malloc(20*sizeOf(char)) If input is resolved to more  than 20 chars it will overflow\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 3273
+      size: 20
+      flags: 950
+  exploits:
+    - inputs:
+        - key: 3273
+          ordinal: 1
+          size: 20
+          value_type_enum: 0
+          source: shared_memory_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          flags: 950
+          value: ../testData
+    - inputs:
+        - key: 3273
+          source_enum: 6
+          value: ../testOutput
+          flags: 950
+          value_encoding: none
+          id: source
+          ordinal: 1
+          source: shared_memory_input
+          stage: pre_process
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          size: 20
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          value_type_enum: 0
+          id: source
+          key: 3273
+          size: 20
+          ordinal: 1
+          flags: 950
+          value: /etc/passwd
+          value_encoding: none
+          source: shared_memory_input
+    - inputs:
+        - value_encoding: none
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value: /etc/ssh/ssh_config
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          key: 3273
+          ordinal: 1
+          flags: 950
+          size: 20
+          value_type_enum: 0
+    - inputs:
+        - value_type_enum: 0
+          flags: 950
+          source_enum: 6
+          size: 20
+          source: shared_memory_input
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value: /usr/bin/gcc
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          key: 3273
+          value_encoding: none

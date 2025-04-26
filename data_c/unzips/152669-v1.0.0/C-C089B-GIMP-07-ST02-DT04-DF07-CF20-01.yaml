@@ -1,0 +1,324 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a filename to read in the file contents using an fread operation within the function\nCompleted injection.\n"
+io_pair:
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+  base_inputs:
+    - stage_enum: 0
+      value_type: USE_TEXT_DIRECTLY
+      value_encoding: none
+      value_type_enum: 0
+      source: env_var_input
+      value: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+      stage: pre_process
+      source_enum: 2
+      name: APOPKA_MICO
+      ordinal: 1
+    - id: source
+      name: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+      source: file_content_input
+      source_enum: 3
+      stage_enum: 0
+      stage: pre_process
+      ordinal: 2
+  exploits:
+    - inputs:
+        - name: APOPKA_MICO
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          value_type_enum: 0
+          ordinal: 1
+          stage_enum: 0
+          source: env_var_input
+        - stage: pre_process
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          value_type_enum: 0
+          value: x' or 'x'='x
+          source: file_content_input
+          name: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          id: source
+          source_enum: 3
+          value_encoding: none
+        - value_encoding: none
+          database_enum: 1
+          database: postgresql
+          stage_enum: 0
+          source_enum: 0
+          stage: pre_process
+          value_type_enum: 1
+          source: database_content_input
+          ordinal: 2
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          server: ss-db-postgres
+        - source_enum: 2
+          stage: pre_process
+          value: SET_DYNAMIC_DB_NAME
+          value_type_enum: 0
+          source: env_var_input
+          ordinal: 3
+          name: SS_DBPGDATABASE
+          stage_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+        - stage_enum: 2
+          server: ss-db-postgres
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_type: USE_TEXT_DIRECTLY
+          database_enum: 1
+          value_type_enum: 0
+          ordinal: 1
+          value_encoding: none
+          source_enum: 0
+          database: postgresql
+          stage: post_process
+          source: database_content_input
+    - inputs:
+        - ordinal: 1
+          name: APOPKA_MICO
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          stage: pre_process
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+        - value: "x'; SELECT * FROM Orders; -- "
+          source_enum: 3
+          ordinal: 2
+          stage: pre_process
+          name: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          source: file_content_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_type_enum: 0
+          id: source
+        - stage: pre_process
+          database_enum: 1
+          stage_enum: 0
+          source: database_content_input
+          database: postgresql
+          value_type: USE_CONTENTS_OF_FILE
+          source_enum: 0
+          server: ss-db-postgres
+          value: northwind
+          value_type_enum: 1
+          ordinal: 2
+          value_encoding: none
+        - value_type_enum: 0
+          source: env_var_input
+          name: SS_DBPGDATABASE
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 3
+          source_enum: 2
+          value_encoding: none
+          stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+        - source: database_content_input
+          source_enum: 0
+          stage: post_process
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 2
+          ordinal: 1
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_encoding: none
+          database_enum: 1
+          server: ss-db-postgres
+          database: postgresql
+  benigns:
+    - inputs:
+        - stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          name: APOPKA_MICO
+          value_encoding: none
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          value_type_enum: 0
+          ordinal: 1
+          source: env_var_input
+          stage_enum: 0
+        - value: USA
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          source: file_content_input
+          value_encoding: none
+          source_enum: 3
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - value_encoding: none
+          stage: pre_process
+          source_enum: 0
+          database: postgresql
+          database_enum: 1
+          value: northwind
+          ordinal: 2
+          server: ss-db-postgres
+          value_type_enum: 1
+          stage_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          source: database_content_input
+        - value_type: USE_TEXT_DIRECTLY
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          source: env_var_input
+          value_encoding: none
+          name: SS_DBPGDATABASE
+        - value_type_enum: 0
+          stage: post_process
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          ordinal: 1
+          value_encoding: none
+          database: postgresql
+          value_type: USE_TEXT_DIRECTLY
+          source: database_content_input
+          server: ss-db-postgres
+          database_enum: 1
+          source_enum: 0
+          stage_enum: 2
+    - inputs:
+        - name: APOPKA_MICO
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          source: env_var_input
+          stage: pre_process
+          value_type_enum: 0
+          ordinal: 1
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+        - value_type_enum: 0
+          name: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          id: source
+          ordinal: 2
+          source_enum: 3
+          source: file_content_input
+          stage_enum: 0
+          value: Germany
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+        - stage_enum: 0
+          stage: pre_process
+          server: ss-db-postgres
+          database: postgresql
+          value_type_enum: 1
+          database_enum: 1
+          source: database_content_input
+          value_encoding: none
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          ordinal: 2
+          source_enum: 0
+        - source: env_var_input
+          ordinal: 3
+          name: SS_DBPGDATABASE
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          value_type_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+        - database: postgresql
+          value_encoding: none
+          database_enum: 1
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          stage_enum: 2
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 0
+          source: database_content_input
+          ordinal: 1
+          server: ss-db-postgres
+          stage: post_process
+    - inputs:
+        - stage_enum: 0
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+          ordinal: 1
+          stage: pre_process
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          name: APOPKA_MICO
+          value_type: USE_TEXT_DIRECTLY
+        - name: /opt/stonesoup/workspace/testData/kinoos_anand/compt_audaciousness.txt
+          value_encoding: none
+          stage: pre_process
+          source: file_content_input
+          source_enum: 3
+          ordinal: 2
+          value: Finland
+          value_type_enum: 0
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+        - value_encoding: none
+          ordinal: 2
+          database: postgresql
+          value_type: USE_CONTENTS_OF_FILE
+          server: ss-db-postgres
+          database_enum: 1
+          value_type_enum: 1
+          stage: pre_process
+          source: database_content_input
+          source_enum: 0
+          stage_enum: 0
+          value: northwind
+        - value: SET_DYNAMIC_DB_NAME
+          name: SS_DBPGDATABASE
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          stage: pre_process
+          ordinal: 3
+          value_encoding: none
+          stage_enum: 0
+          source_enum: 2
+          value_type_enum: 0
+        - value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          database: postgresql
+          value_type_enum: 0
+          ordinal: 1
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          stage_enum: 2
+          database_enum: 1
+          server: ss-db-postgres
+          source: database_content_input
+          stage: post_process
+          source_enum: 0
+code_complexity_features:
+  - function_name: tile_attach
+    line_number: 0
+    feature: FILE_CONTENTS
+    file_name: /tmp/tmpnnakS5_ss_testcase/src-rose/app/base/tile.c
+    feature_group: source_taint
+  - feature_group: data_type
+    file_name: /tmp/tmpnnakS5_ss_testcase/src-rose/app/base/tile.c
+    feature: heap_pointer
+    function_name: tile_attach
+    line_number: 0
+  - feature_group: data_flow
+    file_name: /tmp/tmpnnakS5_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature: index_alias_1
+  - file_name: /tmp/tmpnnakS5_ss_testcase/src-rose/app/base/tile.c
+    feature_group: control_flow
+    function_name: tile_attach
+    line_number: 0
+    feature: sequence

@@ -1,0 +1,100 @@
+io_pair:
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          address: ss-localhost
+          id: source
+          stage_enum: 1
+          ordinal: 1
+          source: socket_input
+          port: 8887
+          stage: co_process
+          value_encoding: none
+          value: 10; ls -la
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source_enum: 5
+          value_encoding: none
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          source: socket_input
+          stage: co_process
+          port: 8887
+          value: localhost; echo Hello world
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  benigns:
+    - inputs:
+        - source: socket_input
+          value: 10
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          address: ss-localhost
+          port: 8887
+          stage_enum: 1
+          source_enum: 5
+          stage: co_process
+          ordinal: 1
+    - inputs:
+        - value_encoding: none
+          port: 8887
+          value_type_enum: 0
+          stage_enum: 1
+          id: source
+          address: ss-localhost
+          value: google.com
+          source: socket_input
+          stage: co_process
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          ordinal: 1
+    - inputs:
+        - source_enum: 5
+          stage: co_process
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value: localhost
+          ordinal: 1
+          stage_enum: 1
+          id: source
+          port: 8887
+          source: socket_input
+          value_type_enum: 0
+          value_encoding: none
+  description: "Read a string from the input.  Do nslookup on that string, without checking first if it has any command separators.  This allows the user to run arbitrary commands.\n\n"
+  base_inputs:
+    - stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+      source_enum: 5
+      stage: co_process
+code_complexity_features:
+  - function_name: stonesoup_handle_taint
+    file_name: /tmp/tmp7_V2PL_ss_testcase/src-rose/epan/stream.c
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmp7_V2PL_ss_testcase/src-rose/epan/stream.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmp7_V2PL_ss_testcase/src-rose/epan/stream.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression
+  - file_name: /tmp/tmp7_V2PL_ss_testcase/src-rose/epan/stream.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: infinite_loop
+    feature_group: control_flow
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

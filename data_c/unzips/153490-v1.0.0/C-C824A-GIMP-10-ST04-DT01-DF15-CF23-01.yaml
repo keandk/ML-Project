@@ -1,0 +1,106 @@
+code_complexity_features:
+  - function_name: tile_swap_find_offset
+    file_name: /tmp/tmp48AuKo_ss_testcase/src-rose/app/base/tile-swap.c
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmp48AuKo_ss_testcase/src-rose/app/base/tile-swap.c
+    feature_group: data_type
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmp48AuKo_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_variable
+  - feature: set_jump_long_jump
+    file_name: /tmp/tmp48AuKo_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature_group: control_flow
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 9914
+      size: 40
+      flags: 950
+  description: "Create a function pointer on the stack.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          key: 9914
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          stage: pre_process
+          size: 40
+          value: AAAAAAAAAAA
+          source: shared_memory_input
+          source_enum: 6
+          flags: 950
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_encoding: none
+          size: 40
+          flags: 950
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          key: 9914
+          ordinal: 1
+          value: 12345 Hello world!
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - ordinal: 1
+          id: source
+          key: 9914
+          value_encoding: none
+          source: shared_memory_input
+          stage_enum: 0
+          stage: pre_process
+          size: 40
+          value_type: USE_TEXT_DIRECTLY
+          value: This string does not have 10 characters
+          value_type_enum: 0
+          flags: 950
+          source_enum: 6
+  exploits:
+    - inputs:
+        - ordinal: 1
+          value_encoding: none
+          size: 40
+          id: source
+          key: 9914
+          stage_enum: 0
+          value_type_enum: 0
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          source: shared_memory_input
+          value: 0123456789
+          stage: pre_process
+    - inputs:
+        - ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value: 10 chars..
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+          size: 40
+          key: 9914
+          flags: 950

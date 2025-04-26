@@ -1,0 +1,194 @@
+io_pair:
+  description: "This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text \"hello\" with \"Hello\".  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.\n"
+  benigns:
+    - inputs:
+        - value_encoding: none
+          name: URETEROGENITAL_KALSOMINE
+          ordinal: 1
+          stage_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          source_enum: 2
+          source: env_var_input
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          value_type_enum: 0
+        - value_type_enum: 0
+          ordinal: 1
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          stage_enum: 0
+          source_enum: 3
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source: file_content_input
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          stage: pre_process
+        - source_enum: 3
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          stage: pre_process
+          value: !<!> hello World!
+          value_type_enum: 0
+          stage_enum: 0
+          source: file_content_input
+    - inputs:
+        - value_type_enum: 0
+          name: URETEROGENITAL_KALSOMINE
+          source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+          ordinal: 1
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          value_encoding: none
+        - source_enum: 3
+          stage_enum: 0
+          source: file_content_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          value_type_enum: 0
+          ordinal: 1
+          stage: pre_process
+        - name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          stage_enum: 0
+          source_enum: 3
+          source: file_content_input
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 2
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+    - inputs:
+        - source: env_var_input
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample3.txt
+          source_enum: 2
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          id: source
+          name: URETEROGENITAL_KALSOMINE
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+        - name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          source: file_content_input
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          source_enum: 3
+          stage_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+        - ordinal: 2
+          source_enum: 3
+          source: file_content_input
+          stage: pre_process
+          value_type_enum: 0
+          value: !<!> "Hello again, hello.  Just called to say hello.\n\nYou had me at \"hello\".\n\n"
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample3.txt
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: URETEROGENITAL_KALSOMINE
+  exploits:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          name: URETEROGENITAL_KALSOMINE
+          source: env_var_input
+          source_enum: 2
+          ordinal: 1
+          value: --cmd 'silent !cat /etc/passwd' /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          stage: pre_process
+          value_type_enum: 0
+          id: source
+          stage_enum: 0
+          value_encoding: none
+        - value_type_enum: 0
+          stage_enum: 0
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          source_enum: 3
+          stage: pre_process
+          ordinal: 1
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source: file_content_input
+        - ordinal: 2
+          source: file_content_input
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          source_enum: 3
+          stage_enum: 0
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          value: !<!> hello World!
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value: --cmd 'silent !ls -la .' /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          ordinal: 1
+          value_encoding: none
+          name: URETEROGENITAL_KALSOMINE
+        - source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          stage_enum: 0
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          stage: pre_process
+          value_type_enum: 0
+          ordinal: 1
+          value_encoding: none
+          source: file_content_input
+        - stage: pre_process
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+          stage_enum: 0
+          value_type_enum: 0
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+          value_encoding: none
+          source: file_content_input
+          ordinal: 2
+code_complexity_features:
+  - function_name: get_column_visible
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+    file_name: /tmp/tmphjYk5H_ss_testcase/src-rose/epan/column.c
+  - file_name: /tmp/tmphjYk5H_ss_testcase/src-rose/epan/column.c
+    feature_group: data_type
+    function_name: get_column_visible
+    line_number: 0
+    feature: heap_pointer
+  - file_name: /tmp/tmphjYk5H_ss_testcase/src-rose/epan/column.c
+    function_name: get_column_visible
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_10
+  - line_number: 0
+    feature: pointer_to_function
+    file_name: /tmp/tmphjYk5H_ss_testcase/src-rose/epan/column.c
+    function_name: get_column_visible
+    feature_group: control_flow
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

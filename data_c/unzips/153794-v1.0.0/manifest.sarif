@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153794,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case implements an unchecked write into a buffer that is contained within stack-allocated struct. The struct contains a function pointer, a fixed-size buffer, and another function pointer. Untrusted input is not properly sanitized or restricted before being copied into the target buffer, resulting in a buffer overflow. The overflow will destroy one of the function pointers either side of the buffer. The weakness then accesses those pointers, resulting in a crash or execution of attacker-specified code. \nMetadata\n - Base program: Wireshark\n - Source Taint: ENVIRONMENT_VARIABLE\n - Data Type: ARRAY\n - Data Flow: ADDRESS_AS_VARIABLE\n - Control Flow: INDIRECTLY_RECURSIVE",
+        "state": "bad",
+        "application": "cpe:2.3:a:wireshark:wireshark:1.10.2:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "wireshark-v1.10.2"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C120D-WIRE-06-ST01-DT01-DF15-CF02-01.xml"
+          },
+          "length": 62072,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "7b0a5b0d43f5cbdab2e5981f20e75ef8581b2f7b1a9e4b26f5c639e33eb5997f"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/epan/timestamp.c"
+          },
+          "length": 7354,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "7fba85301d2ef85d478d9c34b48a30fd0e7d8e24e1fa95883e30cd3702dd6e86"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "120",
+              "name": "Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-120",
+          "message": {
+            "text": "Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/epan/timestamp.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 182,
+                  "endLine": 184
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "120",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

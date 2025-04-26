@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153228,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case creates a buffer on the stack of 1024 bytes and a struct on the heap containing a 64-byte buffer and a pointer to the beginning of that buffer. It copies the taint source into the 1024-char buffer. It checks if the length of the taint source is less than the length of the 64-byte buffer. If it is, it uses strncpy to copy the taint source into the 64-byte buffer, with a maximum value of 1024 bytes. However, strncpy always writes the maximum number of bytes, and so writes 1024 bytes. This overflows the other data in the struct, including the pointer that originally pointed to the beginning of the 64-byte buffer. The test case then calls strlen on that pointer in the struct. However, since the pointer has been corrupted by the overflow, this causes a segmentation fault. \nMetadata\n - Base program: OpenSSL\n - Source Taint: ENVIRONMENT_VARIABLE\n - Data Type: TYPEDEF\n - Data Flow: BUFFER_ADDRESS_POINTER\n - Control Flow: SEQUENCE",
+        "state": "bad",
+        "application": "cpe:2.3:a:openssl:openssl:1.0.1e:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "openssl-v1.0.1e"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C806C-OSSL-03-ST01-DT06-DF17-CF20-01.xml"
+          },
+          "length": 53942,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "76dd67b5cff8f2716eb4935a45640ba448f9093e05357218840aaa2aa6aad181"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/crypto/cryptlib.c"
+          },
+          "length": 27521,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "bbf36a8862e7e3039afb253b59d4f982e6769db2e7db77251edf005fb018e624"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "806",
+              "name": "Buffer Access Using Size of Source Buffer"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-806",
+          "message": {
+            "text": "Buffer Access Using Size of Source Buffer."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/crypto/cryptlib.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 589,
+                  "endLine": 593
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "806",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

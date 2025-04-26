@@ -1,0 +1,100 @@
+io_pair:
+  description: "Has a buffer declared on the stack and populated from input data via strncpy.  If input begins with a lower case letter oor a higher ascii value, it will crash\n\n"
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          port: 8887
+          value_encoding: none
+          value: starting with an s is bad
+          stage_enum: 1
+          address: ss-localhost
+          stage: co_process
+          source: socket_input
+          source_enum: 5
+          id: source
+    - inputs:
+        - stage: co_process
+          port: 8887
+          source: socket_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: zebras have stripes
+          address: ss-localhost
+          id: source
+          ordinal: 1
+          value_type_enum: 0
+          source_enum: 5
+          stage_enum: 1
+  benigns:
+    - inputs:
+        - ordinal: 1
+          value: AAAAAAAAAAAAAAAAAAAAAAA
+          value_type_enum: 0
+          value_encoding: none
+          source: socket_input
+          stage_enum: 1
+          stage: co_process
+          address: ss-localhost
+          id: source
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+    - inputs:
+        - source: socket_input
+          address: ss-localhost
+          stage_enum: 1
+          source_enum: 5
+          port: 8887
+          stage: co_process
+          value_encoding: none
+          value: Hello World!
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - port: 8887
+          value_encoding: none
+          stage: co_process
+          stage_enum: 1
+          address: ss-localhost
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          value: many characters are good, but most are bad
+          value_type_enum: 0
+          ordinal: 1
+          source: socket_input
+  base_inputs:
+    - stage: co_process
+      source: socket_input
+      source_enum: 5
+      stage_enum: 1
+      ordinal: 1
+      port: 8887
+      id: source
+      address: ss-localhost
+code_complexity_features:
+  - feature: SOCKET
+    feature_group: source_taint
+    file_name: /tmp/tmp43tcIz_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+  - feature: struct
+    file_name: /tmp/tmp43tcIz_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    feature_group: data_type
+    function_name: stonesoup_handle_taint
+    line_number: 0
+  - file_name: /tmp/tmp43tcIz_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_function_return_value
+  - file_name: /tmp/tmp43tcIz_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: macros
+    feature_group: control_flow
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

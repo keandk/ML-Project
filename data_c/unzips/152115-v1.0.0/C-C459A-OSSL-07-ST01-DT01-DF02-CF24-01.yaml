@@ -1,0 +1,94 @@
+code_complexity_features:
+  - line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+    file_name: /tmp/tmp55KGlk_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: CONF_modules_unload
+  - file_name: /tmp/tmp55KGlk_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    feature_group: data_type
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmp55KGlk_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_2
+  - file_name: /tmp/tmp55KGlk_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    feature_group: control_flow
+    function_name: CONF_modules_unload
+    line_number: 0
+    feature: unconditional_jump
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: IGNORERS_UNDISTURBANCE
+      source: env_var_input
+      source_enum: 2
+  benigns:
+    - inputs:
+        - ordinal: 1
+          value: 10
+          value_encoding: none
+          name: IGNORERS_UNDISTURBANCE
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source: env_var_input
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+    - inputs:
+        - value_encoding: none
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+          source: env_var_input
+          name: IGNORERS_UNDISTURBANCE
+          value: 42
+          source_enum: 2
+    - inputs:
+        - name: IGNORERS_UNDISTURBANCE
+          source: env_var_input
+          stage_enum: 0
+          id: source
+          value: 37
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source_enum: 2
+          ordinal: 1
+          value_type_enum: 0
+          value_encoding: none
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          name: IGNORERS_UNDISTURBANCE
+          ordinal: 1
+          source_enum: 2
+          source: env_var_input
+          value_type_enum: 0
+          value: 20000
+    - inputs:
+        - source: env_var_input
+          value_type_enum: 0
+          value: 6000
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          name: IGNORERS_UNDISTURBANCE
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+  description: "Takes an input integer and creates temporary files, filling them with a large string. It then attempts cleanup, but if more than 50 files were created, then only the last 50 will be cleaned up. Given a large enough input the program will use up a significant ammount of disk space creating temporary files and not cleaning them up.\n\n"

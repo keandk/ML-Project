@@ -1,0 +1,156 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - feature: SHARED_MEMORY
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    file_name: /tmp/tmp0pgsBB_ss_testcase/src-rose/src/dfa.c
+  - file_name: /tmp/tmp0pgsBB_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmp0pgsBB_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp0pgsBB_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  description: "Has a heap buffer of size 128 within a struct.  reads in an ascii string from an environmentvariable and increments the corresponding values in the heap buffer.  Then reads in an input and prints out the count of the characters from the heap buff of those in the input.  If input contains extended ascii characters, they will be wrapped around to negative values and the buffer will be under read\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 1823
+      size: 105
+      flags: 950
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          source: shared_memory_input
+          source_enum: 6
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          key: 1823
+          flags: 950
+          size: 105
+          value_encoding: none
+          stage: pre_process
+          value_type_enum: 0
+        - ordinal: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          name: INPUT_STRING
+          value_encoding: none
+    - inputs:
+        - value_encoding: none
+          source_enum: 6
+          source: shared_memory_input
+          flags: 950
+          stage: pre_process
+          ordinal: 1
+          id: source
+          stage_enum: 0
+          size: 105
+          value: This is probably not going to overflow a buffer of some sort.  Let's run it anyway and see what happens.
+          key: 1823
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - ordinal: 2
+          source_enum: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          stage: pre_process
+          source: env_var_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: INPUT_STRING
+          value_type_enum: 0
+    - inputs:
+        - key: 1823
+          stage_enum: 0
+          size: 105
+          id: source
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          ordinal: 1
+          value: As long as this statement has more than 64 characters, then nothing bad should happen
+        - source_enum: 2
+          ordinal: 2
+          name: INPUT_STRING
+          stage_enum: 0
+          source: env_var_input
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          stage: pre_process
+  exploits:
+    - inputs:
+        - id: source
+          stage_enum: 0
+          source_enum: 6
+          stage: pre_process
+          ordinal: 1
+          source: shared_memory_input
+          key: 1823
+          flags: 950
+          size: 105
+          value_encoding: base64
+          value: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUGugIE=
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - value_encoding: none
+          stage_enum: 0
+          value_type_enum: 0
+          name: INPUT_STRING
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          stage: pre_process
+          source_enum: 2
+          ordinal: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+    - inputs:
+        - stage: pre_process
+          source: shared_memory_input
+          source_enum: 6
+          key: 1823
+          id: source
+          ordinal: 1
+          flags: 950
+          value_encoding: base64
+          size: 105
+          value: SGVsbKUgV6lybGSI
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+        - value_encoding: none
+          stage_enum: 0
+          source: env_var_input
+          source_enum: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          value_type_enum: 0
+          ordinal: 2
+          name: INPUT_STRING
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process

@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153694,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case allocates a struct on the heap that contains an 8-character buffer, followed by a pointer. The pointer is set to point to the beginning of the 8-character buffer. The taint source is copied into the 8-character buffer, using strncpy, but the length is incorrectly capped at the length of the taint source rather than the length of the 8-character buffer. If the taint source is 8 characters or longer, the strncpy will overflow the 8-character buffer, over-writing the pointer that follows it. The test case then call strlen on the following pointer, and if this point is not valid (due to the overflow), this will cause a segmentation fault. \nMetadata\n - Base program: Gimp\n - Source Taint: FILE_CONTENTS\n - Data Type: STRUCT\n - Data Flow: ADDRESS_AS_LINEAR_EXPRESSION\n - Control Flow: INDIRECTLY_RECURSIVE",
+        "state": "bad",
+        "application": "cpe:2.3:a:gimp:gimp:2.8.8:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "gimp-v2.8.8"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C805D-GIMP-09-ST02-DT05-DF13-CF02-01.xml"
+          },
+          "length": 68107,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "184bd9fb3677fc6d08eccd865f6107e5b52fb7eb73c45b59ad52337acb107b22"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/app/display/gimpdisplayshell-appearance.c"
+          },
+          "length": 37204,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "398f101773436b1cab74284f28b746e3b57e78219dd3301ca5e8105653690b6e"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "805",
+              "name": "Buffer Access with Incorrect Length Value"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-805",
+          "message": {
+            "text": "Buffer Access with Incorrect Length Value."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/app/display/gimpdisplayshell-appearance.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 1281,
+                  "endLine": 1289
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "805",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

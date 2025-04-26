@@ -1,0 +1,122 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 152874,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case implements an file read of 128 characters which does not properly null terminate the copied string if the original string is 128 characters in length or greater. The test case takes the name of a file, opens the file, and reads up to the first 128 characters into an internal buffer of size 128, allocated on the stack. This buffer is then copied via strcpy into a second stack allocated buffer of size 128, however, if the original file read did not copy a null terminator, the strcpy will copy everything it finds in memory after the input string until it encounters a null terminator. This will cause a buffer overflow and lead to a segfault.   \nMetadata\n - Base program: Wireshark\n - Source Taint: SHARED_MEMORY\n - Data Type: ARRAY\n - Data Flow: BUFFER_ADDRESS_ARRAY_INDEX\n - Control Flow: INDIRECTLY_RECURSIVE",
+        "state": "bad",
+        "application": "cpe:2.3:a:wireshark:wireshark:1.10.2:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "wireshark-v1.10.2"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C170A-WIRE-10-ST04-DT01-DF16-CF02-01.xml"
+          },
+          "length": 86344,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "6102d315261a0420d4f88a9e2f6a98d3bc4fb94b09f4ded78dfc55da62c6eed0"
+          }
+        },
+        {
+          "location": {
+            "uri": "scripts/shm_setup.c"
+          },
+          "length": 3155,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "15d311b07d65d83f38876f4ee427c355e2048145d6db756d5d71877405f24822"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/wiretap/file_wrappers.c"
+          },
+          "length": 51692,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "88b5f07a5d99809e47b7a9864892c11d8744519b9d234a3bb645cc39c7043833"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "170",
+              "name": "Improper Null Termination"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-170",
+          "message": {
+            "text": "Improper Null Termination."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/wiretap/file_wrappers.c",
+                  "index": 2
+                },
+                "region": {
+                  "startLine": 1760,
+                  "endLine": 1766
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "170",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

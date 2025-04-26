@@ -1,0 +1,150 @@
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SOCKET
+    file_name: /tmp/tmpGGNV7k_ss_testcase/src-rose/app/base/tile-manager.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+  - file_name: /tmp/tmpGGNV7k_ss_testcase/src-rose/app/base/tile-manager.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpGGNV7k_ss_testcase/src-rose/app/base/tile-manager.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpGGNV7k_ss_testcase/src-rose/app/base/tile-manager.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: indirectly_recursive
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - source_enum: 5
+          source: socket_input
+          stage: co_process
+          id: source
+          stage_enum: 1
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_encoding: none
+          ordinal: 1
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          value_type_enum: 0
+        - value_encoding: none
+          name: INPUT_STRING
+          source_enum: 2
+          stage: pre_process
+          ordinal: 2
+          stage_enum: 0
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          source: env_var_input
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source: socket_input
+          stage: co_process
+          ordinal: 1
+          stage_enum: 1
+          address: ss-localhost
+          source_enum: 5
+          id: source
+          port: 8887
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: This is probably not going to overflow a buffer of some sort.  Let's run it anyway and see what happens.
+        - source: env_var_input
+          source_enum: 2
+          ordinal: 2
+          value_type_enum: 0
+          name: INPUT_STRING
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          stage_enum: 0
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+    - inputs:
+        - id: source
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          source: socket_input
+          stage: co_process
+          address: ss-localhost
+          port: 8887
+          value_encoding: none
+          stage_enum: 1
+          value_type_enum: 0
+          value: As long as this statement has more than 64 characters, then nothing bad should happen
+          ordinal: 1
+        - value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          source: env_var_input
+          ordinal: 2
+          stage: pre_process
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_type_enum: 0
+          name: INPUT_STRING
+          value_encoding: none
+  description: "Has a heap buffer of size 128 within a struct.  reads in an ascii string from an environmentvariable and increments the corresponding values in the heap buffer.  Then reads in an input and prints out the count of the characters from the heap buff of those in the input.  If input contains extended ascii characters, they will be wrapped around to negative values and the buffer will be under read\n\n"
+  exploits:
+    - inputs:
+        - source: socket_input
+          stage: co_process
+          source_enum: 5
+          stage_enum: 1
+          id: source
+          value_encoding: base64
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          value: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUGugIE=
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - source_enum: 2
+          value_encoding: none
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          stage: pre_process
+          name: INPUT_STRING
+          stage_enum: 0
+    - inputs:
+        - id: source
+          stage_enum: 1
+          address: ss-localhost
+          source: socket_input
+          source_enum: 5
+          stage: co_process
+          value: SGVsbKUgV6lybGSI
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: base64
+          port: 8887
+          value_type_enum: 0
+        - value_encoding: none
+          source: env_var_input
+          stage: pre_process
+          value_type_enum: 0
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          name: INPUT_STRING
+          ordinal: 2

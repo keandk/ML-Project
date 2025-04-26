@@ -1,0 +1,100 @@
+code_complexity_features:
+  - file_name: /tmp/tmpN0gPMh_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    line_number: 0
+    function_name: stonesoup_handle_taint
+    feature: SOCKET
+    feature_group: source_taint
+  - file_name: /tmp/tmpN0gPMh_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    feature_group: data_type
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmpN0gPMh_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - line_number: 0
+    feature: macros
+    file_name: /tmp/tmpN0gPMh_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: stonesoup_handle_taint
+    feature_group: control_flow
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - stage: co_process
+          source_enum: 5
+          port: 8887
+          source: socket_input
+          value_encoding: none
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value: 1st char does not appear again
+          id: source
+          address: ss-localhost
+          value_type_enum: 0
+          stage_enum: 1
+    - inputs:
+        - source_enum: 5
+          address: ss-localhost
+          value_type_enum: 0
+          value_encoding: none
+          stage_enum: 1
+          id: source
+          value: FEDCBA
+          port: 8887
+          source: socket_input
+          stage: co_process
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - port: 8887
+      source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+  description: "Read a string from the input.  Get the first character of the string, and then search the string for another instance of that first character.If the character does not appear, go into uncontrolled recursion.\n\n"
+  benigns:
+    - inputs:
+        - value_encoding: none
+          source_enum: 5
+          stage_enum: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          source: socket_input
+          ordinal: 1
+          address: ss-localhost
+          value: asdfasdf
+          id: source
+          stage: co_process
+    - inputs:
+        - port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          value_type_enum: 0
+          value_encoding: none
+          ordinal: 1
+          source: socket_input
+          stage: co_process
+          source_enum: 5
+          stage_enum: 1
+          id: source
+          value: this string has an another t
+    - inputs:
+        - port: 8887
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          source: socket_input
+          ordinal: 1
+          id: source
+          value_encoding: none
+          value: 1st char is 1
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0

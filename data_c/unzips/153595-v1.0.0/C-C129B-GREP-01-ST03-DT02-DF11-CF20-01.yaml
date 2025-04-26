@@ -1,0 +1,100 @@
+code_complexity_features:
+  - file_name: /tmp/tmpUgp6ol_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpUgp6ol_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpUgp6ol_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpUgp6ol_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains non alphanumeric characters\n\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - source_enum: 5
+          id: source
+          stage_enum: 1
+          ordinal: 1
+          port: 8887
+          source: socket_input
+          value: exampleofgoodinput
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          stage: co_process
+    - inputs:
+        - stage: co_process
+          value_type_enum: 0
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          source_enum: 5
+          stage_enum: 1
+          address: ss-localhost
+          value: abcd12345ABCDE
+          ordinal: 1
+          value_encoding: none
+          port: 8887
+    - inputs:
+        - source_enum: 5
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value_type_enum: 0
+          stage: co_process
+          ordinal: 1
+          port: 8887
+          id: source
+          value_encoding: none
+          address: ss-localhost
+          value: R0G3RR4881T
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          source: socket_input
+          stage: co_process
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          value: a-b+c*d
+          ordinal: 1
+          port: 8887
+    - inputs:
+        - source: socket_input
+          ordinal: 1
+          source_enum: 5
+          stage_enum: 1
+          value: 3.14159
+          value_encoding: none
+          stage: co_process
+          id: source
+          port: 8887
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0

@@ -1,0 +1,94 @@
+code_complexity_features:
+  - feature_group: source_taint
+    file_name: /tmp/tmpGoG4DC_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpGoG4DC_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    feature_group: data_type
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmpGoG4DC_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_linear_expression
+  - function_name: gimp_action_group_update
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+    file_name: /tmp/tmpGoG4DC_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - id: source
+      name: UNRATABLE_NOTICEABILI
+      stage: pre_process
+      source: env_var_input
+      source_enum: 2
+      stage_enum: 0
+      ordinal: 1
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  exploits:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          ordinal: 1
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          value: AAAAAAAAAAAAAAA
+          id: source
+          name: UNRATABLE_NOTICEABILI
+          stage_enum: 0
+          value_encoding: none
+    - inputs:
+        - source: env_var_input
+          id: source
+          name: UNRATABLE_NOTICEABILI
+          ordinal: 1
+          stage_enum: 0
+          value: Short is now bad
+          source_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          value_encoding: none
+          id: source
+          source_enum: 2
+          name: UNRATABLE_NOTICEABILI
+          value_type: USE_TEXT_DIRECTLY
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          stage: pre_process
+          stage_enum: 0
+          source: env_var_input
+          ordinal: 1
+    - inputs:
+        - name: UNRATABLE_NOTICEABILI
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          ordinal: 1
+          source: env_var_input
+          stage_enum: 0
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          id: source
+    - inputs:
+        - id: source
+          name: UNRATABLE_NOTICEABILI
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source_enum: 2
+          source: env_var_input
+          value_encoding: none
+          value_type_enum: 0
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong

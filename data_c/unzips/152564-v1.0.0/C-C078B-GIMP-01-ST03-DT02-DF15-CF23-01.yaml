@@ -1,0 +1,100 @@
+code_complexity_features:
+  - function_name: stonesoup_handle_taint
+    line_number: 0
+    file_name: /tmp/tmpAPPTrj_ss_testcase/src-rose/app/core/gimpcontext.c
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpAPPTrj_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpAPPTrj_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_variable
+  - file_name: /tmp/tmpAPPTrj_ss_testcase/src-rose/app/core/gimpcontext.c
+    feature_group: control_flow
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: set_jump_long_jump
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - source_enum: 5
+          value: 10%20%3B%20ls -la
+          stage_enum: 1
+          stage: co_process
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+          address: ss-localhost
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          source: socket_input
+    - inputs:
+        - ordinal: 1
+          value: localhost%20%26%20echo Hello world
+          source_enum: 5
+          stage_enum: 1
+          source: socket_input
+          stage: co_process
+          id: source
+          address: ss-localhost
+          port: 8887
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - address: ss-localhost
+          value_type_enum: 0
+          source: socket_input
+          source_enum: 5
+          stage_enum: 1
+          port: 8887
+          stage: co_process
+          id: source
+          value: 10
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+    - inputs:
+        - stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          port: 8887
+          source: socket_input
+          value: google.com
+          stage: co_process
+          source_enum: 5
+          value_encoding: none
+          id: source
+    - inputs:
+        - stage_enum: 1
+          source_enum: 5
+          ordinal: 1
+          stage: co_process
+          id: source
+          port: 8887
+          value_encoding: none
+          value: localhost
+          address: ss-localhost
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+  description: "Read a string from the input.  Check first if it has any command separators and then run it though a URL decoding algorithm.  Then use this string to perform an nslookup by appending it to the end of the command. This allows the user to run arbitrary commands by suplying command separators encoded in url encoding.\n\n"

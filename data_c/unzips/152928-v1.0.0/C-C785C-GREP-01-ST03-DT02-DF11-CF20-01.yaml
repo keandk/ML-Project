@@ -1,0 +1,100 @@
+code_complexity_features:
+  - file_name: /tmp/tmpLWHwxK_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpLWHwxK_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpLWHwxK_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpLWHwxK_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  description: "Has a buffer declared on the heap in a struct. malloc(20*sizeOf(char)) If input is resolved to more  than 20 chars it will overflow\n\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - id: source
+          value_type_enum: 0
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          address: ss-localhost
+          port: 8887
+          ordinal: 1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: /etc/passwd
+          source: socket_input
+    - inputs:
+        - source_enum: 5
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          stage: co_process
+          ordinal: 1
+          id: source
+          value_encoding: none
+          value: /etc/ssh/ssh_config
+          address: ss-localhost
+          value_type_enum: 0
+          port: 8887
+    - inputs:
+        - source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          value: /usr/bin/gcc
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          value_type_enum: 0
+          ordinal: 1
+          port: 8887
+          value_encoding: none
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value: ../testData
+          source: socket_input
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage: co_process
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value: ../testOutput
+          value_encoding: none
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0

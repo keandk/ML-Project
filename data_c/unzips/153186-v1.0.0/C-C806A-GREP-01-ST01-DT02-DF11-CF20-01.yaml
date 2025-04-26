@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpHsqLvb_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpHsqLvb_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpHsqLvb_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpHsqLvb_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: TRIGGED_DISHMOP
+  exploits:
+    - inputs:
+        - stage: pre_process
+          value: Short is now bad
+          stage_enum: 0
+          source_enum: 2
+          value_encoding: none
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_type_enum: 0
+          name: TRIGGED_DISHMOP
+          source: env_var_input
+    - inputs:
+        - id: source
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          name: TRIGGED_DISHMOP
+          stage_enum: 0
+          source_enum: 2
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value_encoding: none
+          value: AAAAAAAAAAAA
+  description: "Has a buffer declared on the stack. char[64] If input is shorter than 64 it will overflow,due to using improper sizeof and strlen checking\n\n"
+  benigns:
+    - inputs:
+        - id: source
+          stage_enum: 0
+          stage: pre_process
+          name: TRIGGED_DISHMOP
+          source_enum: 2
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          stage_enum: 0
+          name: TRIGGED_DISHMOP
+          id: source
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          name: TRIGGED_DISHMOP
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+          source: env_var_input
+          value_encoding: none

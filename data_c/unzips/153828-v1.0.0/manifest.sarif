@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153828,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case creates a buffer on the stack of 1024 bytes and buffer on the heap of 64 bytes. It copies the taint source into the 1024-char buffer. It checks if the length of the taint source is less than the length of the 64-byte buffer. If it is, it uses strncpy to copy the taint source into the 64-byte buffer, with a maximum value of 1024 bytes. However, strncpy always writes the maximum number of bytes, and so writes 1024 bytes. This overflows the other data in the heap, including memory reserved for use by the memory manager. When the test case attempts to free the heap-allocated buffer, a glibc error occurs. \nMetadata\n - Base program: Gimp\n - Source Taint: ENVIRONMENT_VARIABLE\n - Data Type: ARRAY\n - Data Flow: ADDRESS_AS_LINEAR_EXPRESSION\n - Control Flow: SEQUENCE",
+        "state": "bad",
+        "application": "cpe:2.3:a:gimp:gimp:2.8.8:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "gimp-v2.8.8"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C806B-GIMP-08-ST01-DT01-DF13-CF20-01.xml"
+          },
+          "length": 65128,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "f77bf57e5cf5544722e73d07c8a5dc630ababad3e3d9c4f5f999f241e4473ebf"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/app/widgets/gimpactiongroup.c"
+          },
+          "length": 47621,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "f96008a2a1bbbbd92edd8d296a82e72fbf42f8b51c1805678f4c374b07ffcb92"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "806",
+              "name": "Buffer Access Using Size of Source Buffer"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-806",
+          "message": {
+            "text": "Buffer Access Using Size of Source Buffer."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/app/widgets/gimpactiongroup.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 438,
+                  "endLine": 442
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "806",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

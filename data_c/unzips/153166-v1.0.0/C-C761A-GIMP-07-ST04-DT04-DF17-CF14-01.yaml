@@ -1,0 +1,106 @@
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpDy3d6m_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+  - file_name: /tmp/tmpDy3d6m_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature: heap_pointer
+    feature_group: data_type
+  - file_name: /tmp/tmpDy3d6m_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpDy3d6m_ss_testcase/src-rose/app/base/tile.c
+    feature_group: control_flow
+    function_name: tile_attach
+    line_number: 0
+    feature: interprocedural_10
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 4351
+      size: 40
+      flags: 950
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          source: shared_memory_input
+          flags: 950
+          size: 40
+          key: 4351
+          stage: pre_process
+          value: aaa
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+          source_enum: 6
+          ordinal: 1
+    - inputs:
+        - flags: 950
+          key: 4351
+          value_type_enum: 0
+          ordinal: 1
+          value_encoding: none
+          size: 40
+          source: shared_memory_input
+          value: this string has doe not begin with an e
+          stage_enum: 0
+          stage: pre_process
+          source_enum: 6
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+  benigns:
+    - inputs:
+        - stage_enum: 0
+          ordinal: 1
+          source_enum: 6
+          key: 4351
+          value_type_enum: 0
+          flags: 950
+          id: source
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          size: 40
+          value_encoding: none
+          stage: pre_process
+          value: eAAA
+    - inputs:
+        - source_enum: 6
+          source: shared_memory_input
+          flags: 950
+          value: e12345 Hello world!
+          key: 4351
+          ordinal: 1
+          size: 40
+          stage_enum: 0
+          id: source
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+    - inputs:
+        - id: source
+          value_type_enum: 0
+          value: e This string begins with an e
+          ordinal: 1
+          flags: 950
+          key: 4351
+          value_encoding: none
+          source_enum: 6
+          source: shared_memory_input
+          stage: pre_process
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          size: 40
+  description: "Malloc a buffer.  Copy the input string to the buffer.  Search for 'e' in the string.  Upon finding 'e', free the buffer, using a pointer that points to that 'e'.  If 'e' is the first character in the buffer, everything is OK.  However, if e is not the first character in the buffer, this will seg fault.\n\n"
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

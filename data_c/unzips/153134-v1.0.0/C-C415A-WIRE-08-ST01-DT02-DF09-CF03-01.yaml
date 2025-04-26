@@ -1,0 +1,94 @@
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: SANCY_BOBBLED
+  description: "Malloc a pointer, and free it.  If input begins with ascii character 'a' or higher, free it a second time.  Causes seg fault.\n\n"
+  benigns:
+    - inputs:
+        - source: env_var_input
+          value_type_enum: 0
+          value_encoding: none
+          value: AAA
+          value_type: USE_TEXT_DIRECTLY
+          name: SANCY_BOBBLED
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          source_enum: 2
+          ordinal: 1
+    - inputs:
+        - source_enum: 2
+          stage_enum: 0
+          source: env_var_input
+          name: SANCY_BOBBLED
+          id: source
+          value_encoding: none
+          value_type_enum: 0
+          ordinal: 1
+          value: 12345 Hello world!
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - ordinal: 1
+          source_enum: 2
+          id: source
+          source: env_var_input
+          stage: pre_process
+          stage_enum: 0
+          value: "[Good-bye cruel world!]"
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          name: SANCY_BOBBLED
+          value_encoding: none
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value_type_enum: 0
+          id: source
+          ordinal: 1
+          value: aaa
+          name: SANCY_BOBBLED
+          value_encoding: none
+          source_enum: 2
+          source: env_var_input
+    - inputs:
+        - stage: pre_process
+          ordinal: 1
+          name: SANCY_BOBBLED
+          id: source
+          value: this string begins with a lower-case letter
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 2
+          value_type_enum: 0
+          stage_enum: 0
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmppCZJbS_ss_testcase/src-rose/ui/gtk/main_statusbar.c
+    function_name: status_expert_hide
+    feature_group: source_taint
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmppCZJbS_ss_testcase/src-rose/ui/gtk/main_statusbar.c
+    function_name: status_expert_hide
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmppCZJbS_ss_testcase/src-rose/ui/gtk/main_statusbar.c
+    function_name: status_expert_hide
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_10
+  - file_name: /tmp/tmppCZJbS_ss_testcase/src-rose/ui/gtk/main_statusbar.c
+    function_name: status_expert_hide
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop

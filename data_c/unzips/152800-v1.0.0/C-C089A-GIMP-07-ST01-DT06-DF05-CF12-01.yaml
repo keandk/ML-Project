@@ -1,0 +1,264 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - name: BIOCENOTIC_STRIFEMONGER
+      id: source
+      source: env_var_input
+      source_enum: 2
+      stage_enum: 0
+      ordinal: 1
+      stage: pre_process
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          value_encoding: none
+          value: USA
+          name: BIOCENOTIC_STRIFEMONGER
+          id: source
+          ordinal: 1
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+        - value: northwind
+          source: database_content_input
+          database: mysql
+          stage: pre_process
+          value_encoding: none
+          ordinal: 2
+          stage_enum: 0
+          database_enum: 0
+          source_enum: 0
+          value_type_enum: 1
+          value_type: USE_CONTENTS_OF_FILE
+          server: ss-db-mysql
+        - source_enum: 2
+          value_encoding: none
+          stage: pre_process
+          name: SS_DBMYSQLDATABASE
+          source: env_var_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 3
+          value: SET_DYNAMIC_DB_NAME
+        - database_enum: 0
+          database: mysql
+          value_type: USE_TEXT_DIRECTLY
+          stage: post_process
+          stage_enum: 2
+          source_enum: 0
+          value_type_enum: 0
+          value_encoding: none
+          source: database_content_input
+          server: ss-db-mysql
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          ordinal: 1
+    - inputs:
+        - stage_enum: 0
+          stage: pre_process
+          source_enum: 2
+          value_encoding: none
+          name: BIOCENOTIC_STRIFEMONGER
+          value: Germany
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          id: source
+          ordinal: 1
+        - source: database_content_input
+          source_enum: 0
+          database: mysql
+          value_type_enum: 1
+          stage_enum: 0
+          value: northwind
+          server: ss-db-mysql
+          value_type: USE_CONTENTS_OF_FILE
+          stage: pre_process
+          database_enum: 0
+          ordinal: 2
+          value_encoding: none
+        - value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          value_encoding: none
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          name: SS_DBMYSQLDATABASE
+          source_enum: 2
+          value_type_enum: 0
+          source: env_var_input
+          stage_enum: 0
+        - value_encoding: none
+          database: mysql
+          server: ss-db-mysql
+          stage: post_process
+          source: database_content_input
+          source_enum: 0
+          database_enum: 0
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 2
+    - inputs:
+        - value_encoding: none
+          source_enum: 2
+          source: env_var_input
+          name: BIOCENOTIC_STRIFEMONGER
+          id: source
+          ordinal: 1
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          value: Finland
+          value_type: USE_TEXT_DIRECTLY
+        - server: ss-db-mysql
+          source: database_content_input
+          source_enum: 0
+          database: mysql
+          value_type: USE_CONTENTS_OF_FILE
+          value_type_enum: 1
+          stage_enum: 0
+          stage: pre_process
+          value: northwind
+          value_encoding: none
+          database_enum: 0
+          ordinal: 2
+        - stage_enum: 0
+          ordinal: 3
+          source: env_var_input
+          name: SS_DBMYSQLDATABASE
+          stage: pre_process
+          source_enum: 2
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: SET_DYNAMIC_DB_NAME
+        - value_encoding: none
+          database: mysql
+          source: database_content_input
+          stage_enum: 2
+          server: ss-db-mysql
+          database_enum: 0
+          source_enum: 0
+          stage: post_process
+          value_type_enum: 0
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+  exploits:
+    - inputs:
+        - source: env_var_input
+          value_encoding: none
+          value: x' or 'x'='x
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          id: source
+          name: BIOCENOTIC_STRIFEMONGER
+          stage: pre_process
+          ordinal: 1
+          stage_enum: 0
+          value_type_enum: 0
+        - value: northwind
+          ordinal: 2
+          server: ss-db-mysql
+          value_encoding: none
+          source_enum: 0
+          stage: pre_process
+          value_type_enum: 1
+          database: mysql
+          stage_enum: 0
+          database_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          source: database_content_input
+        - value_type_enum: 0
+          stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          source_enum: 2
+          value_encoding: none
+          name: SS_DBMYSQLDATABASE
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source: env_var_input
+        - database_enum: 0
+          value_type_enum: 0
+          database: mysql
+          stage: post_process
+          source_enum: 0
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          source: database_content_input
+          ordinal: 1
+          stage_enum: 2
+          value_encoding: none
+          server: ss-db-mysql
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - stage_enum: 0
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value: "x'; Select * from Orders; -- "
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+          id: source
+          ordinal: 1
+          name: BIOCENOTIC_STRIFEMONGER
+        - database: mysql
+          value: northwind
+          source_enum: 0
+          database_enum: 0
+          stage: pre_process
+          source: database_content_input
+          value_type_enum: 1
+          value_encoding: none
+          value_type: USE_CONTENTS_OF_FILE
+          stage_enum: 0
+          server: ss-db-mysql
+          ordinal: 2
+        - stage: pre_process
+          source: env_var_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          name: SS_DBMYSQLDATABASE
+          source_enum: 2
+          ordinal: 3
+          stage_enum: 0
+        - value_encoding: none
+          source: database_content_input
+          value: DROP DATABASE IF EXISTS $SS_DBMYSQLDATABASE;
+          database: mysql
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 2
+          server: ss-db-mysql
+          value_type_enum: 0
+          source_enum: 0
+          database_enum: 0
+          stage: post_process
+          ordinal: 1
+code_complexity_features:
+  - feature_group: source_taint
+    file_name: /tmp/tmpnHcbxz_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpnHcbxz_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - feature: address_as_constant
+    file_name: /tmp/tmpnHcbxz_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature_group: data_flow
+  - line_number: 0
+    feature_group: control_flow
+    feature: interprocedural_1
+    file_name: /tmp/tmpnHcbxz_ss_testcase/src-rose/app/base/tile.c
+    function_name: ungouged_reexhibition

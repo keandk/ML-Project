@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpZxA7Fg_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpZxA7Fg_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpZxA7Fg_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - feature_group: control_flow
+    file_name: /tmp/tmpZxA7Fg_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature: indirectly_recursive
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: SHIFTLESS_COLTISHNESS
+  benigns:
+    - inputs:
+        - source: env_var_input
+          value: abcdef
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          stage_enum: 0
+          id: source
+          name: SHIFTLESS_COLTISHNESS
+    - inputs:
+        - stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          ordinal: 1
+          stage_enum: 0
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: SHIFTLESS_COLTISHNESS
+          value: abc
+          value_type_enum: 0
+    - inputs:
+        - ordinal: 1
+          id: source
+          source: env_var_input
+          stage_enum: 0
+          name: SHIFTLESS_COLTISHNESS
+          value_type_enum: 0
+          value_encoding: none
+          value: abcdefghijklmnopqrstuvwxy
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          stage: pre_process
+  description: "Good inputs:1) environement variable is set to a value whose length mod 3 is 0 or 1Bad inputs:1) environment variable is not set2) environment variable is set to a value whose length mod 3 is not 0 or 1\n\n"
+  exploits:
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          name: SHIFTLESS_COLTISHNESS
+          value: ab
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - id: source
+          value_encoding: none
+          ordinal: 1
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+          name: SHIFTLESS_COLTISHNESS
+          value: ab000012
+          stage_enum: 0
+          source: env_var_input
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

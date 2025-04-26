@@ -1,0 +1,100 @@
+code_complexity_features:
+  - file_name: /tmp/tmphG4qkv_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmphG4qkv_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: heap_pointer
+  - file_name: /tmp/tmphG4qkv_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: var_arg_list
+  - file_name: /tmp/tmphG4qkv_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: pleuroceroid_acapulco
+    line_number: 0
+    feature_group: control_flow
+    feature: indirectly_recursive
+io_pair:
+  description: "Read a string from the input.  Do nslookup on that string, without checking first if it has any command separators.  This allows the user to run arbitrary commands.\n\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          id: source
+          ordinal: 1
+          port: 8887
+          value_encoding: none
+          value_type_enum: 0
+          address: ss-localhost
+          value: 10
+    - inputs:
+        - source_enum: 5
+          address: ss-localhost
+          id: source
+          ordinal: 1
+          stage_enum: 1
+          stage: co_process
+          port: 8887
+          value: google.com
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: socket_input
+    - inputs:
+        - value: localhost
+          address: ss-localhost
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value_type_enum: 0
+          source_enum: 5
+          stage_enum: 1
+          value_encoding: none
+          stage: co_process
+          id: source
+          ordinal: 1
+  exploits:
+    - inputs:
+        - value: 10; ls -la
+          source: socket_input
+          id: source
+          stage: co_process
+          source_enum: 5
+          port: 8887
+          stage_enum: 1
+          value_encoding: none
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          address: ss-localhost
+    - inputs:
+        - stage_enum: 1
+          value_type_enum: 0
+          ordinal: 1
+          value: localhost; echo Hello world
+          port: 8887
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          source_enum: 5
+          id: source
+          stage: co_process
+          value_encoding: none
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

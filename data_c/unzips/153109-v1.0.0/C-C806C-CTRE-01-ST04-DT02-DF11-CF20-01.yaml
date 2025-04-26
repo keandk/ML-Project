@@ -1,0 +1,106 @@
+io_pair:
+  exploits:
+    - inputs:
+        - flags: 950
+          id: source
+          size: 91
+          value: AAAAAAAAAAAAAAA
+          stage: pre_process
+          ordinal: 1
+          key: 4630
+          value_encoding: none
+          source_enum: 6
+          stage_enum: 0
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - id: source
+          key: 4630
+          stage_enum: 0
+          value_encoding: none
+          value: Short is now bad
+          size: 91
+          flags: 950
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          source_enum: 6
+          value_type_enum: 0
+          ordinal: 1
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  base_inputs:
+    - stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 4630
+      size: 91
+      flags: 950
+      source: shared_memory_input
+      source_enum: 6
+  benigns:
+    - inputs:
+        - source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          ordinal: 1
+          size: 91
+          flags: 950
+          stage: pre_process
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          source_enum: 6
+          key: 4630
+          stage_enum: 0
+          id: source
+    - inputs:
+        - flags: 950
+          size: 91
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          source: shared_memory_input
+          source_enum: 6
+          value_encoding: none
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          key: 4630
+    - inputs:
+        - ordinal: 1
+          id: source
+          stage: pre_process
+          value_type_enum: 0
+          key: 4630
+          flags: 950
+          size: 91
+          source_enum: 6
+          source: shared_memory_input
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage_enum: 0
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmp1Ox3_s_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmp1Ox3_s_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature: simple
+    feature_group: data_type
+  - file_name: /tmp/tmp1Ox3_s_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp1Ox3_s_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

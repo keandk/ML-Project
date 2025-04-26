@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmp1v_2PE_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmp1v_2PE_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmp1v_2PE_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_10
+  - file_name: /tmp/tmp1v_2PE_ss_testcase/src-rose/app/base/tile-swap.c
+    line_number: 0
+    feature_group: control_flow
+    feature: interprocedural_10
+    function_name: tile_swap_find_offset
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: OVERMOBILIZED_HOODOOED
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value: "\"file.*\""
+          stage: pre_process
+          id: source
+          value_type_enum: 0
+          source_enum: 2
+          stage_enum: 0
+          ordinal: 1
+          name: OVERMOBILIZED_HOODOOED
+          value_encoding: none
+          source: env_var_input
+    - inputs:
+        - stage: pre_process
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_type_enum: 0
+          name: OVERMOBILIZED_HOODOOED
+          value: filename.txt
+          value_encoding: none
+          source: env_var_input
+    - inputs:
+        - ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          name: OVERMOBILIZED_HOODOOED
+          source_enum: 2
+          source: env_var_input
+          value: "\"*\""
+          id: source
+          stage_enum: 0
+          value_encoding: none
+          value_type_enum: 0
+          stage: pre_process
+  exploits:
+    - inputs:
+        - ordinal: 1
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          name: OVERMOBILIZED_HOODOOED
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          value: "\"*\" -exec cat /etc/passwd \\;"
+        - source: file_content_input
+          source_enum: 3
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          stage: pre_process
+          ordinal: 2
+    - inputs:
+        - id: source
+          value: "\"*\" -exec netstat -an \\;"
+          source_enum: 2
+          source: env_var_input
+          name: OVERMOBILIZED_HOODOOED
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+        - name: /opt/stonesoup/workspace/testData/temp/file.txt
+          ordinal: 2
+          source: file_content_input
+          stage_enum: 0
+          stage: pre_process
+          source_enum: 3
+  description: "Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \\; ending the command, a user can insert other commands instead of just find\n\n"

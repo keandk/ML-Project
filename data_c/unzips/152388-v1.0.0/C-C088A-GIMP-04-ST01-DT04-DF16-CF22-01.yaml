@@ -1,0 +1,106 @@
+code_complexity_features:
+  - file_name: /tmp/tmpv8XD1G_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpv8XD1G_ss_testcase/src-rose/app/core/gimpviewable.c
+    feature_group: data_type
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature: heap_pointer
+  - file_name: /tmp/tmpv8XD1G_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpv8XD1G_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature: macros
+    feature_group: control_flow
+io_pair:
+  description: "Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \\; ending the command, a user can insert other commands instead of just find\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: SUPPOSER_SURFIER
+  benigns:
+    - inputs:
+        - source_enum: 2
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          stage: pre_process
+          value: "\"file.*\""
+          value_type_enum: 0
+          value_encoding: none
+          name: SUPPOSER_SURFIER
+    - inputs:
+        - ordinal: 1
+          value_type_enum: 0
+          value: filename.txt
+          source: env_var_input
+          stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          stage_enum: 0
+          id: source
+          name: SUPPOSER_SURFIER
+    - inputs:
+        - value_type_enum: 0
+          stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          value_encoding: none
+          value: "\"*\""
+          ordinal: 1
+          name: SUPPOSER_SURFIER
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          id: source
+  exploits:
+    - inputs:
+        - id: source
+          ordinal: 1
+          value: "\"*\" -exec cat /etc/passwd \\;"
+          name: SUPPOSER_SURFIER
+          stage: pre_process
+          source_enum: 2
+          source: env_var_input
+          value_type_enum: 0
+          value_encoding: none
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - source: file_content_input
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          stage: pre_process
+          source_enum: 3
+          ordinal: 2
+    - inputs:
+        - value: "\"*\" -exec netstat -an \\;"
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          name: SUPPOSER_SURFIER
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+        - stage_enum: 0
+          ordinal: 2
+          stage: pre_process
+          source_enum: 3
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          source: file_content_input
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

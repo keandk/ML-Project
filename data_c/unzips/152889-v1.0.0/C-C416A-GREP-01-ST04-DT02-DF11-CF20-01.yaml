@@ -1,0 +1,106 @@
+code_complexity_features:
+  - line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpLkx1x__ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+  - file_name: /tmp/tmpLkx1x__ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpLkx1x__ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpLkx1x__ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  description: "Malloc a buffer.  Copy the input string to the buffer.  If the first character is 'a' or higher, free the buffer. Use the buffer.  This will cause a seg fault if the buffer was previously freed.\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 3622
+      size: 44
+      flags: 950
+  benigns:
+    - inputs:
+        - stage: pre_process
+          stage_enum: 0
+          source: shared_memory_input
+          key: 3622
+          id: source
+          ordinal: 1
+          flags: 950
+          value_encoding: none
+          size: 44
+          value: AAA
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+          size: 44
+          source: shared_memory_input
+          stage: pre_process
+          ordinal: 1
+          value: 12345 Hello world!
+          key: 3622
+          value_encoding: none
+          flags: 950
+    - inputs:
+        - size: 44
+          value_encoding: none
+          flags: 950
+          source: shared_memory_input
+          source_enum: 6
+          value: "[Good-bye cruel world!]"
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          key: 3622
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  exploits:
+    - inputs:
+        - size: 44
+          value_encoding: none
+          key: 3622
+          id: source
+          source: shared_memory_input
+          stage: pre_process
+          source_enum: 6
+          ordinal: 1
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          value: abc
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 6
+          stage_enum: 0
+          source: shared_memory_input
+          ordinal: 1
+          value: this string begins with a lower-case letter
+          key: 3622
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          id: source
+          size: 44
+          flags: 950
+          value_encoding: none
+          value_type_enum: 0

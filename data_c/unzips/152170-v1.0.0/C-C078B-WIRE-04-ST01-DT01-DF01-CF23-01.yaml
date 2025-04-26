@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  description: "Read a string from the input.  Check first if it has any command separators and then run it though a URL decoding algorithm.  Then use this string to perform an nslookup by appending it to the end of the command. This allows the user to run arbitrary commands by suplying command separators encoded in url encoding.\n\n"
+  base_inputs:
+    - source_enum: 2
+      source: env_var_input
+      ordinal: 1
+      stage_enum: 0
+      id: source
+      name: LIQUESCE_DROLLISHNESS
+      stage: pre_process
+  benigns:
+    - inputs:
+        - value_encoding: none
+          source: env_var_input
+          id: source
+          value: 10
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          name: LIQUESCE_DROLLISHNESS
+          source_enum: 2
+          stage_enum: 0
+    - inputs:
+        - value_type_enum: 0
+          source: env_var_input
+          value_encoding: none
+          ordinal: 1
+          id: source
+          value: google.com
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          source_enum: 2
+          stage: pre_process
+          name: LIQUESCE_DROLLISHNESS
+    - inputs:
+        - value: localhost
+          id: source
+          source_enum: 2
+          stage_enum: 0
+          value_encoding: none
+          name: LIQUESCE_DROLLISHNESS
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+          ordinal: 1
+  exploits:
+    - inputs:
+        - ordinal: 1
+          source_enum: 2
+          id: source
+          stage_enum: 0
+          stage: pre_process
+          name: LIQUESCE_DROLLISHNESS
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          value: 10%20%3B%20ls -la
+          source: env_var_input
+    - inputs:
+        - stage_enum: 0
+          stage: pre_process
+          name: LIQUESCE_DROLLISHNESS
+          value_type_enum: 0
+          value_encoding: none
+          id: source
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          source_enum: 2
+          value: localhost%20%26%20echo Hello world
+code_complexity_features:
+  - feature: ENVIRONMENT_VARIABLE
+    file_name: /tmp/tmpVekyNR_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    function_name: filter_toolbar_new
+    feature_group: source_taint
+    line_number: 0
+  - line_number: 0
+    file_name: /tmp/tmpVekyNR_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    feature: array
+    function_name: filter_toolbar_new
+    feature_group: data_type
+  - line_number: 0
+    file_name: /tmp/tmpVekyNR_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    function_name: filter_toolbar_new
+    feature_group: data_flow
+    feature: address_alias_1
+  - file_name: /tmp/tmpVekyNR_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    feature: set_jump_long_jump
+    feature_group: control_flow
+    function_name: filter_toolbar_new
+    line_number: 0

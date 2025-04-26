@@ -1,0 +1,100 @@
+io_pair:
+  exploits:
+    - inputs:
+        - source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          port: 8887
+          value: ../testData
+          ordinal: 1
+          source: socket_input
+          stage: co_process
+          id: source
+          address: ss-localhost
+          stage_enum: 1
+          value_encoding: none
+    - inputs:
+        - id: source
+          value_encoding: none
+          source: socket_input
+          stage_enum: 1
+          ordinal: 1
+          address: ss-localhost
+          source_enum: 5
+          stage: co_process
+          value: ../testOutput
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - value: /etc/passwd
+          source_enum: 5
+          id: source
+          stage: co_process
+          source: socket_input
+          address: ss-localhost
+          ordinal: 1
+          value_encoding: none
+          port: 8887
+          stage_enum: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - ordinal: 1
+          stage_enum: 1
+          port: 8887
+          source: socket_input
+          source_enum: 5
+          value: /etc/ssh/ssh_config
+          value_encoding: none
+          address: ss-localhost
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage: co_process
+    - inputs:
+        - source: socket_input
+          value_type_enum: 0
+          stage: co_process
+          id: source
+          ordinal: 1
+          port: 8887
+          value_encoding: none
+          address: ss-localhost
+          value: /usr/bin/gcc
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          source_enum: 5
+  description: "Has a buffer declared on the heap. malloc(20*sizeOf(char)) If input is resolved to more  than 20 chars it will overflow\n\n"
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpZZUPuj_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: SOCKET
+    feature_group: source_taint
+  - file_name: /tmp/tmpZZUPuj_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpZZUPuj_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression
+  - function_name: stonesoup_handle_taint
+    line_number: 0
+    feature: unconditional_jump
+    feature_group: control_flow
+    file_name: /tmp/tmpZZUPuj_ss_testcase/src-rose/crypto/cryptlib.c

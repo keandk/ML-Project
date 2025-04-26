@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="C-OSSL" language="C" name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Creating test case using base program.
+Added an environment variable read to get a filename to read in the file contents using an fread operation within the function
+Completed injection.
+</description>
+    <additional_information>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <run_command>$SS_TC_ROOT/$SS_TC_INSTALL/bin/openssl</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-88" name="CWE-88-B"/>
+        <features>
+            <taint_source file_name="/crypto/mem_dbg.c" line_number="0" type="FILE_CONTENTS">
+                <method name="app_info_hash"/>
+            </taint_source>
+            <data_type file_name="/crypto/mem_dbg.c" line_number="0" type="TYPEDEF">
+                <method name="app_info_hash"/>
+            </data_type>
+            <data_flow file_name="/crypto/mem_dbg.c" line_number="0" type="INDEX_ALIAS_2">
+                <method name="app_info_hash"/>
+            </data_flow>
+            <control_flow file_name="/crypto/mem_dbg.c" line_number="0" type="MACROS">
+                <method name="app_info_hash"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands cppflags="-DSTONESOUP_TRACE=1" ldflags="-ldl" libs="-ldl">
+        <command>CFLAG=&quot;-O $CFLAGS&quot; EX_LIBS=&quot;$LDFLAGS $LIBS&quot; ./config --prefix=&quot;$SS_TC_ROOT/$SS_TC_INSTALL&quot; shared</command>
+        <command>make CC=&quot;$SS_CC&quot; CCLD=&quot;$SS_LNK&quot; EX_LIBS=&quot;$LDFLAGS $LIBS&quot;</command>
+        <command>make install_sw CC=&quot;$SS_CC&quot; CCLD=&quot;$SS_LNK&quot; EX_LIBS=&quot;$LDFLAGS $SS_LDFLAGS $LIBS&quot;</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-01" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Generate an RSA private key
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample1.txt" type="USE_TEXT">hello World!</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">genpkey -out $SS_TC_ROOT/testOutput/good-01/key.pem -algorithm RSA</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_UYXW71f2z9" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">GOOD-01 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-01">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">../testOutput/good-01/key.pem</actual>
+                    <expected encoding="STRING" type="USE_TEXT">-----END PRIVATE KEY-----</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-02" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Create a password hash using crypt, and salt of &quot;xx&quot;
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample2.txt" type="USE_TEXT">hello?
+hello.
+hello!
+hello...</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">passwd -crypt -salt xx password</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_gqApJpVSgL" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">GOOD-02 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-02">
+                    <actual encoding="STRING" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">xxj31ZMTZzkVA</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-03" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Encrypt a file with DES3 using salt and key of &quot;stonesoup&quot;
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample3.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample3.txt" type="USE_TEXT">Hello again, hello.  Just called to say hello.
+
+You had me at &quot;hello&quot;.
+
+</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">des3 -salt -in good-03/file.txt -out $SS_TC_ROOT/testOutput/good-03/file.des3 -k &quot;stonesoup&quot;</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_YT7hxJpu07" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">GOOD-03 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-03">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">../testOutput/good-03/file.des3</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Salted__</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-04" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>parse ASN1 structure
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample1.txt" type="USE_TEXT">hello World!</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">asn1parse -genstr 'UTF8:Hello World'</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_nH58HGVrQi" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">GOOD-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-04">
+                    <actual encoding="STRING" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">    0:d=0  hl=2 l=  11 prim: UTF8STRING        :Hello World</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-05" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>create Netscape certficiate from PEM
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample2.txt" type="USE_TEXT">hello?
+hello.
+hello!
+hello...</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">nseq -in good-05/cert.pem -toseq -out $SS_TC_ROOT/testOutput/good-05/nseq.pem</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_FXSM7VAVuZ" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">GOOD-05 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-05">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">../testOutput/good-05/nseq.pem</actual>
+                    <expected encoding="STRING" type="USE_TEXT">-----END CERTIFICATE-----</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-06" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>generate MIME content from text file, encrypting with x509 cert
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample3.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample3.txt" type="USE_TEXT">Hello again, hello.  Just called to say hello.
+
+You had me at &quot;hello&quot;.
+
+</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">smime -in good-06/secretemail.txt -encrypt good-06/x509.pem</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_1Lw3uPC3Cv" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-06-Default">
+                <formula name="GOOD-06-Default">GOOD-06 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-06">
+                    <actual encoding="STRING" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-06/output.txt</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-07" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>check primality of number
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample1.txt" type="USE_TEXT">hello World!</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">prime 15648972863</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_HOpGOoeav4" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-07-Default">
+                <formula name="GOOD-07-Default">GOOD-07 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-07">
+                    <actual encoding="STRING" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">3A4C0603F is prime</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-08" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>encrypt textfile with AES 256 and salt, base64 encoded result
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample2.txt" type="USE_TEXT">hello?
+hello.
+hello!
+hello...</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">enc -in good-08/secret.txt -aes256 -k password -S abacabb -base64</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_1kaPPGvpy7" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-08-Default">
+                <formula name="GOOD-08-Default">GOOD-08 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-08">
+                    <actual encoding="STRING" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">U2FsdGVkX1+rrKuwAAAAACgoU5YHltmsjJifyZi0xJA=</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-09" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>SHA1 with hmac of text file
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample3.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample3.txt" type="USE_TEXT">Hello again, hello.  Just called to say hello.
+
+You had me at &quot;hello&quot;.
+
+</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">dgst -sha1 -c -hmac &quot;secret-key&quot; good-09/message.txt</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_3NVtL9mg5g" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-09-Default">
+                <formula name="GOOD-09-Default">GOOD-09 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-09">
+                    <actual encoding="STRING" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">HMAC-SHA1(good-09/message.txt)= 3a:da:b3:ba:5a:59:a9:56:8d:76:3a:d4:20:f6:13:cd:aa:49:41:a6</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-GOOD-10" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Generate SSL certificate and private key
+This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/vim_inputs/sample1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample1.txt" type="USE_TEXT">hello World!</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout good-10/server.key -out good-10/server.crt -subj &quot;/C=SP/ST=The Moon/L=TheDarkSide/O=KSP/OU=Moon Department/CN=ksp.moon&quot;</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_nUxdaXmwjd" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-10-Default">
+                <formula name="GOOD-10-Default">GOOD-10-1 AND GOOD-10-2 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-10-1">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">../testData/good-10/server.crt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">-----END CERTIFICATE-----</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="GOOD-10-2">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">../testData/good-10/server.key</actual>
+                    <expected encoding="STRING" type="USE_TEXT">-----END PRIVATE KEY-----</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-BAD-01" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">--cmd 'silent !cat /etc/passwd' /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample1.txt" type="USE_TEXT">hello World!</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">des3 -salt -in good-03/file.txt -out $SS_TC_ROOT/testOutput/good-03/file.des3 -k &quot;stonesoup&quot;</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_UkMejeO3qRFfcODS9Lw7" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="arg_injection_formula_JS5j9JzTws">
+                <formula name="arg_injection_formula_JS5j9JzTws">weakness_started_wkZCKo8YwV6S3me7qseP AND ((NOT PERFORMER AND (etc_passwd_line_pattern_E0H57sXboq OR etc_passwd_root_user_z7giMqUa8x OR ls_output_x8A4Ip1YIc) AND NOT timeout_gc4TOhcq6U) or (PERFORMER AND NOT ((etc_passwd_line_pattern_E0H57sXboq OR etc_passwd_root_user_z7giMqUa8x OR ls_output_x8A4Ip1YIc) OR timeout_gc4TOhcq6U)))</formula>
+                <formula name="no_weakness_started_formula_mcgTiLUkRg">(NOT PERFORMER AND (etc_passwd_line_pattern_E0H57sXboq OR etc_passwd_root_user_z7giMqUa8x OR ls_output_x8A4Ip1YIc) AND NOT timeout_gc4TOhcq6U) or (PERFORMER AND NOT ((etc_passwd_line_pattern_E0H57sXboq OR etc_passwd_root_user_z7giMqUa8x OR ls_output_x8A4Ip1YIc) OR timeout_gc4TOhcq6U))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_gc4TOhcq6U" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_Ey4gKBNMsl" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_Wvq7tw1odt" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="REGEX" name="etc_passwd_line_pattern_E0H57sXboq">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">.+:.+:[0-9]+:[0-9]+:.+:.+:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="etc_passwd_root_user_z7giMqUa8x">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">^root:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="ls_output_x8A4Ip1YIc">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">[ld\-][rwxst\-]{9}</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_wkZCKo8YwV6S3me7qseP">
+                    <actual encoding="STRING" input_id_ref="lttng_output_UkMejeO3qRFfcODS9Lw7" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C088B-OSSL-06-ST02-DT06-DF08-CF22-01-BAD-02" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text &quot;hello&quot; with &quot;Hello&quot;.  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SOPHISTER_FOURTEENER;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SOPHISTER_FOURTEENER" type="USE_TEXT">/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_scripts/hello.vim" type="USE_TEXT">:silent %s/hello/Hello/g
+:wq
+</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/handshaking_paki/organoid_ppe.txt" type="USE_TEXT">--cmd 'silent !ls -la .' /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="$SS_TC_ROOT/testData/vim_inputs/sample2.txt" type="USE_TEXT">hello?
+hello.
+hello!
+hello...</file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">enc -in good-08/secret.txt -aes256 -k password -S abacabb -base64</run_command>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_xsnaVwtSkPwrKbYYSecW" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="arg_injection_formula_ltw3CvQU4x">
+                <formula name="arg_injection_formula_ltw3CvQU4x">weakness_started_ad3rntsIzJ7j9EpRsu9g AND ((NOT PERFORMER AND (etc_passwd_line_pattern_6nz3zYWvMd OR etc_passwd_root_user_QGqy01QGn4 OR ls_output_QLYaNyqpwN) AND NOT timeout_5zk9M7Mnri) or (PERFORMER AND NOT ((etc_passwd_line_pattern_6nz3zYWvMd OR etc_passwd_root_user_QGqy01QGn4 OR ls_output_QLYaNyqpwN) OR timeout_5zk9M7Mnri)))</formula>
+                <formula name="no_weakness_started_formula_e0GjhYKry9">(NOT PERFORMER AND (etc_passwd_line_pattern_6nz3zYWvMd OR etc_passwd_root_user_QGqy01QGn4 OR ls_output_QLYaNyqpwN) AND NOT timeout_5zk9M7Mnri) or (PERFORMER AND NOT ((etc_passwd_line_pattern_6nz3zYWvMd OR etc_passwd_root_user_QGqy01QGn4 OR ls_output_QLYaNyqpwN) OR timeout_5zk9M7Mnri))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_5zk9M7Mnri" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_jXjsRQggkM" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_ofwJp9I2Ce" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="REGEX" name="etc_passwd_line_pattern_6nz3zYWvMd">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">.+:.+:[0-9]+:[0-9]+:.+:.+:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="etc_passwd_root_user_QGqy01QGn4">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">^root:.*</expected>
+                </compare_check>
+                <compare_check check_type="REGEX" name="ls_output_QLYaNyqpwN">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">[ld\-][rwxst\-]{9}</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_ad3rntsIzJ7j9EpRsu9g">
+                    <actual encoding="STRING" input_id_ref="lttng_output_xsnaVwtSkPwrKbYYSecW" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

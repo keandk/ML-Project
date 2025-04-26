@@ -1,0 +1,118 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpyODrQS_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpyODrQS_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpyODrQS_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_50
+  - file_name: /tmp/tmpyODrQS_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature_group: control_flow
+    feature: recursive
+io_pair:
+  exploits:
+    - inputs:
+        - id: source
+          value_type_enum: 0
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          source: shared_memory_input
+          key: 1890
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          flags: 950
+          value_encoding: none
+          size: 29
+          value: "\"*\" -exec cat /etc/passwd \\;"
+        - stage: pre_process
+          stage_enum: 0
+          source_enum: 3
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          ordinal: 2
+          source: file_content_input
+    - inputs:
+        - flags: 950
+          stage: pre_process
+          source_enum: 6
+          source: shared_memory_input
+          ordinal: 1
+          key: 1890
+          stage_enum: 0
+          size: 29
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value: "\"*\" -exec netstat -an \\;"
+          value_type_enum: 0
+        - stage: pre_process
+          source_enum: 3
+          name: /opt/stonesoup/workspace/testData/temp/file.txt
+          source: file_content_input
+          ordinal: 2
+          stage_enum: 0
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 1890
+      size: 29
+      flags: 950
+  benigns:
+    - inputs:
+        - flags: 950
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          key: 1890
+          id: source
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: "\"file.*\""
+          ordinal: 1
+          size: 29
+          value_type_enum: 0
+    - inputs:
+        - stage_enum: 0
+          id: source
+          ordinal: 1
+          source_enum: 6
+          stage: pre_process
+          source: shared_memory_input
+          value: filename.txt
+          key: 1890
+          value_type: USE_TEXT_DIRECTLY
+          size: 29
+          value_encoding: none
+          value_type_enum: 0
+          flags: 950
+    - inputs:
+        - flags: 950
+          stage: pre_process
+          source_enum: 6
+          key: 1890
+          source: shared_memory_input
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          value_encoding: none
+          value: "\"*\""
+          size: 29
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  description: "Read a string from the input.  Perform a find path -iname input.If input contains arguments such as -exec with a \\; ending the command, a user can insert other commands instead of just find\n\n"

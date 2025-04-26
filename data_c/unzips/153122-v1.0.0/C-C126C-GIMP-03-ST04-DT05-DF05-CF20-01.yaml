@@ -1,0 +1,106 @@
+io_pair:
+  exploits:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          key: 6271
+          value_encoding: none
+          size: 596
+          source_enum: 6
+          id: source
+          source: shared_memory_input
+          stage_enum: 0
+          ordinal: 1
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          flags: 950
+          value_type_enum: 0
+    - inputs:
+        - stage: pre_process
+          size: 596
+          source: shared_memory_input
+          stage_enum: 0
+          source_enum: 6
+          id: source
+          key: 6271
+          value_type_enum: 0
+          flags: 950
+          ordinal: 1
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+  benigns:
+    - inputs:
+        - value_encoding: none
+          ordinal: 1
+          stage_enum: 0
+          flags: 950
+          id: source
+          value_type_enum: 0
+          value: AAAAAAAAAAAAAAAAAAAAAAA
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source_enum: 6
+          size: 596
+          key: 6271
+          source: shared_memory_input
+    - inputs:
+        - source: shared_memory_input
+          stage: pre_process
+          ordinal: 1
+          value_encoding: none
+          value: Hello World!
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          size: 596
+          stage_enum: 0
+          flags: 950
+          id: source
+          source_enum: 6
+          key: 6271
+    - inputs:
+        - id: source
+          source_enum: 6
+          stage: pre_process
+          key: 6271
+          flags: 950
+          size: 596
+          value: Short is good
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          value_encoding: none
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+  base_inputs:
+    - stage: pre_process
+      source: shared_memory_input
+      source_enum: 6
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 6271
+      size: 596
+      flags: 950
+  description: "Has a fixed heap buffer of size 64, allocated within a struct When input has a larger size, the heap buffer will be over read\n\n"
+code_complexity_features:
+  - feature_group: source_taint
+    function_name: gimp_dialog_factory_find_widget
+    line_number: 0
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpxMz2yl_ss_testcase/src-rose/app/widgets/gimpdialogfactory.c
+  - file_name: /tmp/tmpxMz2yl_ss_testcase/src-rose/app/widgets/gimpdialogfactory.c
+    function_name: gimp_dialog_factory_find_widget
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+  - file_name: /tmp/tmpxMz2yl_ss_testcase/src-rose/app/widgets/gimpdialogfactory.c
+    function_name: gimp_dialog_factory_find_widget
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_constant
+  - function_name: coliseum_anfractuousness
+    line_number: 0
+    feature_group: control_flow
+    file_name: /tmp/tmpxMz2yl_ss_testcase/src-rose/app/widgets/gimpdialogfactory.c
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

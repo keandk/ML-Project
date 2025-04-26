@@ -1,0 +1,100 @@
+io_pair:
+  exploits:
+    - inputs:
+        - value: This_input_is_too_long_to_be_contained_in_buffer
+          value_encoding: none
+          value_type_enum: 0
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          stage_enum: 1
+          id: source
+    - inputs:
+        - value_encoding: none
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          stage: co_process
+          address: ss-localhost
+          port: 8887
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          id: source
+          source: socket_input
+          source_enum: 5
+          ordinal: 1
+  base_inputs:
+    - ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+  description: "Good inputs:1) envrionment variable is set to a value whose length is less than or equal to 8 charsBad inputs:1) environment variable is not set2) environment variable is set to a value whose length is greater than 8 chars\n\n"
+  benigns:
+    - inputs:
+        - stage: co_process
+          id: source
+          stage_enum: 1
+          value_type_enum: 0
+          address: ss-localhost
+          ordinal: 1
+          value_encoding: none
+          value: Hello
+          port: 8887
+          source: socket_input
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - stage: co_process
+          stage_enum: 1
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          ordinal: 1
+          source_enum: 5
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value: a
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 5
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          value_type_enum: 0
+          id: source
+          stage_enum: 1
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          value: ok_str
+          source: socket_input
+code_complexity_features:
+  - file_name: /tmp/tmpdvq8Ma_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpdvq8Ma_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - feature: address_as_nonlinear_expression
+    file_name: /tmp/tmpdvq8Ma_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+  - file_name: /tmp/tmpdvq8Ma_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: set_jump_long_jump
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

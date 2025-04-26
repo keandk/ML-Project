@@ -1,0 +1,106 @@
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 5319
+      size: 19
+      flags: 950
+  exploits:
+    - inputs:
+        - source_enum: 6
+          stage: pre_process
+          value_type_enum: 0
+          stage_enum: 0
+          value_encoding: none
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value: "{a+b|c+d}"
+          key: 5319
+          source: shared_memory_input
+          size: 19
+          flags: 950
+    - inputs:
+        - stage: pre_process
+          flags: 950
+          size: 19
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value: "!a*b(c*d-1)"
+          id: source
+          source: shared_memory_input
+          source_enum: 6
+          ordinal: 1
+          value_encoding: none
+          key: 5319
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains * or -.  + causes infinte loop\n\n"
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          id: source
+          stage: pre_process
+          stage_enum: 0
+          key: 5319
+          size: 19
+          ordinal: 1
+          flags: 950
+          value: exampleofgoodinput
+          value_encoding: none
+          value_type_enum: 0
+          source: shared_memory_input
+    - inputs:
+        - key: 5319
+          source_enum: 6
+          source: shared_memory_input
+          size: 19
+          flags: 950
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value: abcd12345ABCDE
+          value_type_enum: 0
+          ordinal: 1
+    - inputs:
+        - stage: pre_process
+          stage_enum: 0
+          id: source
+          value_type_enum: 0
+          value: R0G3RR4881T
+          ordinal: 1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          key: 5319
+          size: 19
+          source: shared_memory_input
+          source_enum: 6
+          flags: 950
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpQCPPlb_ss_testcase/src-rose/ffmpeg.c
+    function_name: sub2video_heartbeat
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpQCPPlb_ss_testcase/src-rose/ffmpeg.c
+    function_name: sub2video_heartbeat
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpQCPPlb_ss_testcase/src-rose/ffmpeg.c
+    function_name: sub2video_heartbeat
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_constant
+  - file_name: /tmp/tmpQCPPlb_ss_testcase/src-rose/ffmpeg.c
+    function_name: heralding_sysgen
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop

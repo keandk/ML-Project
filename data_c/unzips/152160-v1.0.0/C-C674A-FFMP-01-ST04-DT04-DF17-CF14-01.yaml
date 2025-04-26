@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - stage: pre_process
+          flags: 950
+          key: 4236
+          size: 31
+          source_enum: 6
+          value_type_enum: 0
+          source: shared_memory_input
+          value_encoding: none
+          ordinal: 1
+          value: 1st char does not appear again
+          id: source
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - stage_enum: 0
+          key: 4236
+          source: shared_memory_input
+          id: source
+          stage: pre_process
+          value_encoding: none
+          value_type_enum: 0
+          ordinal: 1
+          flags: 950
+          source_enum: 6
+          value: FEDCBA
+          size: 31
+          value_type: USE_TEXT_DIRECTLY
+  description: "Read a string from the input.  Get the first character of the string, and then search the string for another instance of that first character.If the character does not appear, go into uncontrolled recursion.\n\n"
+  benigns:
+    - inputs:
+        - stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_type_enum: 0
+          value_encoding: none
+          source_enum: 6
+          stage: pre_process
+          key: 4236
+          source: shared_memory_input
+          size: 31
+          value: asdfasdf
+          id: source
+          flags: 950
+    - inputs:
+        - flags: 950
+          value: this string has an another t
+          ordinal: 1
+          source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          key: 4236
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          source: shared_memory_input
+          size: 31
+          value_type_enum: 0
+    - inputs:
+        - source: shared_memory_input
+          source_enum: 6
+          stage_enum: 0
+          value_encoding: none
+          size: 31
+          ordinal: 1
+          stage: pre_process
+          id: source
+          flags: 950
+          value: 1st char is 1
+          value_type_enum: 0
+          key: 4236
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - source_enum: 6
+      key: 4236
+      size: 31
+      source: shared_memory_input
+      id: source
+      flags: 950
+      stage_enum: 0
+      ordinal: 1
+      stage: pre_process
+code_complexity_features:
+  - function_name: avdevice_version
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpjPDSPG_ss_testcase/src-rose/libavdevice/avdevice.c
+    feature_group: source_taint
+    line_number: 0
+  - feature_group: data_type
+    feature: heap_pointer
+    line_number: 0
+    file_name: /tmp/tmpjPDSPG_ss_testcase/src-rose/libavdevice/avdevice.c
+    function_name: avdevice_version
+  - line_number: 0
+    file_name: /tmp/tmpjPDSPG_ss_testcase/src-rose/libavdevice/avdevice.c
+    feature_group: data_flow
+    feature: buffer_address_array_index
+    function_name: avdevice_version
+  - feature: interprocedural_10
+    feature_group: control_flow
+    function_name: avdevice_version
+    line_number: 0
+    file_name: /tmp/tmpjPDSPG_ss_testcase/src-rose/libavdevice/avdevice.c

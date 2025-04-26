@@ -1,0 +1,264 @@
+code_complexity_features:
+  - file_name: /tmp/tmpvTegRM_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - function_name: avfilter_configuration
+    line_number: 0
+    feature: heap_pointer
+    feature_group: data_type
+    file_name: /tmp/tmpvTegRM_ss_testcase/src-rose/libavfilter/avfilter.c
+  - feature_group: data_flow
+    file_name: /tmp/tmpvTegRM_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature: address_as_linear_expression
+  - file_name: /tmp/tmpvTegRM_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: avfilter_configuration
+    line_number: 0
+    feature_group: control_flow
+    feature: set_jump_long_jump
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: CHORISOS_DERMATOGRAPHY
+  benigns:
+    - inputs:
+        - name: CHORISOS_DERMATOGRAPHY
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_encoding: none
+          stage_enum: 0
+          value: shipper1
+          id: source
+          source_enum: 2
+          source: env_var_input
+        - value_type_enum: 1
+          value: northwind
+          database: postgresql
+          stage: pre_process
+          source_enum: 0
+          database_enum: 1
+          stage_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          server: ss-db-postgres
+          value_encoding: none
+          ordinal: 2
+          source: database_content_input
+        - value: SET_DYNAMIC_DB_NAME
+          source_enum: 2
+          ordinal: 3
+          name: SS_DBPGDATABASE
+          stage: pre_process
+          stage_enum: 0
+          source: env_var_input
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+        - source: database_content_input
+          source_enum: 0
+          value_type_enum: 0
+          stage_enum: 2
+          ordinal: 1
+          value_encoding: none
+          stage: post_process
+          database: postgresql
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_type: USE_TEXT_DIRECTLY
+          database_enum: 1
+          server: ss-db-postgres
+    - inputs:
+        - ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+          value_type_enum: 0
+          name: CHORISOS_DERMATOGRAPHY
+          value: NewShipper
+        - server: ss-db-postgres
+          source_enum: 0
+          stage_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          stage: pre_process
+          source: database_content_input
+          ordinal: 2
+          value: northwind
+          value_encoding: none
+          database: postgresql
+          value_type_enum: 1
+          database_enum: 1
+        - source_enum: 2
+          stage_enum: 0
+          value_encoding: none
+          value: SET_DYNAMIC_DB_NAME
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 3
+          stage: pre_process
+          name: SS_DBPGDATABASE
+        - value_encoding: none
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_type_enum: 0
+          ordinal: 1
+          database: postgresql
+          stage_enum: 2
+          database_enum: 1
+          stage: post_process
+          source: database_content_input
+          server: ss-db-postgres
+          source_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source: env_var_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+          source_enum: 2
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          name: CHORISOS_DERMATOGRAPHY
+          value: ShippingCompany
+        - stage_enum: 0
+          value_encoding: none
+          source: database_content_input
+          value: northwind
+          source_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          stage: pre_process
+          ordinal: 2
+          database: postgresql
+          database_enum: 1
+          server: ss-db-postgres
+          value_type_enum: 1
+        - stage: pre_process
+          name: SS_DBPGDATABASE
+          stage_enum: 0
+          source_enum: 2
+          value_type_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          source: env_var_input
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+        - database_enum: 1
+          value_type_enum: 0
+          database: postgresql
+          source_enum: 0
+          server: ss-db-postgres
+          source: database_content_input
+          ordinal: 1
+          stage: post_process
+          stage_enum: 2
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+  description: "Good inputs: 1) name of shipper for use in Sql databaseBad inputs:SQL argument injection \n\n"
+  exploits:
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 1
+          name: CHORISOS_DERMATOGRAPHY
+          value: BadShipper'), ('80','BadShipper2
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - source_enum: 0
+          stage_enum: 0
+          database: postgresql
+          stage: pre_process
+          value_encoding: none
+          value: northwind
+          value_type_enum: 1
+          value_type: USE_CONTENTS_OF_FILE
+          server: ss-db-postgres
+          database_enum: 1
+          ordinal: 2
+          source: database_content_input
+        - source_enum: 2
+          source: env_var_input
+          value: SET_DYNAMIC_DB_NAME
+          name: SS_DBPGDATABASE
+          value_encoding: none
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+        - stage: post_process
+          value_type_enum: 0
+          ordinal: 1
+          database: postgresql
+          database_enum: 1
+          server: ss-db-postgres
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          source_enum: 0
+          stage_enum: 2
+          source: database_content_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - stage_enum: 0
+          id: source
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_type_enum: 0
+          name: CHORISOS_DERMATOGRAPHY
+          value: ShippersRUs'), ('20','BadShips'), ('65','ShipAttack'), ('45', 'MultiShip
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+        - source_enum: 0
+          server: ss-db-postgres
+          value_encoding: none
+          value: northwind
+          value_type_enum: 1
+          value_type: USE_CONTENTS_OF_FILE
+          database: postgresql
+          database_enum: 1
+          stage: pre_process
+          ordinal: 2
+          stage_enum: 0
+          source: database_content_input
+        - value_type_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          source_enum: 2
+          value_encoding: none
+          stage: pre_process
+          ordinal: 3
+          name: SS_DBPGDATABASE
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+        - value_type: USE_TEXT_DIRECTLY
+          source: database_content_input
+          ordinal: 1
+          value_type_enum: 0
+          value_encoding: none
+          database: postgresql
+          source_enum: 0
+          stage_enum: 2
+          database_enum: 1
+          server: ss-db-postgres
+          stage: post_process
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"

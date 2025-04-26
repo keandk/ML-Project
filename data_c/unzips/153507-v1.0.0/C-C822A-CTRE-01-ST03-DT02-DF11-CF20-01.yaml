@@ -1,0 +1,100 @@
+io_pair:
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  exploits:
+    - inputs:
+        - value_encoding: none
+          address: ss-localhost
+          id: source
+          port: 8887
+          source_enum: 5
+          source: socket_input
+          stage_enum: 1
+          stage: co_process
+          value: ab
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+    - inputs:
+        - stage: co_process
+          port: 8887
+          source: socket_input
+          stage_enum: 1
+          ordinal: 1
+          id: source
+          source_enum: 5
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          value: ab000012
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage_enum: 1
+          stage: co_process
+          source_enum: 5
+          ordinal: 1
+          source: socket_input
+          address: ss-localhost
+          value: abcdef
+          value_encoding: none
+          port: 8887
+    - inputs:
+        - port: 8887
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          value_type_enum: 0
+          id: source
+          address: ss-localhost
+          stage: co_process
+          value: abc
+          source: socket_input
+          ordinal: 1
+          source_enum: 5
+    - inputs:
+        - value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          value_encoding: none
+          source: socket_input
+          stage_enum: 1
+          stage: co_process
+          ordinal: 1
+          id: source
+          port: 8887
+          value: abcdefghijklmnopqrstuvwxy
+          source_enum: 5
+  description: "Good inputs:1) environement variable is set to a value whose length mod 3 is 0 or 1Bad inputs:1) environment variable is not set2) environment variable is set to a value whose length mod 3 is not 0 or 1\n\n"
+code_complexity_features:
+  - file_name: /tmp/tmp4cQnKG_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    feature_group: source_taint
+    line_number: 0
+    feature: SOCKET
+  - file_name: /tmp/tmp4cQnKG_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmp4cQnKG_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp4cQnKG_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

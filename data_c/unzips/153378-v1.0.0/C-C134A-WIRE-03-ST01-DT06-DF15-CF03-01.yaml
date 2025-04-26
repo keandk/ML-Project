@@ -1,0 +1,94 @@
+io_pair:
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          source_enum: 2
+          source: env_var_input
+          value: "%0500d"
+          value_encoding: none
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          name: ARRANT_UNSTUNTED
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value: "%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x"
+          value_type: USE_TEXT_DIRECTLY
+          name: ARRANT_UNSTUNTED
+          ordinal: 1
+          value_type_enum: 0
+          source_enum: 2
+          source: env_var_input
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          value_encoding: none
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: ARRANT_UNSTUNTED
+  description: "Good inputs:1) environment variable is a string value with no formatting2) environement variable is a format string that doesn't expose application\tdataBad inputs:1) environment variable is a format string that exposes application data\n\n"
+  benigns:
+    - inputs:
+        - source_enum: 2
+          id: source
+          value: this is a string to be printed
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          source: env_var_input
+          name: ARRANT_UNSTUNTED
+          stage_enum: 0
+          value_type_enum: 0
+    - inputs:
+        - ordinal: 1
+          source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          value_type_enum: 0
+          id: source
+          name: ARRANT_UNSTUNTED
+          stage_enum: 0
+          value: c29tZSBiZW5pZ24gZm9ybWF0dGluZyBmb3IgY2hhciBzdHJpbmcgCg==
+          value_encoding: base64
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value: Cg==
+          source_enum: 2
+          source: env_var_input
+          stage: pre_process
+          value_encoding: base64
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_type_enum: 0
+          stage_enum: 0
+          name: ARRANT_UNSTUNTED
+code_complexity_features:
+  - function_name: init_stream_hash
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+    file_name: /tmp/tmpPnQeaD_ss_testcase/src-rose/epan/stream.c
+  - file_name: /tmp/tmpPnQeaD_ss_testcase/src-rose/epan/stream.c
+    function_name: init_stream_hash
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpPnQeaD_ss_testcase/src-rose/epan/stream.c
+    function_name: init_stream_hash
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_variable
+  - function_name: init_stream_hash
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop
+    file_name: /tmp/tmpPnQeaD_ss_testcase/src-rose/epan/stream.c
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

@@ -1,0 +1,146 @@
+code_complexity_features:
+  - file_name: /tmp/tmpnq_1zN_ss_testcase/src-rose/epan/column.c
+    function_name: get_column_visible
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - line_number: 0
+    feature_group: data_type
+    feature: void_pointer
+    function_name: get_column_visible
+    file_name: /tmp/tmpnq_1zN_ss_testcase/src-rose/epan/column.c
+  - file_name: /tmp/tmpnq_1zN_ss_testcase/src-rose/epan/column.c
+    function_name: get_column_visible
+    line_number: 0
+    feature: address_as_function_return_value
+    feature_group: data_flow
+  - feature_group: control_flow
+    file_name: /tmp/tmpnq_1zN_ss_testcase/src-rose/epan/column.c
+    function_name: get_column_visible
+    line_number: 0
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  description: "Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and whose    contents contain a null character in first 16 bytes.3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a file that does not contain a    null character in first 16 bytes.\n\n"
+  benigns:
+    - inputs:
+        - flags: 950
+          stage: pre_process
+          source_enum: 6
+          value: /opt/stonesoup/workspace/testData/good01.txt
+          value_encoding: none
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          source: shared_memory_input
+          value_type_enum: 0
+          key: 7011
+          size: 50
+        - value_type_enum: 0
+          ordinal: 2
+          source_enum: 3
+          stage_enum: 0
+          value_encoding: none
+          stage: pre_process
+          source: file_content_input
+          value: Hello World
+          value_type: USE_TEXT_DIRECTLY
+          name: /opt/stonesoup/workspace/testData/good01.txt
+    - inputs:
+        - source: shared_memory_input
+          value_encoding: none
+          stage_enum: 0
+          ordinal: 1
+          flags: 950
+          stage: pre_process
+          source_enum: 6
+          value: /opt/stonesoup/workspace/testData/good02.txt
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          size: 50
+          key: 7011
+          id: source
+        - value_type: USE_TEXT_DIRECTLY
+          value: This
+          name: /opt/stonesoup/workspace/testData/good02.txt
+          value_type_enum: 0
+          value_encoding: none
+          source: file_content_input
+          source_enum: 3
+          stage_enum: 0
+          ordinal: 2
+          stage: pre_process
+    - inputs:
+        - stage: pre_process
+          stage_enum: 0
+          source: shared_memory_input
+          value_encoding: none
+          size: 50
+          key: 7011
+          value: /opt/stonesoup/workspace/testData/badfilename.txt
+          ordinal: 1
+          flags: 950
+          source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          id: source
+  base_inputs:
+    - stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 7011
+      size: 50
+      flags: 950
+      source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+  exploits:
+    - inputs:
+        - stage: pre_process
+          source: shared_memory_input
+          flags: 950
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          key: 7011
+          source_enum: 6
+          value: /opt/stonesoup/workspace/testData/bad01.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          size: 50
+        - stage: pre_process
+          value_type_enum: 0
+          source: file_content_input
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/bad01.txt
+          source_enum: 3
+          ordinal: 2
+          value_encoding: none
+          value: abcdefghijklmnopqrstuvwxyz
+    - inputs:
+        - stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/bad02.txt
+          id: source
+          size: 50
+          stage: pre_process
+          value_encoding: none
+          ordinal: 1
+          source: shared_memory_input
+          key: 7011
+          source_enum: 6
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+        - source_enum: 3
+          name: /opt/stonesoup/workspace/testData/bad02.txt
+          stage_enum: 0
+          value: this string is really long and does not contain a null char soon enough
+          ordinal: 2
+          source: file_content_input
+          value_encoding: none
+          stage: pre_process
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY

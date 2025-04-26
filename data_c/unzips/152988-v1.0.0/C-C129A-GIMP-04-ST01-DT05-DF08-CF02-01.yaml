@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpbyUJZ3_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - feature_group: data_type
+    feature: struct
+    line_number: 0
+    file_name: /tmp/tmpbyUJZ3_ss_testcase/src-rose/app/core/gimpviewable.c
+    function_name: gimp_viewable_get_children
+  - function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_2
+    file_name: /tmp/tmpbyUJZ3_ss_testcase/src-rose/app/core/gimpviewable.c
+  - function_name: gimp_viewable_get_children
+    line_number: 0
+    feature_group: control_flow
+    file_name: /tmp/tmpbyUJZ3_ss_testcase/src-rose/app/core/gimpviewable.c
+    feature: indirectly_recursive
+io_pair:
+  benigns:
+    - inputs:
+        - ordinal: 1
+          value_encoding: none
+          value: exampleofgoodinput
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 2
+          source: env_var_input
+          name: OUTWAY_KICKSIES
+          stage_enum: 0
+          stage: pre_process
+          id: source
+    - inputs:
+        - id: source
+          stage: pre_process
+          value: abcd12345ABCDE
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          source: env_var_input
+          name: OUTWAY_KICKSIES
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          id: source
+          stage_enum: 0
+          value: R0G3RR4881T
+          name: OUTWAY_KICKSIES
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: OUTWAY_KICKSIES
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains * or -.  + causes infinte loop\n\n"
+  exploits:
+    - inputs:
+        - source_enum: 2
+          stage: pre_process
+          source: env_var_input
+          id: source
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: "{a+b|c+d}"
+          value_encoding: none
+          name: OUTWAY_KICKSIES
+          ordinal: 1
+          stage_enum: 0
+    - inputs:
+        - source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          name: OUTWAY_KICKSIES
+          source: env_var_input
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          value: "!a*b(c*d-1)"

@@ -1,0 +1,106 @@
+io_pair:
+  base_inputs:
+    - size: 91
+      source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      ordinal: 1
+      flags: 950
+      stage_enum: 0
+      id: source
+      key: 5024
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          stage: pre_process
+          id: source
+          key: 5024
+          source_enum: 6
+          size: 91
+          flags: 950
+          value_encoding: none
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          stage_enum: 0
+          source: shared_memory_input
+          value_type_enum: 0
+    - inputs:
+        - stage_enum: 0
+          key: 5024
+          source_enum: 6
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          source: shared_memory_input
+          stage: pre_process
+          size: 91
+          flags: 950
+          ordinal: 1
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+    - inputs:
+        - stage: pre_process
+          flags: 950
+          ordinal: 1
+          size: 91
+          source: shared_memory_input
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+          stage_enum: 0
+          value_encoding: none
+          value_type_enum: 0
+          source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          key: 5024
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  exploits:
+    - inputs:
+        - ordinal: 1
+          source_enum: 6
+          value: AAAAAAAAAAAAAAA
+          id: source
+          value_encoding: none
+          size: 91
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          value_type_enum: 0
+          key: 5024
+          source: shared_memory_input
+          stage_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          size: 91
+          value_encoding: none
+          flags: 950
+          source_enum: 6
+          ordinal: 1
+          stage_enum: 0
+          key: 5024
+          id: source
+          stage: pre_process
+          value: Short is now bad
+          source: shared_memory_input
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - feature_group: source_taint
+    line_number: 0
+    file_name: /tmp/tmpobkaAS_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    function_name: filter_toolbar_new
+    feature: SHARED_MEMORY
+  - function_name: filter_toolbar_new
+    file_name: /tmp/tmpobkaAS_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    line_number: 0
+    feature: struct
+    feature_group: data_type
+  - line_number: 0
+    feature: address_as_constant
+    feature_group: data_flow
+    function_name: filter_toolbar_new
+    file_name: /tmp/tmpobkaAS_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+  - file_name: /tmp/tmpobkaAS_ss_testcase/src-rose/ui/gtk/main_filter_toolbar.c
+    function_name: trundler_daedalid
+    feature_group: control_flow
+    feature: set_jump_long_jump
+    line_number: 0

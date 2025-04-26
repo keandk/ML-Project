@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - line_number: 0
+    file_name: /tmp/tmpS5VGFq_ss_testcase/src-rose/libavformat/img2.c
+    function_name: av_str2id
+    feature: ENVIRONMENT_VARIABLE
+    feature_group: source_taint
+  - line_number: 0
+    feature_group: data_type
+    function_name: av_str2id
+    file_name: /tmp/tmpS5VGFq_ss_testcase/src-rose/libavformat/img2.c
+    feature: simple
+  - feature_group: data_flow
+    line_number: 0
+    function_name: av_str2id
+    file_name: /tmp/tmpS5VGFq_ss_testcase/src-rose/libavformat/img2.c
+    feature: basic
+  - file_name: /tmp/tmpS5VGFq_ss_testcase/src-rose/libavformat/img2.c
+    line_number: 0
+    function_name: av_str2id
+    feature: pointer_to_function
+    feature_group: control_flow
+io_pair:
+  exploits:
+    - inputs:
+        - id: source
+          source_enum: 2
+          value_encoding: none
+          stage_enum: 0
+          value: Short is now bad
+          name: LYCANTHROPOUS_CARBOLXYLOL
+          source: env_var_input
+          ordinal: 1
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - value_type_enum: 0
+          ordinal: 1
+          name: LYCANTHROPOUS_CARBOLXYLOL
+          value: AAAAAAAAAAAA
+          value_encoding: none
+          id: source
+          source_enum: 2
+          stage_enum: 0
+          source: env_var_input
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - name: LYCANTHROPOUS_CARBOLXYLOL
+      ordinal: 1
+      id: source
+      stage_enum: 0
+      source_enum: 2
+      stage: pre_process
+      source: env_var_input
+  description: "Has a buffer declared on the stack. char[64] If input is shorter than 64 it will overflow,due to using improper sizeof and strlen checking\n\n"
+  benigns:
+    - inputs:
+        - stage: pre_process
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+          source: env_var_input
+          ordinal: 1
+          stage_enum: 0
+          name: LYCANTHROPOUS_CARBOLXYLOL
+          source_enum: 2
+    - inputs:
+        - value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          ordinal: 1
+          stage: pre_process
+          name: LYCANTHROPOUS_CARBOLXYLOL
+          id: source
+          stage_enum: 0
+          source_enum: 2
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+    - inputs:
+        - id: source
+          ordinal: 1
+          name: LYCANTHROPOUS_CARBOLXYLOL
+          value_type_enum: 0
+          source_enum: 2
+          stage: pre_process
+          source: env_var_input
+          stage_enum: 0
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY

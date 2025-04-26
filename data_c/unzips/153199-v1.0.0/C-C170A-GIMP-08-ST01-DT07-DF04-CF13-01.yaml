@@ -1,0 +1,134 @@
+code_complexity_features:
+  - file_name: /tmp/tmpMG68lZ_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+    feature_group: source_taint
+  - file_name: /tmp/tmpMG68lZ_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmpMG68lZ_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_50
+  - file_name: /tmp/tmpMG68lZ_ss_testcase/src-rose/app/widgets/gimpactiongroup.c
+    function_name: gimp_action_group_update
+    line_number: 0
+    feature_group: control_flow
+    feature: interprocedural_2
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  description: "read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes\n\n"
+  base_inputs:
+    - ordinal: 1
+      id: source
+      stage: pre_process
+      source: env_var_input
+      source_enum: 2
+      stage_enum: 0
+      name: PROTESTED_NONSERIALLY
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          value_encoding: none
+          ordinal: 1
+          stage_enum: 0
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source_enum: 2
+          id: source
+          name: PROTESTED_NONSERIALLY
+          value: /opt/stonesoup/workspace/testData/good01.txt
+        - value_type_enum: 0
+          stage: pre_process
+          source_enum: 3
+          value_encoding: none
+          source: file_content_input
+          ordinal: 2
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: This file is not empty.
+          name: /opt/stonesoup/workspace/testData/good01.txt
+    - inputs:
+        - source: env_var_input
+          id: source
+          stage: pre_process
+          name: PROTESTED_NONSERIALLY
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/good02.txt
+          stage_enum: 0
+          ordinal: 1
+        - value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuv
+          source_enum: 3
+          stage: pre_process
+          source: file_content_input
+          ordinal: 2
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          name: /opt/stonesoup/workspace/testData/good02.txt
+    - inputs:
+        - id: source
+          source: env_var_input
+          stage: pre_process
+          value_encoding: none
+          ordinal: 1
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          name: PROTESTED_NONSERIALLY
+          value: /opt/stonesoup/workspace/testData/badfilename.txt
+          value_type_enum: 0
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value: /opt/stonesoup/workspace/testData/bad01.txt
+          value_type: USE_TEXT_DIRECTLY
+          name: PROTESTED_NONSERIALLY
+          value_type_enum: 0
+          stage: pre_process
+          id: source
+          ordinal: 1
+          stage_enum: 0
+          source: env_var_input
+          source_enum: 2
+        - value_encoding: none
+          stage: pre_process
+          ordinal: 2
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/bad01.txt
+          source_enum: 3
+          source: file_content_input
+          value_type_enum: 0
+          value: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source_enum: 2
+          stage: pre_process
+          id: source
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          source: env_var_input
+          value: /opt/stonesoup/workspace/testData/bad02.txt
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: PROTESTED_NONSERIALLY
+        - name: /opt/stonesoup/workspace/testData/bad02.txt
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          source: file_content_input
+          source_enum: 3
+          value_encoding: none
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx

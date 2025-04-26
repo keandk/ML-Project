@@ -1,0 +1,146 @@
+io_pair:
+  exploits:
+    - inputs:
+        - source_enum: 6
+          ordinal: 1
+          key: 9361
+          stage: pre_process
+          id: source
+          source: shared_memory_input
+          size: 50
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/bad01.txt
+          value_type_enum: 0
+          stage_enum: 0
+        - value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          source_enum: 3
+          value_encoding: none
+          value: abcdefghijklmnopqrstuvwxyz
+          stage_enum: 0
+          value_type_enum: 0
+          name: /opt/stonesoup/workspace/testData/bad01.txt
+          source: file_content_input
+          ordinal: 2
+    - inputs:
+        - flags: 950
+          size: 50
+          ordinal: 1
+          stage_enum: 0
+          key: 9361
+          value_type_enum: 0
+          source_enum: 6
+          id: source
+          source: shared_memory_input
+          stage: pre_process
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/bad02.txt
+          value_type: USE_TEXT_DIRECTLY
+        - stage_enum: 0
+          stage: pre_process
+          source_enum: 3
+          value: this string is really long and does not contain a null char soon enough
+          source: file_content_input
+          value_encoding: none
+          ordinal: 2
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: /opt/stonesoup/workspace/testData/bad02.txt
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 9361
+      size: 50
+      flags: 950
+  description: "Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and whose    contents contain a null character in first 16 bytes.3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a file that does not contain a    null character in first 16 bytes.\n\n"
+  benigns:
+    - inputs:
+        - ordinal: 1
+          source: shared_memory_input
+          stage_enum: 0
+          key: 9361
+          size: 50
+          source_enum: 6
+          value: /opt/stonesoup/workspace/testData/good01.txt
+          stage: pre_process
+          id: source
+          flags: 950
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - value_type: USE_TEXT_DIRECTLY
+          name: /opt/stonesoup/workspace/testData/good01.txt
+          source: file_content_input
+          ordinal: 2
+          value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          source_enum: 3
+          value_encoding: none
+          value: Hello World
+    - inputs:
+        - size: 50
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/good02.txt
+          id: source
+          ordinal: 1
+          source: shared_memory_input
+          stage: pre_process
+          source_enum: 6
+          stage_enum: 0
+          key: 9361
+          flags: 950
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - source: file_content_input
+          ordinal: 2
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          source_enum: 3
+          stage: pre_process
+          value_type_enum: 0
+          name: /opt/stonesoup/workspace/testData/good02.txt
+          value: This
+    - inputs:
+        - flags: 950
+          key: 9361
+          source: shared_memory_input
+          stage: pre_process
+          source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          size: 50
+          value_encoding: none
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/badfilename.txt
+          value_type_enum: 0
+          id: source
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmp16gQoM_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmp16gQoM_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmp16gQoM_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp16gQoM_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

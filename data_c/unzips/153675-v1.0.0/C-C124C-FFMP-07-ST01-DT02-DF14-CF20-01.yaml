@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpxpjtrc_ss_testcase/src-rose/libavformat/aviobuf.c
+    function_name: avio_open2
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpxpjtrc_ss_testcase/src-rose/libavformat/aviobuf.c
+    function_name: avio_open2
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpxpjtrc_ss_testcase/src-rose/libavformat/aviobuf.c
+    function_name: avio_open2
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression
+  - function_name: avio_open2
+    line_number: 0
+    feature: sequence
+    file_name: /tmp/tmpxpjtrc_ss_testcase/src-rose/libavformat/aviobuf.c
+    feature_group: control_flow
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: LACERTA_TWEYFOLD
+  exploits:
+    - inputs:
+        - stage: pre_process
+          value_encoding: none
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          id: source
+          name: LACERTA_TWEYFOLD
+          stage_enum: 0
+          ordinal: 1
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_type_enum: 0
+    - inputs:
+        - value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+          id: source
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          stage_enum: 0
+          source: env_var_input
+          stage: pre_process
+          name: LACERTA_TWEYFOLD
+          value_encoding: none
+          value_type_enum: 0
+  description: "Has a fixed heap buffer of size 64, allocated within a struct  (char [64])\n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          value: AAA
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          name: LACERTA_TWEYFOLD
+          value_encoding: none
+          stage: pre_process
+          source_enum: 2
+          source: env_var_input
+          id: source
+    - inputs:
+        - stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          id: source
+          ordinal: 1
+          source: env_var_input
+          source_enum: 2
+          name: LACERTA_TWEYFOLD
+          value: Hellow world!
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - id: source
+          stage_enum: 0
+          stage: pre_process
+          source: env_var_input
+          name: LACERTA_TWEYFOLD
+          ordinal: 1
+          value_encoding: none
+          value: Good-bye cruel world!
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

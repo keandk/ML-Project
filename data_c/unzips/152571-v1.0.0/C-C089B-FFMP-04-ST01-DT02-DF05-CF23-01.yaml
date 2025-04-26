@@ -1,0 +1,264 @@
+io_pair:
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+  exploits:
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          name: NJAVE_WARMTH
+          ordinal: 1
+          value: x' or 'x'='x
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+        - stage_enum: 0
+          database: postgresql
+          server: ss-db-postgres
+          value: northwind
+          source: database_content_input
+          source_enum: 0
+          value_type_enum: 1
+          database_enum: 1
+          stage: pre_process
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          ordinal: 2
+        - stage_enum: 0
+          value_encoding: none
+          stage: pre_process
+          name: SS_DBPGDATABASE
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          ordinal: 3
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+        - value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          source: database_content_input
+          source_enum: 0
+          ordinal: 1
+          database: postgresql
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: post_process
+          server: ss-db-postgres
+          database_enum: 1
+          stage_enum: 2
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          source_enum: 2
+          name: NJAVE_WARMTH
+          stage: pre_process
+          value_encoding: none
+          value: "x'; SELECT * FROM Orders; -- "
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+        - database: postgresql
+          stage: pre_process
+          source: database_content_input
+          server: ss-db-postgres
+          ordinal: 2
+          source_enum: 0
+          value_type_enum: 1
+          value_encoding: none
+          stage_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          database_enum: 1
+        - value_encoding: none
+          stage: pre_process
+          name: SS_DBPGDATABASE
+          source_enum: 2
+          value_type_enum: 0
+          ordinal: 3
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value: SET_DYNAMIC_DB_NAME
+          stage_enum: 0
+        - source_enum: 0
+          ordinal: 1
+          stage_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          source: database_content_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: post_process
+          server: ss-db-postgres
+          database: postgresql
+          database_enum: 1
+  benigns:
+    - inputs:
+        - stage: pre_process
+          name: NJAVE_WARMTH
+          id: source
+          source_enum: 2
+          stage_enum: 0
+          ordinal: 1
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value: USA
+          value_encoding: none
+        - database_enum: 1
+          source: database_content_input
+          database: postgresql
+          stage: pre_process
+          ordinal: 2
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          stage_enum: 0
+          value_type_enum: 1
+          source_enum: 0
+          server: ss-db-postgres
+          value_encoding: none
+        - stage_enum: 0
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 3
+          value: SET_DYNAMIC_DB_NAME
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          name: SS_DBPGDATABASE
+          value_encoding: none
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          server: ss-db-postgres
+          source_enum: 0
+          ordinal: 1
+          stage_enum: 2
+          database: postgresql
+          source: database_content_input
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          stage: post_process
+          database_enum: 1
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          ordinal: 1
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          name: NJAVE_WARMTH
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value: Germany
+          value_type_enum: 0
+          value_encoding: none
+        - server: ss-db-postgres
+          database_enum: 1
+          source_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          ordinal: 2
+          value_encoding: none
+          source: database_content_input
+          value_type: USE_CONTENTS_OF_FILE
+          value: northwind
+          database: postgresql
+          value_type_enum: 1
+        - stage: pre_process
+          name: SS_DBPGDATABASE
+          source_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          ordinal: 3
+          value: SET_DYNAMIC_DB_NAME
+          stage_enum: 0
+        - database: postgresql
+          value_encoding: none
+          ordinal: 1
+          stage: post_process
+          database_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          server: ss-db-postgres
+          value_type_enum: 0
+          stage_enum: 2
+          source_enum: 0
+          source: database_content_input
+    - inputs:
+        - source: env_var_input
+          value_type_enum: 0
+          name: NJAVE_WARMTH
+          value_encoding: none
+          stage: pre_process
+          id: source
+          value: Finland
+          source_enum: 2
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+        - source: database_content_input
+          value_type: USE_CONTENTS_OF_FILE
+          stage_enum: 0
+          value: northwind
+          value_type_enum: 1
+          ordinal: 2
+          source_enum: 0
+          server: ss-db-postgres
+          database: postgresql
+          stage: pre_process
+          value_encoding: none
+          database_enum: 1
+        - value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          ordinal: 3
+          name: SS_DBPGDATABASE
+          stage: pre_process
+          value_encoding: none
+          value: SET_DYNAMIC_DB_NAME
+          value_type_enum: 0
+          source_enum: 2
+          stage_enum: 0
+        - ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          stage: post_process
+          database_enum: 1
+          stage_enum: 2
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          source_enum: 0
+          source: database_content_input
+          database: postgresql
+          server: ss-db-postgres
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: NJAVE_WARMTH
+code_complexity_features:
+  - file_name: /tmp/tmpG3G1bO_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpG3G1bO_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpG3G1bO_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_constant
+  - function_name: obdurately_vicara
+    line_number: 0
+    feature: set_jump_long_jump
+    feature_group: control_flow
+    file_name: /tmp/tmpG3G1bO_ss_testcase/src-rose/libavcodec/avpacket.c
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

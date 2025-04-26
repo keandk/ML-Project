@@ -1,0 +1,94 @@
+io_pair:
+  description: "Create a function pointer on the stack.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value: AAAAAAAAAAA
+          ordinal: 1
+          id: source
+          source: env_var_input
+          name: HIPHUGGERS_BALER
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - name: HIPHUGGERS_BALER
+          value: 12345 Hello world!
+          value_encoding: none
+          source_enum: 2
+          value_type_enum: 0
+          source: env_var_input
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+          value: This string does not have 10 characters
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          name: HIPHUGGERS_BALER
+          value_encoding: none
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: HIPHUGGERS_BALER
+  exploits:
+    - inputs:
+        - ordinal: 1
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value_type_enum: 0
+          name: HIPHUGGERS_BALER
+          source: env_var_input
+          source_enum: 2
+          value_encoding: none
+          value: 0123456789
+          stage: pre_process
+    - inputs:
+        - ordinal: 1
+          value_type_enum: 0
+          name: HIPHUGGERS_BALER
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          stage: pre_process
+          source_enum: 2
+          id: source
+          stage_enum: 0
+          value: 10 chars..
+          value_encoding: none
+code_complexity_features:
+  - file_name: /tmp/tmpbxS3h2_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpbxS3h2_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpbxS3h2_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpbxS3h2_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

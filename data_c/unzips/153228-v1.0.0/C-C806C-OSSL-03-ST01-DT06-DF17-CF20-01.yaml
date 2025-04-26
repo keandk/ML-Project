@@ -1,0 +1,94 @@
+io_pair:
+  exploits:
+    - inputs:
+        - value_encoding: none
+          source_enum: 2
+          source: env_var_input
+          value_type_enum: 0
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          name: DONSY_UNMACHO
+          ordinal: 1
+          value: AAAAAAAAAAAAAAA
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type_enum: 0
+          value_encoding: none
+          value: Short is now bad
+          source_enum: 2
+          stage_enum: 0
+          source: env_var_input
+          stage: pre_process
+          ordinal: 1
+          id: source
+          name: DONSY_UNMACHO
+          value_type: USE_TEXT_DIRECTLY
+  benigns:
+    - inputs:
+        - stage_enum: 0
+          name: DONSY_UNMACHO
+          source_enum: 2
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          stage: pre_process
+    - inputs:
+        - id: source
+          source: env_var_input
+          stage: pre_process
+          source_enum: 2
+          value_encoding: none
+          name: DONSY_UNMACHO
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          ordinal: 1
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - stage: pre_process
+          source_enum: 2
+          value_type_enum: 0
+          source: env_var_input
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          name: DONSY_UNMACHO
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: DONSY_UNMACHO
+code_complexity_features:
+  - file_name: /tmp/tmpZfBM9V_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpZfBM9V_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpZfBM9V_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpZfBM9V_ss_testcase/src-rose/crypto/cryptlib.c
+    function_name: CRYPTO_add_lock
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

@@ -1,0 +1,106 @@
+code_complexity_features:
+  - file_name: /tmp/tmpuAvN3f_ss_testcase/src-rose/epan/column-utils.c
+    function_name: set_time_seconds
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpuAvN3f_ss_testcase/src-rose/epan/column-utils.c
+    function_name: set_time_seconds
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpuAvN3f_ss_testcase/src-rose/epan/column-utils.c
+    function_name: set_time_seconds
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_constant
+  - file_name: /tmp/tmpuAvN3f_ss_testcase/src-rose/epan/column-utils.c
+    function_name: gerkin_horrorist
+    line_number: 0
+    feature_group: control_flow
+    feature: unconditional_jump
+io_pair:
+  description: "Malloc a function pointer.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 1959
+      size: 40
+      flags: 950
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          key: 1959
+          size: 40
+          value_type_enum: 0
+          flags: 950
+          stage_enum: 0
+          value: AAAAAAAAAAA
+          ordinal: 1
+          id: source
+          source_enum: 6
+          stage: pre_process
+          source: shared_memory_input
+    - inputs:
+        - value: 12345 Hello world!
+          value_encoding: none
+          key: 1959
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          source: shared_memory_input
+          size: 40
+          id: source
+          flags: 950
+          value_type_enum: 0
+    - inputs:
+        - source: shared_memory_input
+          ordinal: 1
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 6
+          stage_enum: 0
+          id: source
+          size: 40
+          value: This string does not have 10 characters
+          key: 1959
+          value_encoding: none
+          flags: 950
+  exploits:
+    - inputs:
+        - value: 0123456789
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          stage: pre_process
+          source_enum: 6
+          value_encoding: none
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          size: 40
+          key: 1959
+          flags: 950
+          value_type_enum: 0
+    - inputs:
+        - size: 40
+          flags: 950
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          id: source
+          key: 1959
+          source: shared_memory_input
+          stage: pre_process
+          ordinal: 1
+          source_enum: 6
+          value: 10 chars..
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

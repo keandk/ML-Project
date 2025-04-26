@@ -1,0 +1,100 @@
+code_complexity_features:
+  - file_name: /tmp/tmpJop1EA_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpJop1EA_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpJop1EA_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpJop1EA_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - value: aaa
+          port: 8887
+          value_encoding: none
+          source: socket_input
+          address: ss-localhost
+          stage_enum: 1
+          source_enum: 5
+          stage: co_process
+          ordinal: 1
+          id: source
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_encoding: none
+          value_type_enum: 0
+          value: this string has doe not begin with an e
+          port: 8887
+          source_enum: 5
+          source: socket_input
+          stage_enum: 1
+          stage: co_process
+          ordinal: 1
+          id: source
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  description: "Malloc a buffer.  Copy the input string to the buffer.  Search for 'e' in the string.  Upon finding 'e', free the buffer, using a pointer that points to that 'e'.  If 'e' is the first character in the buffer, everything is OK.  However, if e is not the first character in the buffer, this will seg fault.\n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          id: source
+          address: ss-localhost
+          port: 8887
+          ordinal: 1
+          value_encoding: none
+          source: socket_input
+          value: eAAA
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source_enum: 5
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          ordinal: 1
+          source: socket_input
+          id: source
+          port: 8887
+          value_encoding: none
+          value: e12345 Hello world!
+          address: ss-localhost
+          value_type_enum: 0
+    - inputs:
+        - source: socket_input
+          value_encoding: none
+          value: e This string begins with an e
+          stage: co_process
+          port: 8887
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_type_enum: 0
+          address: ss-localhost

@@ -1,0 +1,270 @@
+code_complexity_features:
+  - file_name: /tmp/tmpFl8Ma9_ss_testcase/src-rose/epan/timestamp.c
+    function_name: stonesoup_handle_taint
+    feature_group: source_taint
+    feature: SOCKET
+    line_number: 0
+  - feature: struct
+    file_name: /tmp/tmpFl8Ma9_ss_testcase/src-rose/epan/timestamp.c
+    line_number: 0
+    function_name: stonesoup_handle_taint
+    feature_group: data_type
+  - feature_group: data_flow
+    function_name: stonesoup_handle_taint
+    file_name: /tmp/tmpFl8Ma9_ss_testcase/src-rose/epan/timestamp.c
+    line_number: 0
+    feature: address_as_constant
+  - function_name: skoo_pleomorphism
+    feature_group: control_flow
+    feature: interprocedural_10
+    line_number: 0
+    file_name: /tmp/tmpFl8Ma9_ss_testcase/src-rose/epan/timestamp.c
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - port: 8887
+      id: source
+      stage: co_process
+      address: ss-localhost
+      source_enum: 5
+      source: socket_input
+      ordinal: 1
+      stage_enum: 1
+  benigns:
+    - inputs:
+        - source: socket_input
+          value_type_enum: 0
+          value: USA
+          stage: co_process
+          id: source
+          value_encoding: none
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          ordinal: 1
+          source_enum: 5
+          port: 8887
+        - source_enum: 0
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          database: postgresql
+          database_enum: 1
+          stage_enum: 0
+          value_type_enum: 1
+          ordinal: 2
+          server: ss-db-postgres
+          source: database_content_input
+          stage: pre_process
+        - source: env_var_input
+          stage_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          value_type_enum: 0
+          value_encoding: none
+          name: SS_DBPGDATABASE
+          stage: pre_process
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+        - database: postgresql
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          server: ss-db-postgres
+          value_type: USE_TEXT_DIRECTLY
+          database_enum: 1
+          source_enum: 0
+          source: database_content_input
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          stage_enum: 2
+          stage: post_process
+    - inputs:
+        - stage: co_process
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          id: source
+          ordinal: 1
+          stage_enum: 1
+          source_enum: 5
+          value: Germany
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+        - stage: pre_process
+          value: northwind
+          source_enum: 0
+          database: postgresql
+          database_enum: 1
+          value_encoding: none
+          ordinal: 2
+          source: database_content_input
+          value_type: USE_CONTENTS_OF_FILE
+          value_type_enum: 1
+          stage_enum: 0
+          server: ss-db-postgres
+        - ordinal: 3
+          value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          source: env_var_input
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          name: SS_DBPGDATABASE
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+        - value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_type_enum: 0
+          stage_enum: 2
+          database: postgresql
+          ordinal: 1
+          server: ss-db-postgres
+          database_enum: 1
+          source: database_content_input
+          source_enum: 0
+          value_encoding: none
+          stage: post_process
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          id: source
+          source: socket_input
+          address: ss-localhost
+          value: Finland
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          ordinal: 1
+          value_encoding: none
+          value_type_enum: 0
+        - value_encoding: none
+          stage: pre_process
+          source: database_content_input
+          value_type_enum: 1
+          value_type: USE_CONTENTS_OF_FILE
+          database: postgresql
+          database_enum: 1
+          stage_enum: 0
+          source_enum: 0
+          value: northwind
+          ordinal: 2
+          server: ss-db-postgres
+        - value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          source: env_var_input
+          stage_enum: 0
+          name: SS_DBPGDATABASE
+          value_type_enum: 0
+          stage: pre_process
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 3
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: post_process
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          source: database_content_input
+          stage_enum: 2
+          source_enum: 0
+          value_type_enum: 0
+          database: postgresql
+          server: ss-db-postgres
+          ordinal: 1
+          database_enum: 1
+  description: "Good inputs: 1) name of country for use in Sql databaseBad inputs:1) SQL argument injection 2) SQL command injection \n\n"
+  exploits:
+    - inputs:
+        - address: ss-localhost
+          ordinal: 1
+          port: 8887
+          id: source
+          stage: co_process
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          stage_enum: 1
+          source_enum: 5
+          value: x' or 'x'='x
+          source: socket_input
+        - value: northwind
+          value_encoding: none
+          database: postgresql
+          stage: pre_process
+          source_enum: 0
+          source: database_content_input
+          server: ss-db-postgres
+          value_type: USE_CONTENTS_OF_FILE
+          database_enum: 1
+          value_type_enum: 1
+          ordinal: 2
+          stage_enum: 0
+        - stage_enum: 0
+          ordinal: 3
+          value_type_enum: 0
+          value_encoding: none
+          source_enum: 2
+          name: SS_DBPGDATABASE
+          value: SET_DYNAMIC_DB_NAME
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+        - stage: post_process
+          source: database_content_input
+          ordinal: 1
+          server: ss-db-postgres
+          stage_enum: 2
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          value_encoding: none
+          source_enum: 0
+          database_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          database: postgresql
+    - inputs:
+        - address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          value_encoding: none
+          value: "x'; SELECT * FROM Orders; -- "
+          source: socket_input
+          stage_enum: 1
+          port: 8887
+          source_enum: 5
+          value_type_enum: 0
+          id: source
+          stage: co_process
+        - database_enum: 1
+          ordinal: 2
+          stage: pre_process
+          database: postgresql
+          server: ss-db-postgres
+          source: database_content_input
+          value_encoding: none
+          value_type_enum: 1
+          source_enum: 0
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          stage_enum: 0
+        - source: env_var_input
+          name: SS_DBPGDATABASE
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          value: SET_DYNAMIC_DB_NAME
+          value_encoding: none
+          stage_enum: 0
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+        - source: database_content_input
+          stage: post_process
+          value_encoding: none
+          value_type_enum: 0
+          stage_enum: 2
+          source_enum: 0
+          database_enum: 1
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          server: ss-db-postgres
+          value_type: USE_TEXT_DIRECTLY
+          database: postgresql
+          ordinal: 1

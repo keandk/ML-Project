@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="C-GIMP" language="C" name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Creating test case using base program.
+Added an environment variable read to get a filename to read in the file contents using an fread operation within the function
+Completed injection.
+</description>
+    <additional_information>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <resource_limits>
+        <limit type="RLIMIT_AS">3221225472</limit>
+    </resource_limits>
+    <run_command>$SS_TC_ROOT/$SS_TC_INSTALL/bin/gimp $SS_TC_ROOT/testData/input.jpg</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-771" name="CWE-771-A"/>
+        <features>
+            <taint_source file_name="/app/core/gimpcontext.c" line_number="0" type="FILE_CONTENTS">
+                <method name="gimp_context_dispose"/>
+            </taint_source>
+            <data_type file_name="/app/core/gimpcontext.c" line_number="0" type="VOID_POINTER">
+                <method name="gimp_context_dispose"/>
+            </data_type>
+            <data_flow file_name="/app/core/gimpcontext.c" line_number="0" type="INDEX_ALIAS_50">
+                <method name="gimp_context_dispose"/>
+            </data_flow>
+            <control_flow file_name="/app/core/gimpcontext.c" line_number="0" type="UNCONDITIONAL_JUMP">
+                <method name="gimp_context_dispose"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands cppflags="-DSTONESOUP_TRACE=1" libs="-ldl">
+        <command>env</command>
+        <command>./configure --prefix=&quot;$SS_TC_ROOT/$SS_TC_INSTALL&quot; --disable-alsatest --without-libmng --without-libexif --without-aa --without-librsvg --without-poppler --without-gvfs --without-libjasper --with-lcms --without-alsa --disable-python</command>
+        <command>make V=1 CC=&quot;$SS_CC&quot;</command>
+        <command>make install V=1</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-01" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>Open saved jpg file
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_1.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_1_1 /opt/stonesoup/workspace/testData/benign_data_1_2 /opt/stonesoup/workspace/testData/benign_data_1_3 /opt/stonesoup/workspace/testData/benign_data_1_4 /opt/stonesoup/workspace/testData/benign_data_1_5 /opt/stonesoup/workspace/testData/benign_data_1_6 /opt/stonesoup/workspace/testData/benign_data_1_7 /opt/stonesoup/workspace/testData/benign_data_1_8 /opt/stonesoup/workspace/testData/benign_data_1_9 /opt/stonesoup/workspace/testData/benign_data_1_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-01" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-01/GIMP-GOOD-01.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_fRxCAnjnGo" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">GOOD-01 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-01">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-01" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">input image opened.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-02" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>color invert an image
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_2.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_2_1 /opt/stonesoup/workspace/testData/benign_data_2_2 /opt/stonesoup/workspace/testData/benign_data_2_3 /opt/stonesoup/workspace/testData/benign_data_2_4 /opt/stonesoup/workspace/testData/benign_data_2_5 /opt/stonesoup/workspace/testData/benign_data_2_6 /opt/stonesoup/workspace/testData/benign_data_2_7 /opt/stonesoup/workspace/testData/benign_data_2_8 /opt/stonesoup/workspace/testData/benign_data_2_9 /opt/stonesoup/workspace/testData/benign_data_2_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=512 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_2_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_2_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-02" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-02/GIMP-GOOD-02.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_2_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_fi2cxf87pX" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">GOOD-02 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-02">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-02" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">image colors inverted</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-03" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>create a layer, fill with black, use divde layer mode
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_3.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_3.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_3_1 /opt/stonesoup/workspace/testData/benign_data_3_2 /opt/stonesoup/workspace/testData/benign_data_3_3 /opt/stonesoup/workspace/testData/benign_data_3_4 /opt/stonesoup/workspace/testData/benign_data_3_5 /opt/stonesoup/workspace/testData/benign_data_3_6 /opt/stonesoup/workspace/testData/benign_data_3_7 /opt/stonesoup/workspace/testData/benign_data_3_8 /opt/stonesoup/workspace/testData/benign_data_3_9 /opt/stonesoup/workspace/testData/benign_data_3_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-03" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-03/GIMP-GOOD-03.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_kV2PTsjt8L" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">GOOD-03 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-03">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-03" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Layer created, and layer mode changed.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-04" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>view color histogram of image
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_1.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_1_1 /opt/stonesoup/workspace/testData/benign_data_1_2 /opt/stonesoup/workspace/testData/benign_data_1_3 /opt/stonesoup/workspace/testData/benign_data_1_4 /opt/stonesoup/workspace/testData/benign_data_1_5 /opt/stonesoup/workspace/testData/benign_data_1_6 /opt/stonesoup/workspace/testData/benign_data_1_7 /opt/stonesoup/workspace/testData/benign_data_1_8 /opt/stonesoup/workspace/testData/benign_data_1_9 /opt/stonesoup/workspace/testData/benign_data_1_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-04" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-04/GIMP-GOOD-04.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_3202Hikx01" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">GOOD-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-04">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-04" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Histogram of image generated.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-05" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>add supernova filter
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_2.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_2_1 /opt/stonesoup/workspace/testData/benign_data_2_2 /opt/stonesoup/workspace/testData/benign_data_2_3 /opt/stonesoup/workspace/testData/benign_data_2_4 /opt/stonesoup/workspace/testData/benign_data_2_5 /opt/stonesoup/workspace/testData/benign_data_2_6 /opt/stonesoup/workspace/testData/benign_data_2_7 /opt/stonesoup/workspace/testData/benign_data_2_8 /opt/stonesoup/workspace/testData/benign_data_2_9 /opt/stonesoup/workspace/testData/benign_data_2_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=512 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_2_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_2_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-05" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-05/GIMP-GOOD-05.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_2_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_khUsU2x95P" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">GOOD-05 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-05">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-05" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">supernova added</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-06" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>make selection with magic wand, paste into new image
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_3.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_3.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_3_1 /opt/stonesoup/workspace/testData/benign_data_3_2 /opt/stonesoup/workspace/testData/benign_data_3_3 /opt/stonesoup/workspace/testData/benign_data_3_4 /opt/stonesoup/workspace/testData/benign_data_3_5 /opt/stonesoup/workspace/testData/benign_data_3_6 /opt/stonesoup/workspace/testData/benign_data_3_7 /opt/stonesoup/workspace/testData/benign_data_3_8 /opt/stonesoup/workspace/testData/benign_data_3_9 /opt/stonesoup/workspace/testData/benign_data_3_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-06" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-06/GIMP-GOOD-06.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_q7sQZODPXJ" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-06-Default">
+                <formula name="GOOD-06-Default">GOOD-06 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-06">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-06" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Magic Wand selection pasted into new document.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-07" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>rotate image 180 degrees
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_1.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_1_1 /opt/stonesoup/workspace/testData/benign_data_1_2 /opt/stonesoup/workspace/testData/benign_data_1_3 /opt/stonesoup/workspace/testData/benign_data_1_4 /opt/stonesoup/workspace/testData/benign_data_1_5 /opt/stonesoup/workspace/testData/benign_data_1_6 /opt/stonesoup/workspace/testData/benign_data_1_7 /opt/stonesoup/workspace/testData/benign_data_1_8 /opt/stonesoup/workspace/testData/benign_data_1_9 /opt/stonesoup/workspace/testData/benign_data_1_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-07" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-07/GIMP-GOOD-07.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_QcQKvHIpWF" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-07-Default">
+                <formula name="GOOD-07-Default">GOOD-07 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-07">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-07" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">Image rotated 180 degrees.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-08" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>add pagecurl filter
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_2.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_2_1 /opt/stonesoup/workspace/testData/benign_data_2_2 /opt/stonesoup/workspace/testData/benign_data_2_3 /opt/stonesoup/workspace/testData/benign_data_2_4 /opt/stonesoup/workspace/testData/benign_data_2_5 /opt/stonesoup/workspace/testData/benign_data_2_6 /opt/stonesoup/workspace/testData/benign_data_2_7 /opt/stonesoup/workspace/testData/benign_data_2_8 /opt/stonesoup/workspace/testData/benign_data_2_9 /opt/stonesoup/workspace/testData/benign_data_2_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=512 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_2_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_2_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-08" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-08/GIMP-GOOD-08.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_2_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_Gr3dIzMM8F" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-08-Default">
+                <formula name="GOOD-08-Default">GOOD-08 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-08">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-08" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">pagecurl added</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-09" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>use edgefinder filter
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_3.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_3.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_3_1 /opt/stonesoup/workspace/testData/benign_data_3_2 /opt/stonesoup/workspace/testData/benign_data_3_3 /opt/stonesoup/workspace/testData/benign_data_3_4 /opt/stonesoup/workspace/testData/benign_data_3_5 /opt/stonesoup/workspace/testData/benign_data_3_6 /opt/stonesoup/workspace/testData/benign_data_3_7 /opt/stonesoup/workspace/testData/benign_data_3_8 /opt/stonesoup/workspace/testData/benign_data_3_9 /opt/stonesoup/workspace/testData/benign_data_3_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=70 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_3_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_3_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-09" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-09/GIMP-GOOD-09.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_3_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_PSDJp1CdOy" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-09-Default">
+                <formula name="GOOD-09-Default">GOOD-09 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-09">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-09" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">pagecurl added</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-GOOD-10" reset_scheme="NONE" timeout="480" type="GOOD">
+            <description>pixelize image
+Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/good_1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/good_1.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/benign_data_1_1 /opt/stonesoup/workspace/testData/benign_data_1_2 /opt/stonesoup/workspace/testData/benign_data_1_3 /opt/stonesoup/workspace/testData/benign_data_1_4 /opt/stonesoup/workspace/testData/benign_data_1_5 /opt/stonesoup/workspace/testData/benign_data_1_6 /opt/stonesoup/workspace/testData/benign_data_1_7 /opt/stonesoup/workspace/testData/benign_data_1_8 /opt/stonesoup/workspace/testData/benign_data_1_9 /opt/stonesoup/workspace/testData/benign_data_1_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=1024 count=60 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/benign_data_1_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/benign_data_1_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="PARALLEL">
+                <process_group scheme="SEQUENCE">
+                    <process delay_after="0" delay_before="0">
+                        <script background="false" encoding="STRING" input_id="SIKULI-GOOD-10" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-10/GIMP-GOOD-10.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                    </process>
+                </process_group>
+                <process_group scheme="SEQUENCE"/>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/benign_data_1_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_rQtwvfYprN" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-10-Default">
+                <formula name="GOOD-10-Default">GOOD-10 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="GOOD-10">
+                    <actual encoding="STRING" input_id_ref="SIKULI-GOOD-10" output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_TEXT">image pixelized.</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-BAD-01" reset_scheme="NONE" timeout="480" type="BAD">
+            <description>Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>DOS_RESOURCE_CONSUMPTION</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_8 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_8 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_8 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/bad_1.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/bad_1.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/exploit_data_1_1 /opt/stonesoup/workspace/testData/exploit_data_1_2 /opt/stonesoup/workspace/testData/exploit_data_1_3 /opt/stonesoup/workspace/testData/exploit_data_1_4 /opt/stonesoup/workspace/testData/exploit_data_1_5 /opt/stonesoup/workspace/testData/exploit_data_1_6 /opt/stonesoup/workspace/testData/exploit_data_1_7 /opt/stonesoup/workspace/testData/exploit_data_1_8 /opt/stonesoup/workspace/testData/exploit_data_1_9 /opt/stonesoup/workspace/testData/exploit_data_1_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_1 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_1 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_2 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_2 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_3 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_3 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_4 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_4 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_5 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_5 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_6 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_6 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$((1024 * 1024)) count=200 | xxd -p | tr -dc 'a-zA-Z0-9' &gt; /opt/stonesoup/workspace/testData/exploit_data_1_7 &amp;&amp; printf @ &gt;&gt; /opt/stonesoup/workspace/testData/exploit_data_1_7 &amp;&amp;printf '/opt/stonesoup/workspace/testData/exploit_data_1_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="SIKULI-GOOD-10EPMiNMwP2W" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-10/GIMP-GOOD-10.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_1_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_I1iE3BM4dXyhMpwFTzsF" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="ulimit_reached_formula_kOHMOwyC7G">
+                <formula name="ulimit_reached_formula_kOHMOwyC7G">weakness_started_Qnrrd6R27WS1hAJMBuLo AND ((NOT PERFORMER AND (ulimit_reached_pnL4yC7KNf) AND NOT timeout_EyPGCnB0HI) or (PERFORMER AND NOT ((ulimit_reached_pnL4yC7KNf) OR timeout_EyPGCnB0HI)))</formula>
+                <formula name="no_weakness_started_formula_ckBhoCLt1c">(NOT PERFORMER AND (ulimit_reached_pnL4yC7KNf) AND NOT timeout_EyPGCnB0HI) or (PERFORMER AND NOT ((ulimit_reached_pnL4yC7KNf) OR timeout_EyPGCnB0HI))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_EyPGCnB0HI" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_GkxB2JmEZO" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_bDLAneOtJM" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="CONTAINS" name="ulimit_reached_pnL4yC7KNf">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Malloc error due to ulimit</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_Qnrrd6R27WS1hAJMBuLo">
+                    <actual encoding="STRING" input_id_ref="lttng_output_I1iE3BM4dXyhMpwFTzsF" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="C-C771A-GIMP-01-ST02-DT03-DF10-CF24-01-BAD-02" reset_scheme="NONE" timeout="480" type="BAD">
+            <description>Read in a file containing a list of 10 other files. Open these files and read their contents. If these contents are purly alphanumeric, the memory gets properly free()'d, otherwise a missing reference is created.
+
+</description>
+            <technical_impact>DOS_RESOURCE_CONSUMPTION</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env RATIONMENT_PSYCHOMETRICIAN;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_ROOT/scripts/restart_dm.sh</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="RATIONMENT_PSYCHOMETRICIAN" type="USE_TEXT">/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_8 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_8 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_9 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_9 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_10 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_10 generated\n'</script>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/idolater_fervence/dandy_operators.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/bad_2.txt</file>
+                </process>
+                <process>
+                    <file encoding="STRING" path="/opt/stonesoup/workspace/testData/bad_2.txt" type="USE_TEXT">/opt/stonesoup/workspace/testData/exploit_data_2_1 /opt/stonesoup/workspace/testData/exploit_data_2_2 /opt/stonesoup/workspace/testData/exploit_data_2_3 /opt/stonesoup/workspace/testData/exploit_data_2_4 /opt/stonesoup/workspace/testData/exploit_data_2_5 /opt/stonesoup/workspace/testData/exploit_data_2_6 /opt/stonesoup/workspace/testData/exploit_data_2_7 /opt/stonesoup/workspace/testData/exploit_data_2_8 /opt/stonesoup/workspace/testData/exploit_data_2_9 /opt/stonesoup/workspace/testData/exploit_data_2_10 </file>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_1 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_1 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_2 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_2 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_3 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_3 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_4 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_4 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_5 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_5 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_6 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_6 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">dd if=/dev/urandom bs=$(( 1024 * 1024 )) count=310 of=/opt/stonesoup/workspace/testData/exploit_data_2_7 &amp;&amp; printf '/opt/stonesoup/workspace/testData/exploit_data_2_7 generated\n'</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-c.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT"></run_command>
+            <co_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" input_id="SIKULI-GOOD-010KWpkHdchx" type="USE_TEXT">$SS_TC_DEPS/bin/run-sikuli.sh &quot;$SS_TC_ROOT/testData/good-01/GIMP-GOOD-01.sikuli --args $SS_USER_DELAY&quot;
+                    </script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process delay_after="0" delay_before="0">
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /root/.gimp-2.8/</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_1</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_10</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_2</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_3</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_4</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_5</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_6</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_7</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_8</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf /opt/stonesoup/workspace/testData/exploit_data_2_9</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_moDqtBx8BIuoEn225Fby" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="ulimit_reached_formula_cfZGZOrtwl">
+                <formula name="ulimit_reached_formula_cfZGZOrtwl">weakness_started_DjxaWLR4VohszXvbGQaa AND ((NOT PERFORMER AND (ulimit_reached_JHHujPktVO) AND NOT timeout_yoflwUC2a4) or (PERFORMER AND NOT ((ulimit_reached_JHHujPktVO) OR timeout_yoflwUC2a4)))</formula>
+                <formula name="no_weakness_started_formula_cP67hIjVNB">(NOT PERFORMER AND (ulimit_reached_JHHujPktVO) AND NOT timeout_yoflwUC2a4) or (PERFORMER AND NOT ((ulimit_reached_JHHujPktVO) OR timeout_yoflwUC2a4))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_yoflwUC2a4" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_4QUbTJ5gbw" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_6RU56GwOfv" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="CONTAINS" name="ulimit_reached_JHHujPktVO">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Malloc error due to ulimit</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_DjxaWLR4VohszXvbGQaa">
+                    <actual encoding="STRING" input_id_ref="lttng_output_moDqtBx8BIuoEn225Fby" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

@@ -1,0 +1,100 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmparuVwP_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmparuVwP_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmparuVwP_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmparuVwP_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  exploits:
+    - inputs:
+        - value_encoding: none
+          source: socket_input
+          source_enum: 5
+          port: 8887
+          address: ss-localhost
+          id: source
+          stage: co_process
+          stage_enum: 1
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value: aaa
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value: this string begins with a lower-case letter
+          value_encoding: none
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          port: 8887
+          value_type_enum: 0
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  description: "Malloc a pointer, and free it.  If input begins with ascii character 'a' or higher, free it a second time.  Causes seg fault.\n\n"
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          id: source
+          source: socket_input
+          stage_enum: 1
+          address: ss-localhost
+          source_enum: 5
+          port: 8887
+          stage: co_process
+          ordinal: 1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: AAA
+    - inputs:
+        - source_enum: 5
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          ordinal: 1
+          source: socket_input
+          id: source
+          value_encoding: none
+          value: 12345 Hello world!
+          address: ss-localhost
+          value_type_enum: 0
+          port: 8887
+    - inputs:
+        - source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: co_process
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          value_type_enum: 0
+          value: "[Good-bye cruel world!]"
+          ordinal: 1
+          port: 8887

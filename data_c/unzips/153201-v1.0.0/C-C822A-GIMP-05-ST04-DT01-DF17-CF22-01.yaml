@@ -1,0 +1,106 @@
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 1884
+      size: 26
+      flags: 950
+  benigns:
+    - inputs:
+        - stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value_encoding: none
+          value_type_enum: 0
+          size: 26
+          value: abcdef
+          key: 1884
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          source: shared_memory_input
+          source_enum: 6
+    - inputs:
+        - stage: pre_process
+          source: shared_memory_input
+          id: source
+          ordinal: 1
+          stage_enum: 0
+          value_encoding: none
+          key: 1884
+          flags: 950
+          size: 26
+          value: abc
+          source_enum: 6
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - id: source
+          stage: pre_process
+          flags: 950
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_type_enum: 0
+          key: 1884
+          source: shared_memory_input
+          size: 26
+          source_enum: 6
+          ordinal: 1
+          value: abcdefghijklmnopqrstuvwxy
+  exploits:
+    - inputs:
+        - source: shared_memory_input
+          size: 26
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          value_encoding: none
+          value_type_enum: 0
+          value: ab
+          source_enum: 6
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          key: 1884
+          ordinal: 1
+    - inputs:
+        - size: 26
+          flags: 950
+          stage: pre_process
+          stage_enum: 0
+          source_enum: 6
+          ordinal: 1
+          key: 1884
+          value_encoding: none
+          source: shared_memory_input
+          id: source
+          value: ab000012
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+  description: "Good inputs:1) environement variable is set to a value whose length mod 3 is 0 or 1Bad inputs:1) environment variable is not set2) environment variable is set to a value whose length mod 3 is not 0 or 1\n\n"
+code_complexity_features:
+  - feature_group: source_taint
+    file_name: /tmp/tmpf4qyqo_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpf4qyqo_ss_testcase/src-rose/app/core/gimpimage.c
+    feature_group: data_type
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmpf4qyqo_ss_testcase/src-rose/app/core/gimpimage.c
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpf4qyqo_ss_testcase/src-rose/app/core/gimpimage.c
+    feature_group: control_flow
+    function_name: gimp_image_get_imported_uri
+    line_number: 0
+    feature: macros
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

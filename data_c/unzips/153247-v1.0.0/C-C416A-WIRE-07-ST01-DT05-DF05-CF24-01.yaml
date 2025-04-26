@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  description: "Malloc a buffer.  Copy the input string to the buffer.  If the first character is 'a' or higher, free the buffer. Use the buffer.  This will cause a seg fault if the buffer was previously freed.\n\n"
+  base_inputs:
+    - stage_enum: 0
+      id: source
+      ordinal: 1
+      name: NONRANDOMNESS_MIMBARS
+      source: env_var_input
+      source_enum: 2
+      stage: pre_process
+  benigns:
+    - inputs:
+        - value: AAA
+          ordinal: 1
+          stage: pre_process
+          source_enum: 2
+          name: NONRANDOMNESS_MIMBARS
+          stage_enum: 0
+          source: env_var_input
+          id: source
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - id: source
+          stage_enum: 0
+          name: NONRANDOMNESS_MIMBARS
+          value: 12345 Hello world!
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value_encoding: none
+          stage: pre_process
+          value_type_enum: 0
+          source_enum: 2
+    - inputs:
+        - stage: pre_process
+          name: NONRANDOMNESS_MIMBARS
+          source_enum: 2
+          source: env_var_input
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          value: "[Good-bye cruel world!]"
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          id: source
+          name: NONRANDOMNESS_MIMBARS
+          source_enum: 2
+          ordinal: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: abc
+          stage: pre_process
+          value_encoding: none
+          source: env_var_input
+    - inputs:
+        - id: source
+          name: NONRANDOMNESS_MIMBARS
+          stage_enum: 0
+          source: env_var_input
+          ordinal: 1
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: this string begins with a lower-case letter
+          value_type_enum: 0
+          stage: pre_process
+code_complexity_features:
+  - file_name: /tmp/tmpSe_3Oy_ss_testcase/src-rose/epan/conversation.c
+    function_name: conversation_hash_no_addr2_or_port2
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpSe_3Oy_ss_testcase/src-rose/epan/conversation.c
+    function_name: conversation_hash_no_addr2_or_port2
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+  - file_name: /tmp/tmpSe_3Oy_ss_testcase/src-rose/epan/conversation.c
+    function_name: conversation_hash_no_addr2_or_port2
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_constant
+  - function_name: whinnying_prolusionize
+    line_number: 0
+    feature: unconditional_jump
+    file_name: /tmp/tmpSe_3Oy_ss_testcase/src-rose/epan/conversation.c
+    feature_group: control_flow

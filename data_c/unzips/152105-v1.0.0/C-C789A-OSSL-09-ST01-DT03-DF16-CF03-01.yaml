@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpWi4NAh_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - line_number: 0
+    feature_group: data_type
+    feature: void_pointer
+    file_name: /tmp/tmpWi4NAh_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+  - file_name: /tmp/tmpWi4NAh_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpWi4NAh_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop
+io_pair:
+  benigns:
+    - inputs:
+        - stage: pre_process
+          source: env_var_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: 80
+          id: source
+          source_enum: 2
+          name: PAILFULS_BALISTRARIA
+          stage_enum: 0
+          ordinal: 1
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value: 3643
+          stage_enum: 0
+          id: source
+          stage: pre_process
+          value_type_enum: 0
+          ordinal: 1
+          name: PAILFULS_BALISTRARIA
+          source: env_var_input
+          source_enum: 2
+          value_encoding: none
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          name: PAILFULS_BALISTRARIA
+          stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          value_type_enum: 0
+          id: source
+          value_encoding: none
+          stage_enum: 0
+          ordinal: 1
+          value: 10
+  exploits:
+    - inputs:
+        - name: PAILFULS_BALISTRARIA
+          stage: pre_process
+          id: source
+          source_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          source: env_var_input
+          ordinal: 1
+          value: 123451234567
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+    - inputs:
+        - name: PAILFULS_BALISTRARIA
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          id: source
+          value_encoding: none
+          stage_enum: 0
+          source: env_var_input
+          value_type_enum: 0
+          value: 845633125678
+          value_type: USE_TEXT_DIRECTLY
+  description: "Reads in a integer and uses the value to allocate memory for a string on the stack. Because the input value is unchecked can allocate arbitrarily large value, resulting in a resource drain\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: PAILFULS_BALISTRARIA

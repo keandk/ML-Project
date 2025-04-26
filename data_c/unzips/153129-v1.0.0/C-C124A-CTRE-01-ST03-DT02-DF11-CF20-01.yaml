@@ -1,0 +1,100 @@
+io_pair:
+  exploits:
+    - inputs:
+        - port: 8887
+          address: ss-localhost
+          id: source
+          source_enum: 5
+          stage_enum: 1
+          stage: co_process
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_type_enum: 0
+          value_encoding: none
+          ordinal: 1
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          port: 8887
+          source_enum: 5
+          source: socket_input
+          stage_enum: 1
+          stage: co_process
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+          ordinal: 1
+          address: ss-localhost
+          value_encoding: none
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - value_encoding: none
+          value_type_enum: 0
+          address: ss-localhost
+          ordinal: 1
+          id: source
+          stage: co_process
+          source_enum: 5
+          source: socket_input
+          stage_enum: 1
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          value: AAA
+    - inputs:
+        - value_encoding: none
+          address: ss-localhost
+          value: Hellow world!
+          ordinal: 1
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          value_type_enum: 0
+          id: source
+          source: socket_input
+          stage: co_process
+          source_enum: 5
+    - inputs:
+        - stage: co_process
+          source: socket_input
+          value_encoding: none
+          id: source
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          port: 8887
+          address: ss-localhost
+          value: Good-bye cruel world!
+          source_enum: 5
+  description: "Has a fixed stack buffer of size 64.  (char [64])\n\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - function_name: stonesoup_handle_taint
+    file_name: /tmp/tmpZaGVX6_ss_testcase/src-rose/color.c
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpZaGVX6_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpZaGVX6_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpZaGVX6_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

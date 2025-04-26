@@ -1,0 +1,270 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  description: "Good inputs: 1) name of shipper for use in Sql databaseBad inputs:SQL argument injection \n\n"
+  exploits:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 5
+          port: 8887
+          ordinal: 1
+          stage: co_process
+          source: socket_input
+          id: source
+          address: ss-localhost
+          stage_enum: 1
+          value_encoding: none
+          value: BadShipper'), ('80','BadShipper2
+        - database: postgresql
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          stage_enum: 0
+          source_enum: 0
+          ordinal: 2
+          database_enum: 1
+          source: database_content_input
+          stage: pre_process
+          value_type_enum: 1
+          server: ss-db-postgres
+          value: northwind
+        - source: env_var_input
+          stage: pre_process
+          value_encoding: none
+          name: SS_DBPGDATABASE
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+        - value_encoding: none
+          ordinal: 1
+          server: ss-db-postgres
+          database: postgresql
+          stage: post_process
+          value_type_enum: 0
+          source_enum: 0
+          stage_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          database_enum: 1
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          source: database_content_input
+    - inputs:
+        - value_encoding: none
+          stage: co_process
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          id: source
+          source: socket_input
+          ordinal: 1
+          port: 8887
+          address: ss-localhost
+          value: ShippersRUs'), ('20','BadShips'), ('65','ShipAttack'), ('45', 'MultiShip
+          value_type_enum: 0
+        - value: northwind
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 1
+          ordinal: 2
+          server: ss-db-postgres
+          source_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+          value_encoding: none
+          source: database_content_input
+          database: postgresql
+          database_enum: 1
+        - ordinal: 3
+          value_encoding: none
+          stage_enum: 0
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value: SET_DYNAMIC_DB_NAME
+          source_enum: 2
+          name: SS_DBPGDATABASE
+        - database_enum: 1
+          stage_enum: 2
+          value_encoding: none
+          server: ss-db-postgres
+          source_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          stage: post_process
+          ordinal: 1
+          source: database_content_input
+          database: postgresql
+          value_type_enum: 0
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - source: socket_input
+          id: source
+          value_type_enum: 0
+          stage_enum: 1
+          source_enum: 5
+          stage: co_process
+          value: shipper1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          port: 8887
+          ordinal: 1
+        - source: database_content_input
+          database: postgresql
+          server: ss-db-postgres
+          value: northwind
+          database_enum: 1
+          ordinal: 2
+          value_encoding: none
+          stage: pre_process
+          value_type_enum: 1
+          stage_enum: 0
+          source_enum: 0
+          value_type: USE_CONTENTS_OF_FILE
+        - name: SS_DBPGDATABASE
+          source_enum: 2
+          value: SET_DYNAMIC_DB_NAME
+          stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          ordinal: 3
+          value_type_enum: 0
+          stage_enum: 0
+        - database_enum: 1
+          value_encoding: none
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          ordinal: 1
+          value_type_enum: 0
+          database: postgresql
+          server: ss-db-postgres
+          source_enum: 0
+          source: database_content_input
+          stage_enum: 2
+          stage: post_process
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - source_enum: 5
+          stage_enum: 1
+          ordinal: 1
+          id: source
+          address: ss-localhost
+          value_type_enum: 0
+          stage: co_process
+          source: socket_input
+          value_encoding: none
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          value: NewShipper
+        - database: postgresql
+          value_type_enum: 1
+          database_enum: 1
+          source_enum: 0
+          ordinal: 2
+          source: database_content_input
+          value_encoding: none
+          value: northwind
+          value_type: USE_CONTENTS_OF_FILE
+          stage_enum: 0
+          server: ss-db-postgres
+          stage: pre_process
+        - stage: pre_process
+          name: SS_DBPGDATABASE
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value: SET_DYNAMIC_DB_NAME
+          ordinal: 3
+          source_enum: 2
+          value_encoding: none
+          stage_enum: 0
+          value_type_enum: 0
+        - value_encoding: none
+          source_enum: 0
+          server: ss-db-postgres
+          stage_enum: 2
+          source: database_content_input
+          value_type_enum: 0
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          database: postgresql
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          database_enum: 1
+          stage: post_process
+    - inputs:
+        - port: 8887
+          stage_enum: 1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          value_type_enum: 0
+          id: source
+          value: ShippingCompany
+          stage: co_process
+          source: socket_input
+          ordinal: 1
+          source_enum: 5
+        - stage_enum: 0
+          ordinal: 2
+          database: postgresql
+          value_type: USE_CONTENTS_OF_FILE
+          source_enum: 0
+          source: database_content_input
+          stage: pre_process
+          server: ss-db-postgres
+          value_type_enum: 1
+          value: northwind
+          database_enum: 1
+          value_encoding: none
+        - source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          value_encoding: none
+          ordinal: 3
+          source: env_var_input
+          name: SS_DBPGDATABASE
+          value: SET_DYNAMIC_DB_NAME
+          value_type: USE_TEXT_DIRECTLY
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          stage: post_process
+          value: DROP DATABASE IF EXISTS "$SS_DBPGDATABASE;"
+          server: ss-db-postgres
+          source: database_content_input
+          stage_enum: 2
+          database: postgresql
+          source_enum: 0
+          database_enum: 1
+          ordinal: 1
+code_complexity_features:
+  - file_name: /tmp/tmpkxkTfB_ss_testcase/src-rose/crypto/engine/eng_lib.c
+    line_number: 0
+    feature_group: source_taint
+    function_name: stonesoup_handle_taint
+    feature: SOCKET
+  - function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: union
+    file_name: /tmp/tmpkxkTfB_ss_testcase/src-rose/crypto/engine/eng_lib.c
+  - file_name: /tmp/tmpkxkTfB_ss_testcase/src-rose/crypto/engine/eng_lib.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression
+  - file_name: /tmp/tmpkxkTfB_ss_testcase/src-rose/crypto/engine/eng_lib.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: indirectly_recursive

@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153375,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case implements an incorrectly checked write into a buffer that is contained within a stack allocated struct. The buffer is declared as a struct member with a fixed size. Untrusted input is not properly sanitized or restricted before being copied into the buffer, from the last character to the first. This allows input greater than 63 characters in length to underflow the buffer, overwriting the function pointer declared before the buffer in the struct. \nMetadata\n - Base program: FFmpeg\n - Source Taint: FILE_CONTENTS\n - Data Type: VOID_POINTER\n - Data Flow: ADDRESS_ALIAS_50\n - Control Flow: INTERPROCEDURAL_50",
+        "state": "bad",
+        "application": "cpe:2.3:a:ffmpeg:ffmpeg:1.2.2:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "ffmpeg-v1.2.2"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C124D-FFMP-10-ST02-DT03-DF04-CF15-01.xml"
+          },
+          "length": 63692,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "312728c9ffa09608971de36de5a6c19d7ba967db51e52d8c9304e2e9f4c44ce9"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/libavformat/mux.c"
+          },
+          "length": 52540,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "23f8ccb4bf8c6f93979ece0d8e9e81546ca636328213e15f6898a7c9af1c8e45"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "124",
+              "name": "Buffer Underwrite ('Buffer Underflow')"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-124",
+          "message": {
+            "text": "Buffer Underwrite ('Buffer Underflow')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/libavformat/mux.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 1381,
+                  "endLine": 1391
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "124",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

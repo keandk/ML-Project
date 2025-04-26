@@ -1,0 +1,150 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+  exploits:
+    - inputs:
+        - stage_enum: 1
+          stage: co_process
+          value_encoding: base64
+          id: source
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          source: socket_input
+          value_type_enum: 0
+          value: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUGugIE=
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+        - value_type_enum: 0
+          stage: pre_process
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          value_type: USE_TEXT_DIRECTLY
+          name: INPUT_STRING
+          source_enum: 2
+          source: env_var_input
+          stage_enum: 0
+          value_encoding: none
+          ordinal: 2
+    - inputs:
+        - port: 8887
+          value_type_enum: 0
+          stage_enum: 1
+          ordinal: 1
+          address: ss-localhost
+          source_enum: 5
+          stage: co_process
+          source: socket_input
+          value_encoding: base64
+          value_type: USE_TEXT_DIRECTLY
+          value: SGVsbKUgV6lybGSI
+          id: source
+        - source_enum: 2
+          value_encoding: none
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          name: INPUT_STRING
+          stage: pre_process
+          stage_enum: 0
+          source: env_var_input
+          value_type_enum: 0
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+  benigns:
+    - inputs:
+        - port: 8887
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_encoding: none
+          address: ss-localhost
+          value_type_enum: 0
+          stage_enum: 1
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          stage: co_process
+          source: socket_input
+          source_enum: 5
+        - value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          name: INPUT_STRING
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          ordinal: 2
+    - inputs:
+        - stage: co_process
+          value_type: USE_TEXT_DIRECTLY
+          value: This is probably not going to overflow a buffer of some sort.  Let's run it anyway and see what happens.
+          source_enum: 5
+          id: source
+          stage_enum: 1
+          address: ss-localhost
+          ordinal: 1
+          port: 8887
+          source: socket_input
+          value_type_enum: 0
+          value_encoding: none
+        - value_type_enum: 0
+          ordinal: 2
+          source_enum: 2
+          source: env_var_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: INPUT_STRING
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          stage: pre_process
+    - inputs:
+        - id: source
+          port: 8887
+          source: socket_input
+          value: As long as this statement has more than 128 characters, then nothing bad should happen
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          address: ss-localhost
+          value_encoding: none
+          stage_enum: 1
+          stage: co_process
+          source_enum: 5
+        - value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          stage: pre_process
+          source_enum: 2
+          name: INPUT_STRING
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_type_enum: 0
+          ordinal: 2
+          source: env_var_input
+  description: "Has a stack buffer of size 128 within a struct.  reads in an ascii string from an environmentvariable and increments the corresponding values in the stack buffer.  Then reads in an input and prints out the count of the characters from the stack buff of those in the input.  If input contains extended ascii characters, they will be wrapped around to negative values and the buffer will be under read\n\n"
+code_complexity_features:
+  - file_name: /tmp/tmpNhFG5W_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpNhFG5W_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpNhFG5W_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_linear_expression
+  - file_name: /tmp/tmpNhFG5W_ss_testcase/src-rose/crypto/conf/conf_mod.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: recursive

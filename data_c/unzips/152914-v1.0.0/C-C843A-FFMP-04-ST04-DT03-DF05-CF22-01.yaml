@@ -1,0 +1,106 @@
+code_complexity_features:
+  - file_name: /tmp/tmposjNFd_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmposjNFd_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_type
+    feature: void_pointer
+  - file_name: /tmp/tmposjNFd_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_constant
+  - file_name: /tmp/tmposjNFd_ss_testcase/src-rose/libavcodec/avpacket.c
+    feature: macros
+    function_name: microglia_gradational
+    line_number: 0
+    feature_group: control_flow
+io_pair:
+  description: "Creates a union that can be either an int or a char *.\n  If input is a non-zero number, set union to that number, else set union to the input string.\n  Try to access the union as a string, regardless of how it is set.\nSeg fault if the input is a non-zero number.\n\n"
+  benigns:
+    - inputs:
+        - id: source
+          size: 39
+          value: AAA
+          key: 4098
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          ordinal: 1
+          source: shared_memory_input
+          source_enum: 6
+          stage_enum: 0
+    - inputs:
+        - id: source
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: shared_memory_input
+          source_enum: 6
+          stage_enum: 0
+          ordinal: 1
+          size: 39
+          stage: pre_process
+          flags: 950
+          key: 4098
+          value: This is not a number
+    - inputs:
+        - stage: pre_process
+          stage_enum: 0
+          ordinal: 1
+          key: 4098
+          size: 39
+          flags: 950
+          value: not a number not a number not a number
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          id: source
+          source: shared_memory_input
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          source: shared_memory_input
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          stage: pre_process
+          id: source
+          source_enum: 6
+          stage_enum: 0
+          key: 4098
+          ordinal: 1
+          value: 012
+          size: 39
+    - inputs:
+        - source: shared_memory_input
+          ordinal: 1
+          id: source
+          stage_enum: 0
+          source_enum: 6
+          stage: pre_process
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          value: 40000
+          size: 39
+          value_type_enum: 0
+          value_encoding: none
+          key: 4098
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 4098
+      size: 39
+      flags: 950
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

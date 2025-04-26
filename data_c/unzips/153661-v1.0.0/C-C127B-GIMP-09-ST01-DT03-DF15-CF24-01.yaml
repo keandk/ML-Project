@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmprxWkDa_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    feature_group: source_taint
+    function_name: gimp_display_shell_get_show_sample_points
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+  - feature_group: data_type
+    function_name: gimp_display_shell_get_show_sample_points
+    line_number: 0
+    feature: void_pointer
+    file_name: /tmp/tmprxWkDa_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+  - feature_group: data_flow
+    file_name: /tmp/tmprxWkDa_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    function_name: gimp_display_shell_get_show_sample_points
+    line_number: 0
+    feature: address_as_variable
+  - file_name: /tmp/tmprxWkDa_ss_testcase/src-rose/app/display/gimpdisplayshell-appearance.c
+    function_name: gimp_display_shell_get_show_sample_points
+    line_number: 0
+    feature: unconditional_jump
+    feature_group: control_flow
+io_pair:
+  base_inputs:
+    - stage: pre_process
+      id: source
+      source_enum: 2
+      name: COVE_BASEMENTLESS
+      stage_enum: 0
+      ordinal: 1
+      source: env_var_input
+  description: "Has a heap buffer of size 64.  Reads in an ascii string from an environment variable and copies the final 63 characters into the heap buffer.  Then  reads the variable back from the heap buffer in reverse order, but incorrectly uses the size of the original string.  If the original string is longer than 63characters, this will result in an underread.\n\n"
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          name: COVE_BASEMENTLESS
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          value_encoding: none
+          source: env_var_input
+    - inputs:
+        - value: The quick brown fox jumps over the lazy dog.  Why?  I don't know, because he was in a rush and trying to get somewhere.
+          value_encoding: none
+          id: source
+          source: env_var_input
+          stage: pre_process
+          ordinal: 1
+          name: COVE_BASEMENTLESS
+          stage_enum: 0
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - id: source
+          source: env_var_input
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          name: COVE_BASEMENTLESS
+          value_encoding: none
+          stage_enum: 0
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+    - inputs:
+        - ordinal: 1
+          stage_enum: 0
+          source_enum: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value: This is probably not going to overflow a buffer of some sort.
+          value_type_enum: 0
+          id: source
+          name: COVE_BASEMENTLESS
+          source: env_var_input
+          value_encoding: none
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          stage_enum: 0
+          value_type_enum: 0
+          stage: pre_process
+          name: COVE_BASEMENTLESS
+          value: This statement has less than 64 characters, then nothing bad.
+          source_enum: 2
+          id: source
+          value_encoding: none
+          source: env_var_input
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

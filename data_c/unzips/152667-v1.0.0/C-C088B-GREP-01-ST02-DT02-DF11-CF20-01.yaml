@@ -1,0 +1,254 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a filename to read in the file contents using an fread operation within the function\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpSFgHqH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: FILE_CONTENTS
+  - file_name: /tmp/tmpSFgHqH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpSFgHqH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpSFgHqH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  exploits:
+    - inputs:
+        - source_enum: 2
+          value_encoding: none
+          source: env_var_input
+          value: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          ordinal: 1
+          stage: pre_process
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: PANDIT_TERRET
+          value_type_enum: 0
+        - stage: pre_process
+          value_encoding: none
+          ordinal: 2
+          value: --cmd 'silent !cat /etc/passwd' /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          value_type: USE_TEXT_DIRECTLY
+          source: file_content_input
+          source_enum: 3
+          id: source
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          value_type_enum: 0
+        - value_encoding: none
+          source: file_content_input
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          stage: pre_process
+          stage_enum: 0
+          source_enum: 3
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          ordinal: 1
+        - ordinal: 2
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          value_encoding: none
+          stage: pre_process
+          value: !<!> hello World!
+          source_enum: 3
+          stage_enum: 0
+          value_type_enum: 0
+          source: file_content_input
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          value_type_enum: 0
+          ordinal: 1
+          name: PANDIT_TERRET
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          value: --cmd 'silent !ls -la .' /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          stage: pre_process
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+          source: file_content_input
+          value_type_enum: 0
+          ordinal: 1
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_encoding: none
+        - ordinal: 2
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          source: file_content_input
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          value_encoding: none
+  description: "This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text \"hello\" with \"Hello\".  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      value: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+      value_encoding: none
+      value_type: USE_TEXT_DIRECTLY
+      value_type_enum: 0
+      ordinal: 1
+      name: PANDIT_TERRET
+    - source: file_content_input
+      source_enum: 3
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 2
+      name: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+  benigns:
+    - inputs:
+        - value: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          source_enum: 2
+          name: PANDIT_TERRET
+          stage_enum: 0
+          value_encoding: none
+          source: env_var_input
+          stage: pre_process
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - value_type_enum: 0
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          stage: pre_process
+          source_enum: 3
+          id: source
+          source: file_content_input
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+        - value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: file_content_input
+          source_enum: 3
+          stage_enum: 0
+          ordinal: 1
+          value_encoding: none
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          stage: pre_process
+        - value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          value_encoding: none
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          source_enum: 3
+          source: file_content_input
+          value: !<!> hello World!
+    - inputs:
+        - stage: pre_process
+          value_encoding: none
+          stage_enum: 0
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          source: env_var_input
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          name: PANDIT_TERRET
+          value_type_enum: 0
+        - stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          source: file_content_input
+          stage: pre_process
+          name: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+        - value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          ordinal: 1
+          source: file_content_input
+          source_enum: 3
+        - source_enum: 3
+          stage_enum: 0
+          value_type_enum: 0
+          source: file_content_input
+          stage: pre_process
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+    - inputs:
+        - name: PANDIT_TERRET
+          stage_enum: 0
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          source_enum: 2
+          ordinal: 1
+          value: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+        - source_enum: 3
+          source: file_content_input
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+          stage: pre_process
+          name: /opt/stonesoup/workspace/testData/machinization_ozone/cattish_tinnient.txt
+          ordinal: 2
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample3.txt
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+        - stage: pre_process
+          source: file_content_input
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 3
+          ordinal: 1
+          value_encoding: none
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          value_type_enum: 0
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+        - value_type_enum: 0
+          value_encoding: none
+          source_enum: 3
+          value: !<!> "Hello again, hello.  Just called to say hello.\n\nYou had me at \"hello\".\n\n"
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample3.txt
+          stage: pre_process
+          stage_enum: 0
+          source: file_content_input
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY

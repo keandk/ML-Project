@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153245,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case implements a heap allocated buffer that erroneously gets double free()'d causing a segfault. The test case takes an input string and copies it into a heap allocated buffer. It then checks to see if the first character is an 'a' or greater and if so, calls a function that finishes by free()ing the buffer. The test case then finishes execution and free()s the buffer, causing a double free if the first character was an 'a' or greater. \nMetadata\n - Base program: OpenSSL\n - Source Taint: FILE_CONTENTS\n - Data Type: HEAP_POINTER\n - Data Flow: ADDRESS_AS_LINEAR_EXPRESSION\n - Control Flow: POINTER_TO_FUNCTION",
+        "state": "bad",
+        "application": "cpe:2.3:a:openssl:openssl:1.0.1e:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "openssl-v1.0.1e"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C415A-OSSL-09-ST02-DT04-DF13-CF18-01.xml"
+          },
+          "length": 57595,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "fd934a35d254dcbb6e864dfd5ca3d331f6057e51eb4db00909c02c4200dc5a19"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/crypto/evp/e_bf.c"
+          },
+          "length": 12971,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "709780210de4b8de330d5406b0a149b2c61af243aa66115f4a631460ac164b65"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "415",
+              "name": "Double Free"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-415",
+          "message": {
+            "text": "Double Free."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/crypto/evp/e_bf.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 302,
+                  "endLine": 303
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "415",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

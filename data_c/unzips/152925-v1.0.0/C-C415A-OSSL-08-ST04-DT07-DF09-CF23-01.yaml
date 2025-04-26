@@ -1,0 +1,106 @@
+code_complexity_features:
+  - function_name: ENGINE_cleanup
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpyk_uyO_ss_testcase/src-rose/crypto/engine/eng_lib.c
+  - file_name: /tmp/tmpyk_uyO_ss_testcase/src-rose/crypto/engine/eng_lib.c
+    function_name: ENGINE_cleanup
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmpyk_uyO_ss_testcase/src-rose/crypto/engine/eng_lib.c
+    function_name: ENGINE_cleanup
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_10
+  - function_name: ENGINE_cleanup
+    line_number: 0
+    feature_group: control_flow
+    feature: set_jump_long_jump
+    file_name: /tmp/tmpyk_uyO_ss_testcase/src-rose/crypto/engine/eng_lib.c
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 2674
+      size: 44
+      flags: 950
+  exploits:
+    - inputs:
+        - flags: 950
+          key: 2674
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: aaa
+          id: source
+          source: shared_memory_input
+          ordinal: 1
+          source_enum: 6
+          value_type_enum: 0
+          size: 44
+    - inputs:
+        - stage: pre_process
+          source: shared_memory_input
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          size: 44
+          key: 2674
+          flags: 950
+          value: this string begins with a lower-case letter
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          source_enum: 6
+  benigns:
+    - inputs:
+        - key: 2674
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_encoding: none
+          ordinal: 1
+          id: source
+          value: AAA
+          value_type_enum: 0
+          stage: pre_process
+          size: 44
+          source: shared_memory_input
+          flags: 950
+          source_enum: 6
+    - inputs:
+        - source_enum: 6
+          stage: pre_process
+          id: source
+          ordinal: 1
+          stage_enum: 0
+          source: shared_memory_input
+          size: 44
+          key: 2674
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: 12345 Hello world!
+          flags: 950
+    - inputs:
+        - stage_enum: 0
+          source_enum: 6
+          flags: 950
+          size: 44
+          value: "[Good-bye cruel world!]"
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          key: 2674
+          source: shared_memory_input
+          stage: pre_process
+          id: source
+          ordinal: 1
+  description: "Malloc a pointer, and free it.  If input begins with ascii character 'a' or higher, free it a second time.  Causes seg fault.\n\n"

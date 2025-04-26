@@ -1,0 +1,106 @@
+io_pair:
+  exploits:
+    - inputs:
+        - source: shared_memory_input
+          source_enum: 6
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value: a-b+c*d
+          id: source
+          ordinal: 1
+          value_encoding: none
+          key: 9357
+          size: 19
+          flags: 950
+    - inputs:
+        - size: 19
+          ordinal: 1
+          value: 3.14159
+          value_encoding: none
+          flags: 950
+          source_enum: 6
+          stage: pre_process
+          source: shared_memory_input
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+          key: 9357
+          value_type: USE_TEXT_DIRECTLY
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains non alphanumeric characters\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 9357
+      size: 19
+      flags: 950
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          key: 9357
+          size: 19
+          source: shared_memory_input
+          ordinal: 1
+          flags: 950
+          value: exampleofgoodinput
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - stage_enum: 0
+          source_enum: 6
+          value: abcd12345ABCDE
+          ordinal: 1
+          source: shared_memory_input
+          stage: pre_process
+          size: 19
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          value_encoding: none
+          key: 9357
+          value_type_enum: 0
+    - inputs:
+        - stage_enum: 0
+          id: source
+          value_type_enum: 0
+          ordinal: 1
+          key: 9357
+          value: R0G3RR4881T
+          value_encoding: none
+          size: 19
+          flags: 950
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpF5AdPj_ss_testcase/src-rose/libavformat/utils.c
+    function_name: ff_read_packet
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpF5AdPj_ss_testcase/src-rose/libavformat/utils.c
+    function_name: ff_read_packet
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+  - file_name: /tmp/tmpF5AdPj_ss_testcase/src-rose/libavformat/utils.c
+    function_name: ff_read_packet
+    line_number: 0
+    feature_group: data_flow
+    feature: buffer_address_array_index
+  - file_name: /tmp/tmpF5AdPj_ss_testcase/src-rose/libavformat/utils.c
+    function_name: ff_read_packet
+    line_number: 0
+    feature_group: control_flow
+    feature: recursive

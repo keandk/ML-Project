@@ -1,0 +1,106 @@
+io_pair:
+  exploits:
+    - inputs:
+        - ordinal: 1
+          stage: pre_process
+          id: source
+          value_encoding: none
+          flags: 950
+          source: shared_memory_input
+          source_enum: 6
+          key: 7292
+          size: 596
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          value_type_enum: 0
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    - inputs:
+        - ordinal: 1
+          stage: pre_process
+          stage_enum: 0
+          source_enum: 6
+          source: shared_memory_input
+          id: source
+          key: 7292
+          size: 596
+          flags: 950
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+  description: "Has a fixed heap buffer of size 64.  (char [64])\n\n"
+  benigns:
+    - inputs:
+        - stage: pre_process
+          value_encoding: none
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          value: AAA
+          flags: 950
+          source_enum: 6
+          id: source
+          size: 596
+          stage_enum: 0
+          value_type_enum: 0
+          key: 7292
+          ordinal: 1
+    - inputs:
+        - source: shared_memory_input
+          source_enum: 6
+          value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+          ordinal: 1
+          key: 7292
+          id: source
+          value: Hellow world!
+          flags: 950
+          size: 596
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+    - inputs:
+        - ordinal: 1
+          stage_enum: 0
+          size: 596
+          source: shared_memory_input
+          id: source
+          source_enum: 6
+          value: Good-bye cruel world!
+          key: 7292
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          flags: 950
+          value_type_enum: 0
+          stage: pre_process
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 7292
+      size: 596
+      flags: 950
+code_complexity_features:
+  - file_name: /tmp/tmp_PD7e2_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature: SHARED_MEMORY
+    feature_group: source_taint
+  - file_name: /tmp/tmp_PD7e2_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+  - file_name: /tmp/tmp_PD7e2_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_linear_expression
+  - file_name: /tmp/tmp_PD7e2_ss_testcase/src-rose/libavcodec/avpacket.c
+    function_name: av_packet_split_side_data
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

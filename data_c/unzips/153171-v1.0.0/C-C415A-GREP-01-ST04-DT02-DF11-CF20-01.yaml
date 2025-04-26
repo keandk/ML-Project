@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - feature: SHARED_MEMORY
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    file_name: /tmp/tmp7Ap2dl_ss_testcase/src-rose/src/dfa.c
+  - file_name: /tmp/tmp7Ap2dl_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmp7Ap2dl_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmp7Ap2dl_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 2547
+      size: 44
+      flags: 950
+  description: "Malloc a pointer, and free it.  If input begins with ascii character 'a' or higher, free it a second time.  Causes seg fault.\n\n"
+  exploits:
+    - inputs:
+        - flags: 950
+          stage_enum: 0
+          value_type_enum: 0
+          ordinal: 1
+          source_enum: 6
+          value: aaa
+          size: 44
+          source: shared_memory_input
+          id: source
+          stage: pre_process
+          value_encoding: none
+          key: 2547
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - id: source
+          ordinal: 1
+          source: shared_memory_input
+          stage: pre_process
+          value_encoding: none
+          source_enum: 6
+          stage_enum: 0
+          key: 2547
+          size: 44
+          value: this string begins with a lower-case letter
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          source: shared_memory_input
+          stage_enum: 0
+          value_type_enum: 0
+          key: 2547
+          source_enum: 6
+          size: 44
+          stage: pre_process
+          ordinal: 1
+          flags: 950
+          value: AAA
+          value_encoding: none
+    - inputs:
+        - size: 44
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value: 12345 Hello world!
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          flags: 950
+          value_encoding: none
+          key: 2547
+          value_type_enum: 0
+    - inputs:
+        - size: 44
+          source: shared_memory_input
+          key: 2547
+          value_type_enum: 0
+          flags: 950
+          stage: pre_process
+          source_enum: 6
+          id: source
+          stage_enum: 0
+          value_encoding: none
+          ordinal: 1
+          value: "[Good-bye cruel world!]"
+          value_type: USE_TEXT_DIRECTLY

@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 153826,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case creates a struct on the stack that contains a function pointer and a char*. It examines the length of the taint source. If the length is not equal to 10, it sets the function pointer and char* within the struct to benign values. If the length is equal to 10, it does not set the function pointer or char* inside the struct, leaving them uninitialized. Subsequently, the test case calls the function pointer from the struct, using the char* from the struct as an argument. If these values have not been initialized, this will result in a segmentation fault or illegal instruction fault. \nMetadata\n - Base program: Gimp\n - Source Taint: FILE_CONTENTS\n - Data Type: STRUCT\n - Data Flow: BUFFER_ADDRESS_POINTER\n - Control Flow: INFINITE_LOOP",
+        "state": "bad",
+        "application": "cpe:2.3:a:gimp:gimp:2.8.8:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "gimp-v2.8.8"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C824B-GIMP-08-ST02-DT05-DF17-CF03-01.xml"
+          },
+          "length": 69548,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "3b1257195f6eb947beeec67024916d2bd45ac6a7e097365d74108de3cb3214f5"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/app/widgets/gimpactiongroup.c"
+          },
+          "length": 50403,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "da56b187ca402a92faae62dda2a6a89b1fa60b4915f5f9b54b90b4ae6483268f"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "824",
+              "name": "Access of Uninitialized Pointer"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-824",
+          "message": {
+            "text": "Access of Uninitialized Pointer."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/app/widgets/gimpactiongroup.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 506,
+                  "endLine": 507
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "824",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

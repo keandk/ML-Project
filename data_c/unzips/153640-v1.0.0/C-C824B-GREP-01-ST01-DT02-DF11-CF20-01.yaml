@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpSYb6_R_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpSYb6_R_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpSYb6_R_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpSYb6_R_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  description: "Malloc a function pointer.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: PAULDRON_STAGGY
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          id: source
+          ordinal: 1
+          name: PAULDRON_STAGGY
+          source: env_var_input
+          source_enum: 2
+          value: 0123456789
+          stage: pre_process
+          value_encoding: none
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value: 10 chars..
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          value_encoding: none
+          ordinal: 1
+          source_enum: 2
+          name: PAULDRON_STAGGY
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+  benigns:
+    - inputs:
+        - source: env_var_input
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          ordinal: 1
+          value_encoding: none
+          name: PAULDRON_STAGGY
+          value: AAAAAAAAAAA
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+    - inputs:
+        - source: env_var_input
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          value_encoding: none
+          ordinal: 1
+          value: 12345 Hello world!
+          name: PAULDRON_STAGGY
+    - inputs:
+        - ordinal: 1
+          name: PAULDRON_STAGGY
+          value_encoding: none
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          id: source
+          value: This string does not have 10 characters

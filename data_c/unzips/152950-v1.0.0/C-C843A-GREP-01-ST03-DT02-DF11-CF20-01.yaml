@@ -1,0 +1,100 @@
+io_pair:
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  description: "Creates a union that can be either an int or a char *.\n  If input is a non-zero number, set union to that number, else set union to the input string.\n  Try to access the union as a string, regardless of how it is set.\nSeg fault if the input is a non-zero number.\n\n"
+  benigns:
+    - inputs:
+        - port: 8887
+          ordinal: 1
+          stage: co_process
+          stage_enum: 1
+          value: AAA
+          address: ss-localhost
+          source: socket_input
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          source_enum: 5
+    - inputs:
+        - source: socket_input
+          ordinal: 1
+          stage_enum: 1
+          source_enum: 5
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          id: source
+          value_encoding: none
+          value: This is not a number
+          value_type_enum: 0
+          stage: co_process
+    - inputs:
+        - stage_enum: 1
+          source_enum: 5
+          value: not a number not a number not a number
+          ordinal: 1
+          source: socket_input
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          stage: co_process
+          port: 8887
+          value_encoding: none
+          value_type_enum: 0
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          source: socket_input
+          source_enum: 5
+          ordinal: 1
+          stage: co_process
+          stage_enum: 1
+          port: 8887
+          id: source
+          value_encoding: none
+          address: ss-localhost
+          value: 012
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          source: socket_input
+          value_encoding: none
+          ordinal: 1
+          stage_enum: 1
+          stage: co_process
+          id: source
+          port: 8887
+          value: 40000
+          value_type_enum: 0
+code_complexity_features:
+  - file_name: /tmp/tmpUCVEiM_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpUCVEiM_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpUCVEiM_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpUCVEiM_ss_testcase/src-rose/src/dfa.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

@@ -1,0 +1,106 @@
+code_complexity_features:
+  - file_name: /tmp/tmpvYFGS1_ss_testcase/src-rose/libavformat/mux.c
+    feature_group: control_flow
+    function_name: avformat_write_header
+    line_number: 0
+    feature: callback
+  - function_name: drome_needful
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpvYFGS1_ss_testcase/src-rose/libavformat/mux.c
+  - file_name: /tmp/tmpvYFGS1_ss_testcase/src-rose/libavformat/mux.c
+    function_name: drome_needful
+    line_number: 0
+    feature_group: data_type
+    feature: typedef
+  - file_name: /tmp/tmpvYFGS1_ss_testcase/src-rose/libavformat/mux.c
+    function_name: jnana_amphicarpia
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_10
+io_pair:
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          id: source
+          stage: pre_process
+          value_encoding: none
+          value: "%0500d"
+          key: 7902
+          ordinal: 1
+          flags: 950
+          size: 76
+          source_enum: 6
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - stage: pre_process
+          ordinal: 1
+          flags: 950
+          value_encoding: none
+          id: source
+          source: shared_memory_input
+          stage_enum: 0
+          size: 76
+          source_enum: 6
+          key: 7902
+          value_type: USE_TEXT_DIRECTLY
+          value: "%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x%.08x"
+          value_type_enum: 0
+  description: "Good inputs:1) environment variable is a string value with no formatting2) environement variable is a format string that doesn't expose application\tdataBad inputs:1) environment variable is a format string that exposes application data\n\n"
+  base_inputs:
+    - stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 7902
+      size: 76
+      flags: 950
+      source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+  benigns:
+    - inputs:
+        - source: shared_memory_input
+          stage_enum: 0
+          id: source
+          source_enum: 6
+          value_encoding: none
+          value: this is a string to be printed
+          value_type_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          size: 76
+          key: 7902
+          flags: 950
+          ordinal: 1
+    - inputs:
+        - source: shared_memory_input
+          size: 76
+          value_type: USE_TEXT_DIRECTLY
+          key: 7902
+          value_encoding: base64
+          flags: 950
+          stage: pre_process
+          stage_enum: 0
+          value: c29tZSBiZW5pZ24gZm9ybWF0dGluZyBmb3IgY2hhciBzdHJpbmcgCg==
+          id: source
+          ordinal: 1
+          value_type_enum: 0
+          source_enum: 6
+    - inputs:
+        - flags: 950
+          key: 7902
+          stage_enum: 0
+          value_type_enum: 0
+          id: source
+          size: 76
+          ordinal: 1
+          source_enum: 6
+          source: shared_memory_input
+          stage: pre_process
+          value: Cg==
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: base64
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

@@ -1,0 +1,106 @@
+code_complexity_features:
+  - line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpXbcFGY_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+  - file_name: /tmp/tmpXbcFGY_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpXbcFGY_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpXbcFGY_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - size: 91
+          value_encoding: none
+          value: Short is now bad
+          value_type_enum: 0
+          key: 8386
+          source: shared_memory_input
+          source_enum: 6
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+    - inputs:
+        - source_enum: 6
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          source: shared_memory_input
+          stage: pre_process
+          value_encoding: none
+          key: 8386
+          size: 91
+          value: AAAAAAAAAAAA
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+  description: "Has a buffer declared on the stack. char[64] If input is shorter than 64 it will overflow,due to using improper sizeof and strlen checking\n\n"
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          key: 8386
+          stage_enum: 0
+          source_enum: 6
+          value_type_enum: 0
+          id: source
+          stage: pre_process
+          size: 91
+          source: shared_memory_input
+          ordinal: 1
+          flags: 950
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          value_encoding: none
+    - inputs:
+        - source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          source_enum: 6
+          id: source
+          key: 8386
+          ordinal: 1
+          stage_enum: 0
+          size: 91
+          flags: 950
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - value_encoding: none
+          value_type_enum: 0
+          source: shared_memory_input
+          stage: pre_process
+          ordinal: 1
+          id: source
+          source_enum: 6
+          size: 91
+          stage_enum: 0
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          key: 8386
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 8386
+      size: 91
+      flags: 950

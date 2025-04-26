@@ -1,0 +1,144 @@
+code_complexity_features:
+  - file_name: /tmp/tmp3iJjhm_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - feature_group: data_type
+    feature: simple
+    file_name: /tmp/tmp3iJjhm_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+    line_number: 0
+  - file_name: /tmp/tmp3iJjhm_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: EVP_bf_cbc
+    line_number: 0
+    feature_group: data_flow
+    feature: var_arg_list
+  - file_name: /tmp/tmp3iJjhm_ss_testcase/src-rose/crypto/evp/e_bf.c
+    function_name: lullaby_retrochoir
+    line_number: 0
+    feature_group: control_flow
+    feature: pointer_to_function
+io_pair:
+  description: "Has a stack buffer of size 128.  reads in an ascii string from an environmentvariable and increments the corresponding values in the stack buffer.  Then reads in an input and prints out the count of the characters from the stack buff of those in the input.  If input contains extended ascii characters, they will be wrapped around to negative values and the buffer will be under read\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: OVERSPICED_PHYSIOLOGUE
+  benigns:
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: env_var_input
+          source_enum: 2
+          name: OVERSPICED_PHYSIOLOGUE
+          value_encoding: none
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          ordinal: 1
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 2
+          source: env_var_input
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          name: INPUT_STRING
+          ordinal: 2
+          value_type_enum: 0
+          stage: pre_process
+          stage_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value: This is probably not going to overflow a buffer of some sort.  Let's run it anyway and see what happens.
+          value_encoding: none
+          name: OVERSPICED_PHYSIOLOGUE
+          value_type_enum: 0
+          stage_enum: 0
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          source: env_var_input
+          id: source
+        - source_enum: 2
+          value_encoding: none
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          name: INPUT_STRING
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          ordinal: 2
+          source: env_var_input
+          value_type_enum: 0
+    - inputs:
+        - value_type_enum: 0
+          name: OVERSPICED_PHYSIOLOGUE
+          stage: pre_process
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+          value_encoding: none
+          stage_enum: 0
+          value: As long as this statement has more than 64 characters, then nothing bad should happen
+          id: source
+          source: env_var_input
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          stage: pre_process
+          stage_enum: 0
+          ordinal: 2
+          source_enum: 2
+          source: env_var_input
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          value_type_enum: 0
+          name: INPUT_STRING
+  exploits:
+    - inputs:
+        - value: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUGugIE=
+          source_enum: 2
+          stage: pre_process
+          name: OVERSPICED_PHYSIOLOGUE
+          ordinal: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: base64
+          id: source
+          source: env_var_input
+          stage_enum: 0
+        - ordinal: 2
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+          name: INPUT_STRING
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+    - inputs:
+        - source_enum: 2
+          source: env_var_input
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          id: source
+          name: OVERSPICED_PHYSIOLOGUE
+          value_encoding: base64
+          ordinal: 1
+          value: SGVsbKUgV6lybGSI
+          value_type: USE_TEXT_DIRECTLY
+        - ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source: env_var_input
+          name: INPUT_STRING
+          stage: pre_process
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          source_enum: 2
+          value_type_enum: 0
+          stage_enum: 0
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

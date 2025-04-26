@@ -1,0 +1,8 @@
+ volatile int y;
+void f() {
+    char data[2];
+    int x;
+    for (x = 0; y && x <= 10; x++) {
+        data[x] = 0; // Array 'data[2]' accessed at index 10, which is out of bounds.
+    }
+}

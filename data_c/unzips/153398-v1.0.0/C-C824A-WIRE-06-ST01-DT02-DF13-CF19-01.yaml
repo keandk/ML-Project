@@ -1,0 +1,94 @@
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+code_complexity_features:
+  - feature: ENVIRONMENT_VARIABLE
+    feature_group: source_taint
+    line_number: 0
+    function_name: timestamp_get_precision
+    file_name: /tmp/tmpb4yWvL_ss_testcase/src-rose/epan/timestamp.c
+  - file_name: /tmp/tmpb4yWvL_ss_testcase/src-rose/epan/timestamp.c
+    function_name: timestamp_get_precision
+    feature: simple
+    line_number: 0
+    feature_group: data_type
+  - line_number: 0
+    feature_group: data_flow
+    function_name: timestamp_get_precision
+    file_name: /tmp/tmpb4yWvL_ss_testcase/src-rose/epan/timestamp.c
+    feature: address_as_linear_expression
+  - feature_group: control_flow
+    function_name: timestamp_get_precision
+    line_number: 0
+    file_name: /tmp/tmpb4yWvL_ss_testcase/src-rose/epan/timestamp.c
+    feature: recursive
+io_pair:
+  description: "Create a function pointer on the stack.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  base_inputs:
+    - name: JOEY_PREROGATIVED
+      ordinal: 1
+      id: source
+      stage_enum: 0
+      stage: pre_process
+      source_enum: 2
+      source: env_var_input
+  exploits:
+    - inputs:
+        - ordinal: 1
+          id: source
+          value: 0123456789
+          stage_enum: 0
+          stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          value_type_enum: 0
+          name: JOEY_PREROGATIVED
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          stage_enum: 0
+          value_type_enum: 0
+          id: source
+          ordinal: 1
+          value_encoding: none
+          value: 10 chars..
+          source_enum: 2
+          stage: pre_process
+          name: JOEY_PREROGATIVED
+  benigns:
+    - inputs:
+        - source: env_var_input
+          value: AAAAAAAAAAA
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          name: JOEY_PREROGATIVED
+          source_enum: 2
+          stage: pre_process
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+          id: source
+    - inputs:
+        - value: 12345 Hello world!
+          value_type_enum: 0
+          stage_enum: 0
+          source_enum: 2
+          id: source
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          name: JOEY_PREROGATIVED
+          source: env_var_input
+          stage: pre_process
+    - inputs:
+        - ordinal: 1
+          stage: pre_process
+          source: env_var_input
+          id: source
+          value_encoding: none
+          name: JOEY_PREROGATIVED
+          value_type: USE_TEXT_DIRECTLY
+          value: This string does not have 10 characters
+          source_enum: 2
+          stage_enum: 0
+          value_type_enum: 0

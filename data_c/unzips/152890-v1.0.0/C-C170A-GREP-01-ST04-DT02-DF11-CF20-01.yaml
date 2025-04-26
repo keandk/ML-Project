@@ -1,0 +1,146 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpS5hoSy_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpS5hoSy_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpS5hoSy_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpS5hoSy_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  description: "read cmd doesn't null terminate input so strcpy reads past end of buffer until NULL char found Good inputs: 1) environment variable is not set. 2) environment variable is set to a filename that exists and    whose contents contain a null character in first 32 bytes3) environment variable is set to a filename that does not exist.Bad input: 1) environment variable is set to a filename that exists and    whose contents do not contain a null charater in first 32 bytes\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 8681
+      size: 50
+      flags: 950
+  benigns:
+    - inputs:
+        - stage: pre_process
+          id: source
+          flags: 950
+          source: shared_memory_input
+          ordinal: 1
+          stage_enum: 0
+          size: 50
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value: /opt/stonesoup/workspace/testData/good01.txt
+          key: 8681
+          source_enum: 6
+        - value_type: USE_TEXT_DIRECTLY
+          value: This file is not empty.
+          source: file_content_input
+          name: /opt/stonesoup/workspace/testData/good01.txt
+          stage: pre_process
+          value_encoding: none
+          source_enum: 3
+          ordinal: 2
+          stage_enum: 0
+          value_type_enum: 0
+    - inputs:
+        - key: 8681
+          size: 50
+          stage_enum: 0
+          flags: 950
+          source: shared_memory_input
+          id: source
+          ordinal: 1
+          source_enum: 6
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/good02.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - stage: pre_process
+          source: file_content_input
+          stage_enum: 0
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuv
+          value_encoding: none
+          value_type_enum: 0
+          name: /opt/stonesoup/workspace/testData/good02.txt
+    - inputs:
+        - source_enum: 6
+          stage: pre_process
+          id: source
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+          key: 8681
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          source: shared_memory_input
+          value: /opt/stonesoup/workspace/testData/badfilename.txt
+          size: 50
+  exploits:
+    - inputs:
+        - source_enum: 6
+          value_type_enum: 0
+          source: shared_memory_input
+          stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          ordinal: 1
+          id: source
+          size: 50
+          key: 8681
+          value: /opt/stonesoup/workspace/testData/bad01.txt
+          flags: 950
+        - source_enum: 3
+          value_type_enum: 0
+          ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          value: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          stage_enum: 0
+          stage: pre_process
+          value_encoding: none
+          source: file_content_input
+          name: /opt/stonesoup/workspace/testData/bad01.txt
+    - inputs:
+        - source: shared_memory_input
+          value: /opt/stonesoup/workspace/testData/bad02.txt
+          value_encoding: none
+          source_enum: 6
+          flags: 950
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          id: source
+          size: 50
+          key: 8681
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          value_type_enum: 0
+          value_encoding: none
+          stage_enum: 0
+          source_enum: 3
+          stage: pre_process
+          name: /opt/stonesoup/workspace/testData/bad02.txt
+          source: file_content_input
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx

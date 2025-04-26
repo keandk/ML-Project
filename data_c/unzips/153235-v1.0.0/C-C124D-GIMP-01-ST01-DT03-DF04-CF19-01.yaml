@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpa_mmG6_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: gimp_context_dispose
+    line_number: 0
+    feature: ENVIRONMENT_VARIABLE
+    feature_group: source_taint
+  - file_name: /tmp/tmpa_mmG6_ss_testcase/src-rose/app/core/gimpcontext.c
+    feature_group: data_type
+    function_name: gimp_context_dispose
+    line_number: 0
+    feature: void_pointer
+  - file_name: /tmp/tmpa_mmG6_ss_testcase/src-rose/app/core/gimpcontext.c
+    function_name: gimp_context_dispose
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_50
+  - file_name: /tmp/tmpa_mmG6_ss_testcase/src-rose/app/core/gimpcontext.c
+    feature_group: control_flow
+    function_name: gimp_context_dispose
+    line_number: 0
+    feature: recursive
+io_pair:
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          id: source
+          ordinal: 1
+          source: env_var_input
+          name: QUIPPED_PENK
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_encoding: none
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage: pre_process
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          name: QUIPPED_PENK
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+          id: source
+          source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          stage_enum: 0
+  benigns:
+    - inputs:
+        - stage_enum: 0
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: QUIPPED_PENK
+          ordinal: 1
+          id: source
+          value: AAA
+          source: env_var_input
+          stage: pre_process
+          source_enum: 2
+    - inputs:
+        - stage_enum: 0
+          value: Hellow world!
+          stage: pre_process
+          source: env_var_input
+          source_enum: 2
+          ordinal: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          name: QUIPPED_PENK
+    - inputs:
+        - value_encoding: none
+          id: source
+          ordinal: 1
+          name: QUIPPED_PENK
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source_enum: 2
+          value: Good-bye cruel world!
+          stage: pre_process
+          source: env_var_input
+          stage_enum: 0
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: QUIPPED_PENK
+  description: "Has a fixed stack buffer of size 64, allocated within a struct  (char [64])\n\n"
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"

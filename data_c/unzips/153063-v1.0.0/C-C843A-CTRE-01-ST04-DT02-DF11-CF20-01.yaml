@@ -1,0 +1,106 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - function_name: initlinedraw
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmplQ9u1f_ss_testcase/src-rose/color.c
+  - file_name: /tmp/tmplQ9u1f_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature: simple
+    feature_group: data_type
+  - line_number: 0
+    feature_group: data_flow
+    feature: basic
+    file_name: /tmp/tmplQ9u1f_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+  - file_name: /tmp/tmplQ9u1f_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+io_pair:
+  benigns:
+    - inputs:
+        - key: 4767
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          value_type_enum: 0
+          value_encoding: none
+          source_enum: 6
+          stage: pre_process
+          value: AAA
+          flags: 950
+          size: 39
+          stage_enum: 0
+          id: source
+          ordinal: 1
+    - inputs:
+        - size: 39
+          flags: 950
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+          stage: pre_process
+          id: source
+          source: shared_memory_input
+          key: 4767
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 6
+          value: This is not a number
+    - inputs:
+        - id: source
+          size: 39
+          stage: pre_process
+          key: 4767
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+          value_encoding: none
+          ordinal: 1
+          source_enum: 6
+          value: not a number not a number not a number
+          source: shared_memory_input
+          flags: 950
+  base_inputs:
+    - stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 4767
+      size: 39
+      flags: 950
+      source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          source: shared_memory_input
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value: 012
+          id: source
+          key: 4767
+          ordinal: 1
+          flags: 950
+          size: 39
+          source_enum: 6
+          value_encoding: none
+          value_type_enum: 0
+    - inputs:
+        - value: 40000
+          id: source
+          stage_enum: 0
+          flags: 950
+          source_enum: 6
+          ordinal: 1
+          key: 4767
+          source: shared_memory_input
+          size: 39
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value_encoding: none
+          value_type_enum: 0
+  description: "Creates a union that can be either an int or a char *.\n  If input is a non-zero number, set union to that number, else set union to the input string.\n  Try to access the union as a string, regardless of how it is set.\nSeg fault if the input is a non-zero number.\n\n"

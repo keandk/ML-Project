@@ -1,0 +1,154 @@
+description: "Creating test case using base program.\nAdded an environment variable read to get a filename to read in the file contents using an fread operation within the function\nCompleted injection.\n"
+io_pair:
+  description: "Has a heap buffer of size 64.  Reads in an ascii string from an environment variable and copies the final 63 characters into the heap buffer.  Then  reads the variable back from the heap buffer in reverse order, but incorrectly uses the size of the original string.  If the original string is longer than 63characters, this will result in an underread.\n\n"
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          ordinal: 1
+          name: GONZALO_TIECLASPS
+          source_enum: 2
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value_encoding: none
+          stage_enum: 0
+        - stage: pre_process
+          stage_enum: 0
+          source_enum: 3
+          id: source
+          source: file_content_input
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          name: GONZALO_TIECLASPS
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value: The quick brown fox jumps over the lazy dog.  Why?  I don't know, because he was in a rush and trying to get somewhere.
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          name: GONZALO_TIECLASPS
+          source_enum: 2
+          stage_enum: 0
+          source: env_var_input
+          value_encoding: none
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+        - ordinal: 2
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          stage: pre_process
+          source: file_content_input
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value_encoding: none
+          source_enum: 3
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_type_enum: 0
+    - inputs:
+        - name: GONZALO_TIECLASPS
+          stage_enum: 0
+          source: env_var_input
+          source_enum: 2
+          value: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value_type_enum: 0
+          ordinal: 1
+        - value_encoding: none
+          stage: pre_process
+          ordinal: 2
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: file_content_input
+          name: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          source_enum: 3
+          id: source
+          stage_enum: 0
+          value: This is probably not going to overflow a buffer of some sort.
+    - inputs:
+        - stage_enum: 0
+          ordinal: 1
+          value: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          stage: pre_process
+          value_encoding: none
+          source_enum: 2
+          source: env_var_input
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          name: GONZALO_TIECLASPS
+        - source_enum: 3
+          stage: pre_process
+          value_encoding: none
+          id: source
+          ordinal: 2
+          source: file_content_input
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 0
+          name: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+          value: This statement has less than 64 characters, then nothing bad.
+          value_type_enum: 0
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      value: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+      value_encoding: none
+      value_type: USE_TEXT_DIRECTLY
+      value_type_enum: 0
+      ordinal: 1
+      name: GONZALO_TIECLASPS
+    - source: file_content_input
+      source_enum: 3
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 2
+      name: /opt/stonesoup/workspace/testData/exemplificator_octects/echelon_meleagrina.txt
+code_complexity_features:
+  - file_name: /tmp/tmpGTRGIS_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: source_taint
+    feature: FILE_CONTENTS
+  - feature_group: data_type
+    file_name: /tmp/tmpGTRGIS_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature: simple
+  - feature_group: data_flow
+    file_name: /tmp/tmpGTRGIS_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature: basic
+  - file_name: /tmp/tmpGTRGIS_ss_testcase/src-rose/color.c
+    function_name: initlinedraw
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

@@ -1,0 +1,200 @@
+io_pair:
+  benigns:
+    - inputs:
+        - stage: co_process
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+          value_type_enum: 0
+          value_encoding: none
+          port: 8887
+          address: ss-localhost
+          stage_enum: 1
+          ordinal: 1
+          source: socket_input
+        - ordinal: 1
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          source: file_content_input
+          value_encoding: none
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          source_enum: 3
+          value_type_enum: 0
+          stage_enum: 0
+        - name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          ordinal: 2
+          value: !<!> hello World!
+          source: file_content_input
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 3
+    - inputs:
+        - stage: co_process
+          stage_enum: 1
+          id: source
+          source: socket_input
+          source_enum: 5
+          port: 8887
+          address: ss-localhost
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+        - name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          source: file_content_input
+          ordinal: 1
+          value_type_enum: 0
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          stage_enum: 0
+          stage: pre_process
+        - source: file_content_input
+          stage: pre_process
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          ordinal: 2
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          stage_enum: 0
+          value_encoding: none
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          id: source
+          port: 8887
+          source: socket_input
+          ordinal: 1
+          address: ss-localhost
+          source_enum: 5
+          stage: co_process
+          stage_enum: 1
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/vim_inputs/sample3.txt
+          value_type_enum: 0
+        - value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          value_encoding: none
+          source: file_content_input
+          source_enum: 3
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          ordinal: 1
+          value_type_enum: 0
+          stage_enum: 0
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+        - source: file_content_input
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 2
+          value: !<!> "Hello again, hello.  Just called to say hello.\n\nYou had me at \"hello\".\n\n"
+          value_type: USE_TEXT_DIRECTLY
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample3.txt
+          value_encoding: none
+          source_enum: 3
+          stage_enum: 0
+  exploits:
+    - inputs:
+        - source: socket_input
+          id: source
+          stage_enum: 1
+          stage: co_process
+          address: ss-localhost
+          ordinal: 1
+          source_enum: 5
+          value_type_enum: 0
+          port: 8887
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value: --cmd 'silent !cat /etc/passwd' /opt/stonesoup/workspace/testData/vim_inputs/sample1.txt
+        - source: file_content_input
+          source_enum: 3
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value_type: USE_TEXT_DIRECTLY
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          value_encoding: none
+          value_type_enum: 0
+          stage_enum: 0
+          ordinal: 1
+          stage: pre_process
+        - stage: pre_process
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 3
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample1.txt
+          ordinal: 2
+          stage_enum: 0
+          source: file_content_input
+          value_type_enum: 0
+          value: !<!> hello World!
+    - inputs:
+        - address: ss-localhost
+          ordinal: 1
+          port: 8887
+          source_enum: 5
+          value: --cmd 'silent !ls -la .' /opt/stonesoup/workspace/testData/vim_inputs/sample2.txt
+          stage: co_process
+          stage_enum: 1
+          source: socket_input
+          value_encoding: none
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+        - stage: pre_process
+          value_type_enum: 0
+          source_enum: 3
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          name: !<!> $SS_TC_ROOT/testData/vim_scripts/hello.vim
+          value: !<!> ":silent %s/hello/Hello/g\n:wq\n"
+          ordinal: 1
+          value_encoding: none
+          source: file_content_input
+        - value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          stage_enum: 0
+          value: !<!> "hello?\nhello.\nhello!\nhello..."
+          ordinal: 2
+          name: !<!> $SS_TC_ROOT/testData/vim_inputs/sample2.txt
+          source: file_content_input
+          source_enum: 3
+          value_type_enum: 0
+  description: "This weakness takes a filename from an untrusted source and uses a subprocess (via popen) to perform a search and replace of the text \"hello\" with \"Hello\".  The untrusted input is not properly sanitized, and may be used to perform an argument injection on the base command in order to run additional commands or functions.\n"
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+code_complexity_features:
+  - file_name: /tmp/tmptrpaEP_ss_testcase/src-rose/app/base/tile-swap.c
+    feature_group: control_flow
+    feature: callback
+    function_name: tile_swap_find_offset
+    line_number: 0
+  - file_name: /tmp/tmptrpaEP_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+    file_name: /tmp/tmptrpaEP_ss_testcase/src-rose/app/base/tile-swap.c
+  - file_name: /tmp/tmptrpaEP_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_1
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"

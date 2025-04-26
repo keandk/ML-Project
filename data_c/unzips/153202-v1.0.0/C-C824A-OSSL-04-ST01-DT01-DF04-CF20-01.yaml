@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpT7K65c_ss_testcase/src-rose/crypto/bio/bio_err.c
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpT7K65c_ss_testcase/src-rose/crypto/bio/bio_err.c
+    feature_group: data_type
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature: array
+  - file_name: /tmp/tmpT7K65c_ss_testcase/src-rose/crypto/bio/bio_err.c
+    function_name: ERR_load_BIO_strings
+    line_number: 0
+    feature_group: data_flow
+    feature: address_alias_50
+  - file_name: /tmp/tmpT7K65c_ss_testcase/src-rose/crypto/bio/bio_err.c
+    feature: sequence
+    line_number: 0
+    function_name: ERR_load_BIO_strings
+    feature_group: control_flow
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
+io_pair:
+  description: "Create a function pointer on the stack.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: CLASSWISE_HOLBEIN
+  benigns:
+    - inputs:
+        - source: env_var_input
+          name: CLASSWISE_HOLBEIN
+          id: source
+          stage_enum: 0
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: AAAAAAAAAAA
+          stage: pre_process
+          ordinal: 1
+          value_type_enum: 0
+    - inputs:
+        - value_type: USE_TEXT_DIRECTLY
+          source: env_var_input
+          value_encoding: none
+          name: CLASSWISE_HOLBEIN
+          value_type_enum: 0
+          stage: pre_process
+          source_enum: 2
+          stage_enum: 0
+          id: source
+          value: 12345 Hello world!
+          ordinal: 1
+    - inputs:
+        - source: env_var_input
+          stage_enum: 0
+          value: This string does not have 10 characters
+          id: source
+          ordinal: 1
+          source_enum: 2
+          name: CLASSWISE_HOLBEIN
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          stage: pre_process
+  exploits:
+    - inputs:
+        - ordinal: 1
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          value: 0123456789
+          value_type: USE_TEXT_DIRECTLY
+          name: CLASSWISE_HOLBEIN
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          source_enum: 2
+    - inputs:
+        - name: CLASSWISE_HOLBEIN
+          id: source
+          source: env_var_input
+          value_type_enum: 0
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value: 10 chars..
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 2

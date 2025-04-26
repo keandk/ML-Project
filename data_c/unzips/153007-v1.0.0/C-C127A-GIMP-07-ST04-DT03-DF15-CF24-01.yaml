@@ -1,0 +1,156 @@
+code_complexity_features:
+  - feature_group: source_taint
+    feature: SHARED_MEMORY
+    file_name: /tmp/tmpxReLuQ_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+  - file_name: /tmp/tmpxReLuQ_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature_group: data_type
+    feature: void_pointer
+  - file_name: /tmp/tmpxReLuQ_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_variable
+  - file_name: /tmp/tmpxReLuQ_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature_group: control_flow
+    feature: unconditional_jump
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+io_pair:
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 9439
+      size: 105
+      flags: 950
+  benigns:
+    - inputs:
+        - value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          source: shared_memory_input
+          source_enum: 6
+          stage: pre_process
+          size: 105
+          key: 9439
+          value_encoding: none
+          id: source
+          stage_enum: 0
+          flags: 950
+          ordinal: 1
+        - value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          source: env_var_input
+          stage_enum: 0
+          source_enum: 2
+          value_type_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          name: INPUT_STRING
+          stage: pre_process
+    - inputs:
+        - source_enum: 6
+          source: shared_memory_input
+          value: This is probably not going to overflow a buffer of some sort.  Let's run it anyway and see what happens.
+          size: 105
+          ordinal: 1
+          stage_enum: 0
+          value_type_enum: 0
+          id: source
+          value_encoding: none
+          key: 9439
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          stage: pre_process
+        - source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          name: INPUT_STRING
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          source: env_var_input
+          value_encoding: none
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 2
+          stage_enum: 0
+    - inputs:
+        - value: As long as this statement has more than 64 characters, then nothing bad should happen
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          stage_enum: 0
+          value_encoding: none
+          size: 105
+          ordinal: 1
+          key: 9439
+          stage: pre_process
+          id: source
+          source_enum: 6
+          source: shared_memory_input
+        - stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+          source: env_var_input
+          name: INPUT_STRING
+          stage: pre_process
+          source_enum: 2
+          ordinal: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+  description: "Has a stack buffer of size 128.  reads in an ascii string from an environmentvariable and increments the corresponding values in the stack buffer.  Then reads in an input and prints out the count of the characters from the stack buff of those in the input.  If input contains extended ascii characters, they will be wrapped around to negative values and the buffer will be under read\n\n"
+  exploits:
+    - inputs:
+        - source_enum: 6
+          stage: pre_process
+          source: shared_memory_input
+          flags: 950
+          key: 9439
+          value_encoding: base64
+          value_type: USE_TEXT_DIRECTLY
+          value: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUGugIE=
+          id: source
+          size: 105
+          value_type_enum: 0
+          ordinal: 1
+          stage_enum: 0
+        - name: INPUT_STRING
+          source_enum: 2
+          stage_enum: 0
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          stage: pre_process
+          source: env_var_input
+    - inputs:
+        - value_encoding: base64
+          source_enum: 6
+          value_type_enum: 0
+          size: 105
+          source: shared_memory_input
+          id: source
+          stage: pre_process
+          ordinal: 1
+          stage_enum: 0
+          flags: 950
+          value: SGVsbKUgV6lybGSI
+          value_type: USE_TEXT_DIRECTLY
+          key: 9439
+        - stage_enum: 0
+          source: env_var_input
+          ordinal: 2
+          value: AAAABVVCUYEOAISDHGUEHGU:WOJOQIUFGUYGBJdjsafihuegakdlfm9238946665232kmemiucyds78fy2
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          value_encoding: none
+          name: INPUT_STRING
+          value_type_enum: 0
+          source_enum: 2

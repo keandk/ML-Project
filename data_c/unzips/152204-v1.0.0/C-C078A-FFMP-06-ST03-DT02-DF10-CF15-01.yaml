@@ -1,0 +1,100 @@
+io_pair:
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  benigns:
+    - inputs:
+        - id: source
+          stage_enum: 1
+          ordinal: 1
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          address: ss-localhost
+          value: 10
+          value_encoding: none
+          source: socket_input
+          source_enum: 5
+          stage: co_process
+    - inputs:
+        - value: google.com
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          address: ss-localhost
+          value_type_enum: 0
+          source: socket_input
+          stage: co_process
+          ordinal: 1
+          value_encoding: none
+          stage_enum: 1
+          id: source
+          source_enum: 5
+    - inputs:
+        - source: socket_input
+          stage_enum: 1
+          port: 8887
+          id: source
+          value: localhost
+          value_encoding: none
+          ordinal: 1
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          stage: co_process
+          address: ss-localhost
+  description: "Read a string from the input.  Do nslookup on that string, without checking first if it has any command separators.  This allows the user to run arbitrary commands.\n\n"
+  exploits:
+    - inputs:
+        - source_enum: 5
+          stage: co_process
+          value_encoding: none
+          value_type_enum: 0
+          source: socket_input
+          id: source
+          address: ss-localhost
+          stage_enum: 1
+          value: 10; ls -la
+          ordinal: 1
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - address: ss-localhost
+          id: source
+          value_encoding: none
+          source: socket_input
+          stage: co_process
+          value_type_enum: 0
+          stage_enum: 1
+          value: localhost; echo Hello world
+          source_enum: 5
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpjMyhhe_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpjMyhhe_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpjMyhhe_ss_testcase/src-rose/libavfilter/avfilter.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_50
+  - line_number: 0
+    file_name: /tmp/tmpjMyhhe_ss_testcase/src-rose/libavfilter/avfilter.c
+    feature: interprocedural_50
+    feature_group: control_flow
+    function_name: stonesoup_handle_taint

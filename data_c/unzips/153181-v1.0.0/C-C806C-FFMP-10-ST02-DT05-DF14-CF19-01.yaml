@@ -1,0 +1,154 @@
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      value: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+      value_encoding: none
+      value_type: USE_TEXT_DIRECTLY
+      value_type_enum: 0
+      ordinal: 1
+      name: DETAILIST_ITEM
+    - source: file_content_input
+      source_enum: 3
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 2
+      name: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+  description: "Has a buffer declared on the heap. malloc(64*sizeOf(char)) If input is shorter than 64 it will overflowdue to using improper sizeof and strlen checking\n\n"
+  exploits:
+    - inputs:
+        - stage_enum: 0
+          value_type_enum: 0
+          ordinal: 1
+          name: DETAILIST_ITEM
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          source: env_var_input
+          stage: pre_process
+          source_enum: 2
+        - source_enum: 3
+          source: file_content_input
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          value: AAAAAAAAAAAAAAA
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          stage_enum: 0
+          value: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          ordinal: 1
+          name: DETAILIST_ITEM
+        - source: file_content_input
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          id: source
+          ordinal: 2
+          name: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          value: Short is now bad
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - source: env_var_input
+          stage_enum: 0
+          stage: pre_process
+          source_enum: 2
+          value_type: USE_TEXT_DIRECTLY
+          value: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          value_encoding: none
+          ordinal: 1
+          name: DETAILIST_ITEM
+          value_type_enum: 0
+        - value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          source: file_content_input
+          stage: pre_process
+          source_enum: 3
+          name: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          ordinal: 2
+          stage_enum: 0
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAA
+          value_type_enum: 0
+    - inputs:
+        - source_enum: 2
+          source: env_var_input
+          ordinal: 1
+          stage_enum: 0
+          stage: pre_process
+          name: DETAILIST_ITEM
+          value: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          value_type_enum: 0
+        - value_encoding: none
+          source_enum: 3
+          stage_enum: 0
+          stage: pre_process
+          source: file_content_input
+          id: source
+          name: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          ordinal: 2
+          value: Hello World!  If this statement isn't more than 64 characters, it will go badly
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage_enum: 0
+          value_encoding: none
+          stage: pre_process
+          value: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          name: DETAILIST_ITEM
+        - value_type: USE_TEXT_DIRECTLY
+          ordinal: 2
+          value_encoding: none
+          id: source
+          source: file_content_input
+          name: /opt/stonesoup/workspace/testData/buffoon_nonadaptor/encolden_timeserver.txt
+          source_enum: 3
+          stage: pre_process
+          stage_enum: 0
+          value_type_enum: 0
+          value: Short is good for buffer overflows, unless you make a mistake and get it wrong
+code_complexity_features:
+  - feature: FILE_CONTENTS
+    file_name: /tmp/tmp4pmmZd_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: source_taint
+  - file_name: /tmp/tmp4pmmZd_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: data_type
+    feature: struct
+  - file_name: /tmp/tmp4pmmZd_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_nonlinear_expression
+  - file_name: /tmp/tmp4pmmZd_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: control_flow
+    feature: recursive
+description: "Creating test case using base program.\nAdded an environment variable read to get a filename to read in the file contents using an fread operation within the function\nCompleted injection.\n"

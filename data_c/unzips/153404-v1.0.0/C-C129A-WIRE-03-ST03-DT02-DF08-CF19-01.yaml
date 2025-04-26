@@ -1,0 +1,100 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - port: 8887
+          source_enum: 5
+          stage_enum: 1
+          ordinal: 1
+          id: source
+          address: ss-localhost
+          stage: co_process
+          value: "{a+b|c+d}"
+          value_encoding: none
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+    - inputs:
+        - value: "!a*b(c*d-1)"
+          port: 8887
+          stage_enum: 1
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          value_encoding: none
+          ordinal: 1
+          source_enum: 5
+          source: socket_input
+          stage: co_process
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - value: exampleofgoodinput
+          value_encoding: none
+          value_type_enum: 0
+          stage: co_process
+          source_enum: 5
+          value_type: USE_TEXT_DIRECTLY
+          stage_enum: 1
+          address: ss-localhost
+          source: socket_input
+          ordinal: 1
+          port: 8887
+          id: source
+    - inputs:
+        - source_enum: 5
+          port: 8887
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          stage_enum: 1
+          id: source
+          ordinal: 1
+          stage: co_process
+          value: abcd12345ABCDE
+          value_type_enum: 0
+          value_encoding: none
+    - inputs:
+        - ordinal: 1
+          value: R0G3RR4881T
+          stage_enum: 1
+          value_type: USE_TEXT_DIRECTLY
+          source: socket_input
+          value_encoding: none
+          value_type_enum: 0
+          id: source
+          port: 8887
+          source_enum: 5
+          stage: co_process
+          address: ss-localhost
+  base_inputs:
+    - stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+      source: socket_input
+      source_enum: 5
+      stage: co_process
+  description: "Good input:1) environment variable contains only alphanumeric charactersBad input:1) environment variable contains * or -.  + causes infinte loop\n\n"
+code_complexity_features:
+  - file_name: /tmp/tmpnLF6SD_ss_testcase/src-rose/epan/stream.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpnLF6SD_ss_testcase/src-rose/epan/stream.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpnLF6SD_ss_testcase/src-rose/epan/stream.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: index_alias_2
+  - function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    file_name: /tmp/tmpnLF6SD_ss_testcase/src-rose/epan/stream.c
+    feature: recursive

@@ -1,0 +1,106 @@
+io_pair:
+  description: "Create a function pointer on the stack.  If the input length is not equal to 10, set the function pointer to a function.  Try to use the function pointer. This will seg fault if the input length is exactly 10.\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 1458
+      size: 40
+      flags: 950
+  exploits:
+    - inputs:
+        - value_encoding: none
+          value_type_enum: 0
+          source: shared_memory_input
+          flags: 950
+          source_enum: 6
+          value_type: USE_TEXT_DIRECTLY
+          stage: pre_process
+          stage_enum: 0
+          value: 0123456789
+          id: source
+          ordinal: 1
+          key: 1458
+          size: 40
+    - inputs:
+        - value_type_enum: 0
+          source_enum: 6
+          stage: pre_process
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          flags: 950
+          value: 10 chars..
+          stage_enum: 0
+          id: source
+          source: shared_memory_input
+          size: 40
+          key: 1458
+          ordinal: 1
+  benigns:
+    - inputs:
+        - value_encoding: none
+          source_enum: 6
+          source: shared_memory_input
+          stage: pre_process
+          stage_enum: 0
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          key: 1458
+          flags: 950
+          value: AAAAAAAAAAA
+          size: 40
+          value_type_enum: 0
+    - inputs:
+        - stage: pre_process
+          size: 40
+          source: shared_memory_input
+          source_enum: 6
+          value_type_enum: 0
+          stage_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          flags: 950
+          ordinal: 1
+          key: 1458
+          value_encoding: none
+          value: 12345 Hello world!
+    - inputs:
+        - value: This string does not have 10 characters
+          key: 1458
+          size: 40
+          source: shared_memory_input
+          flags: 950
+          ordinal: 1
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          stage: pre_process
+          value_type_enum: 0
+          stage_enum: 0
+          id: source
+code_complexity_features:
+  - file_name: /tmp/tmpaR4rMH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: source_taint
+    feature: SHARED_MEMORY
+  - file_name: /tmp/tmpaR4rMH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpaR4rMH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpaR4rMH_ss_testcase/src-rose/src/dfa.c
+    function_name: dfamust
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

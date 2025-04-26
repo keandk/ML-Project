@@ -1,0 +1,106 @@
+io_pair:
+  benigns:
+    - inputs:
+        - value_encoding: none
+          flags: 950
+          ordinal: 1
+          id: source
+          source: shared_memory_input
+          stage_enum: 0
+          key: 8966
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value: /etc/passwd
+          stage: pre_process
+          size: 20
+          source_enum: 6
+    - inputs:
+        - size: 20
+          value: /etc/ssh/ssh_config
+          value_type: USE_TEXT_DIRECTLY
+          ordinal: 1
+          source: shared_memory_input
+          id: source
+          stage: pre_process
+          value_type_enum: 0
+          value_encoding: none
+          key: 8966
+          stage_enum: 0
+          source_enum: 6
+          flags: 950
+    - inputs:
+        - key: 8966
+          size: 20
+          stage: pre_process
+          id: source
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          source: shared_memory_input
+          stage_enum: 0
+          value_encoding: none
+          source_enum: 6
+          value: /usr/bin/gcc
+          value_type_enum: 0
+          ordinal: 1
+  exploits:
+    - inputs:
+        - value: ../testData
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          key: 8966
+          value_type_enum: 0
+          source: shared_memory_input
+          flags: 950
+          stage: pre_process
+          source_enum: 6
+          stage_enum: 0
+          size: 20
+          ordinal: 1
+          value_encoding: none
+    - inputs:
+        - value: ../testOutput
+          key: 8966
+          value_type: USE_TEXT_DIRECTLY
+          size: 20
+          flags: 950
+          id: source
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 1
+          source: shared_memory_input
+          stage_enum: 0
+          value_encoding: none
+          source_enum: 6
+  description: "Has a buffer declared on the heap in a struct. malloc(20*sizeOf(char)) If input is resolved to more  than 20 chars it will overflow\n\n"
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage_enum: 0
+      ordinal: 1
+      size: 20
+      id: source
+      stage: pre_process
+      key: 8966
+      flags: 950
+code_complexity_features:
+  - function_name: tile_attach
+    feature: SHARED_MEMORY
+    feature_group: source_taint
+    line_number: 0
+    file_name: /tmp/tmp5EGwzx_ss_testcase/src-rose/app/base/tile.c
+  - feature_group: data_type
+    file_name: /tmp/tmp5EGwzx_ss_testcase/src-rose/app/base/tile.c
+    function_name: tile_attach
+    line_number: 0
+    feature: heap_pointer
+  - feature_group: data_flow
+    function_name: tile_attach
+    line_number: 0
+    feature: buffer_address_array_index
+    file_name: /tmp/tmp5EGwzx_ss_testcase/src-rose/app/base/tile.c
+  - feature_group: control_flow
+    function_name: tile_attach
+    line_number: 0
+    feature: sequence
+    file_name: /tmp/tmp5EGwzx_ss_testcase/src-rose/app/base/tile.c
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"

@@ -1,0 +1,112 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "properties": {
+        "id": 152993,
+        "version": "1.0.0",
+        "type": "source code",
+        "status": "candidate",
+        "submissionDate": "2015-10-06",
+        "language": "c",
+        "author": "IARPA STONESOUP Test and Evaluation team",
+        "description": "This test case implements an file read of 16 characters which does not properly null terminate the copied string if the original string is 16 characters in length or greater. The test case takes the name of a file, opens the file, and reads up to the first 16 characters into an internal buffer of size 16, allocated on the stack. This buffer is then copied via strcpy into a heap allocated buffer of size 64, however, if the original file read did not copy a null terminator, the strcpy will copy everything it finds in memory after the input string until it encounters a null terminator. This will cause a buffer overflow and lead to a segfault.   \nMetadata\n - Base program: OpenSSL\n - Source Taint: FILE_CONTENTS\n - Data Type: ARRAY\n - Data Flow: VAR_ARG_LIST\n - Control Flow: UNCONDITIONAL_JUMP",
+        "state": "bad",
+        "application": "cpe:2.3:a:openssl:openssl:1.0.1e:*:*:*:*:*:*:*",
+        "dependencies": [
+          "stonesoup-vm-v3.0",
+          "openssl-v1.0.1e"
+        ]
+      },
+      "tool": {
+        "driver": {
+          "name": "SARD - SAMATE",
+          "fullName": "Software Assurance Reference Dataset Project",
+          "informationUri": "https://samate.nist.gov/SARD/",
+          "version": "5.0.0",
+          "organization": "NIST",
+          "supportedTaxonomies": [
+            {
+              "name": "CWE",
+              "index": 0
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "C-C170B-OSSL-06-ST02-DT01-DF12-CF24-01.xml"
+          },
+          "length": 62291,
+          "sourceLanguage": "xml",
+          "hashes": {
+            "sha-256": "1f117b16bb18e342bc9e73f4ac36510be797c9e973d2efde265981ec02e3f64c"
+          }
+        },
+        {
+          "location": {
+            "uri": "src/crypto/mem_dbg.c"
+          },
+          "length": 31800,
+          "sourceLanguage": "c",
+          "hashes": {
+            "sha-256": "2dd89bd3d97efbe243cdef96b549b42c393ecafb454b8562295f43ec66e8e244"
+          }
+        }
+      ],
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "version": "4.6",
+          "informationUri": "https://cwe.mitre.org/data/published/cwe_v4.6.pdf",
+          "downloadUri": "https://cwe.mitre.org/data/xml/cwec_v4.6.xml.zip",
+          "organization": "MITRE",
+          "shortDescription": {
+            "text": "The MITRE Common Weakness Enumeration"
+          },
+          "isComprehensive": false,
+          "taxa": [
+            {
+              "id": "170",
+              "name": "Improper Null Termination"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "CWE-170",
+          "message": {
+            "text": "Improper Null Termination."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/crypto/mem_dbg.c",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 945,
+                  "endLine": 952
+                }
+              }
+            }
+          ],
+          "taxa": [
+            {
+              "toolComponent": {
+                "name": "CWE",
+                "index": 0
+              },
+              "id": "170",
+              "index": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

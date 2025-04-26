@@ -1,0 +1,100 @@
+description: "Creating test case using base program.\nAdded a Socket Server to accept communication from untrusted source.\nCompleted injection.\n"
+io_pair:
+  exploits:
+    - inputs:
+        - source: socket_input
+          source_enum: 5
+          stage: co_process
+          value_type_enum: 0
+          stage_enum: 1
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          id: source
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - stage_enum: 1
+          id: source
+          ordinal: 1
+          value_type_enum: 0
+          address: ss-localhost
+          port: 8887
+          stage: co_process
+          value_encoding: none
+          source: socket_input
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 5
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+  benigns:
+    - inputs:
+        - stage_enum: 1
+          value_encoding: none
+          source: socket_input
+          stage: co_process
+          source_enum: 5
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          address: ss-localhost
+          value_type_enum: 0
+          id: source
+          value: AAAAAAAAAAAAAAAAAAAAAAA
+          ordinal: 1
+    - inputs:
+        - stage_enum: 1
+          source_enum: 5
+          stage: co_process
+          id: source
+          ordinal: 1
+          address: ss-localhost
+          port: 8887
+          value_type: USE_TEXT_DIRECTLY
+          value: Hello World!
+          value_encoding: none
+          value_type_enum: 0
+          source: socket_input
+    - inputs:
+        - value: Short is good
+          address: ss-localhost
+          value_type: USE_TEXT_DIRECTLY
+          port: 8887
+          value_encoding: none
+          source: socket_input
+          value_type_enum: 0
+          source_enum: 5
+          stage: co_process
+          ordinal: 1
+          id: source
+          stage_enum: 1
+  base_inputs:
+    - source: socket_input
+      source_enum: 5
+      stage: co_process
+      stage_enum: 1
+      id: source
+      ordinal: 1
+      address: ss-localhost
+      port: 8887
+  description: "Has a fixed heap buffer of size 64, allocated within a struct When input has a larger size, the heap buffer will be over read\n\n"
+code_complexity_features:
+  - function_name: stonesoup_handle_taint
+    file_name: /tmp/tmpjxa6tP_ss_testcase/src-rose/color.c
+    line_number: 0
+    feature_group: source_taint
+    feature: SOCKET
+  - file_name: /tmp/tmpjxa6tP_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_type
+    feature: simple
+  - file_name: /tmp/tmpjxa6tP_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: data_flow
+    feature: basic
+  - file_name: /tmp/tmpjxa6tP_ss_testcase/src-rose/color.c
+    function_name: stonesoup_handle_taint
+    line_number: 0
+    feature_group: control_flow
+    feature: sequence

@@ -1,0 +1,106 @@
+io_pair:
+  exploits:
+    - inputs:
+        - ordinal: 1
+          source: shared_memory_input
+          id: source
+          key: 2493
+          source_enum: 6
+          value_type_enum: 0
+          stage: pre_process
+          value_encoding: none
+          flags: 950
+          stage_enum: 0
+          value: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          size: 596
+          value_type: USE_TEXT_DIRECTLY
+    - inputs:
+        - value_type_enum: 0
+          value_encoding: none
+          flags: 950
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 6
+          source: shared_memory_input
+          stage: pre_process
+          id: source
+          stage_enum: 0
+          key: 2493
+          ordinal: 1
+          size: 596
+          value: This is probably going to overflow a buffer of some sort.  Let's run it anyway and see what happens.  I hope that everything turns out ok, because I would love to see what this looks like in all CAPS.  Converting ASCII characters to upper case is easy, you can either call a system function, or just add the standard difference between the start of the two character sets.  But, I am sure there is a reason that system functions exist for this sort of functionality.
+  base_inputs:
+    - source: shared_memory_input
+      source_enum: 6
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      key: 2493
+      size: 596
+      flags: 950
+  benigns:
+    - inputs:
+        - ordinal: 1
+          stage: pre_process
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+          source_enum: 6
+          value: AAA
+          key: 2493
+          size: 596
+          flags: 950
+          source: shared_memory_input
+          value_type_enum: 0
+          stage_enum: 0
+    - inputs:
+        - ordinal: 1
+          stage: pre_process
+          source_enum: 6
+          source: shared_memory_input
+          stage_enum: 0
+          size: 596
+          key: 2493
+          flags: 950
+          value_type_enum: 0
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          value: Hellow world!
+          value_encoding: none
+    - inputs:
+        - id: source
+          source_enum: 6
+          value: Good-bye cruel world!
+          ordinal: 1
+          key: 2493
+          flags: 950
+          stage: pre_process
+          stage_enum: 0
+          size: 596
+          value_type: USE_TEXT_DIRECTLY
+          value_type_enum: 0
+          value_encoding: none
+          source: shared_memory_input
+  description: "Has a fixed heap buffer of size 64, allocated within a struct (char [64])\n\n"
+description: "Creating test case using base program.\nAdded an environment variable read to get a key in order to read in data from shared memory.\nCompleted injection.\n"
+code_complexity_features:
+  - file_name: /tmp/tmpLP4Liu_ss_testcase/src-rose/app/base/tile-swap.c
+    feature_group: source_taint
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature: SHARED_MEMORY
+  - feature_group: data_type
+    feature: heap_pointer
+    file_name: /tmp/tmpLP4Liu_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+  - file_name: /tmp/tmpLP4Liu_ss_testcase/src-rose/app/base/tile-swap.c
+    function_name: tile_swap_find_offset
+    line_number: 0
+    feature: var_arg_list
+    feature_group: data_flow
+  - function_name: trechmannite_goldenpert
+    line_number: 0
+    feature_group: control_flow
+    feature: infinite_loop
+    file_name: /tmp/tmpLP4Liu_ss_testcase/src-rose/app/base/tile-swap.c

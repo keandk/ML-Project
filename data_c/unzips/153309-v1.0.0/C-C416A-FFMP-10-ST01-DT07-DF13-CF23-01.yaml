@@ -1,0 +1,94 @@
+code_complexity_features:
+  - file_name: /tmp/tmpn054QO_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: source_taint
+    feature: ENVIRONMENT_VARIABLE
+  - file_name: /tmp/tmpn054QO_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: data_type
+    feature: union
+  - file_name: /tmp/tmpn054QO_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature_group: data_flow
+    feature: address_as_linear_expression
+  - feature_group: control_flow
+    file_name: /tmp/tmpn054QO_ss_testcase/src-rose/libavformat/mux.c
+    function_name: avformat_write_header
+    line_number: 0
+    feature: set_jump_long_jump
+io_pair:
+  base_inputs:
+    - source: env_var_input
+      source_enum: 2
+      stage: pre_process
+      stage_enum: 0
+      id: source
+      ordinal: 1
+      name: GUMPTIONS_UTTERMOST
+  exploits:
+    - inputs:
+        - value_type_enum: 0
+          stage: pre_process
+          source: env_var_input
+          id: source
+          source_enum: 2
+          stage_enum: 0
+          name: GUMPTIONS_UTTERMOST
+          value: abc
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          value_encoding: none
+    - inputs:
+        - value_encoding: none
+          source_enum: 2
+          value: this string begins with a lower-case letter
+          source: env_var_input
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          name: GUMPTIONS_UTTERMOST
+          value_type_enum: 0
+  benigns:
+    - inputs:
+        - value_type_enum: 0
+          source_enum: 2
+          value_encoding: none
+          value_type: USE_TEXT_DIRECTLY
+          id: source
+          source: env_var_input
+          stage_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value: AAA
+          name: GUMPTIONS_UTTERMOST
+    - inputs:
+        - source: env_var_input
+          stage_enum: 0
+          name: GUMPTIONS_UTTERMOST
+          value_encoding: none
+          id: source
+          value_type_enum: 0
+          stage: pre_process
+          ordinal: 1
+          value: 12345 Hello world!
+          value_type: USE_TEXT_DIRECTLY
+          source_enum: 2
+    - inputs:
+        - source: env_var_input
+          source_enum: 2
+          stage: pre_process
+          ordinal: 1
+          value: "[Good-bye cruel world!]"
+          stage_enum: 0
+          id: source
+          value_type: USE_TEXT_DIRECTLY
+          name: GUMPTIONS_UTTERMOST
+          value_encoding: none
+          value_type_enum: 0
+  description: "Malloc a buffer.  Copy the input string to the buffer.  If the first character is 'a' or higher, free the buffer. Use the buffer.  This will cause a seg fault if the buffer was previously freed.\n\n"
+description: "Creating test case using base program.\nAdded an environment variable read to the function definition.\nCompleted injection.\n"
