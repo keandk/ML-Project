@@ -1,7 +1,7 @@
 import os
 import json
 
-directory = r"data_cpp\json"
+directory = r"data_java\json"
 
 # Duyệt từng file trong thư mục
 count_bad = 0
@@ -22,6 +22,7 @@ for filename in os.listdir(directory):
         for testcase in testcases:
             # Bạn có thể xử lý mỗi testcase ở đây
             
-            if testcase['sarif']['runs'][0]['properties']['state'] == 'bad':
+            if testcase['sarif']['runs'][0]['properties']['state'] == 'good':
                 count_bad += 1
-print(f"🔚 Tổng số test cases 'bad': {count_bad}")
+                print(testcase['identifier'])
+print(f"🔚 Tổng số test cases 'good': {count_bad}")
