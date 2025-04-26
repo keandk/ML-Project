@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project base_program="J-TREE" language="JAVA" name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01" targeted_architecture="ANY" targeted_os="LINUX" test_case_type="ALL" xmlns="urn:stonesoup:project">
+    <description>Using Hibernate to execute a dynamic SQL statement with
+ built-in user-controlled input can allow an attacker to modify the
+ statement's meaning or to execute arbitrary SQL commands.
+</description>
+    <additional_information>
+        <keyvalue key="JAVA_MAIN">stonesoup.jtree.Main</keyvalue>
+        <keyvalue key="JAVA_CLASSPATH">$SS_TC_ROOT/$SS_TC_INSTALL:$SS_TC_ROOT/$SS_TC_INSTALL/lib/*:$SS_TC_ROOT/$SS_TC_INSTALL/lib/opt/*:$SS_TC_DEPS/java/stonesoup/hibernate/postgres/*:$SS_TC_DEPS/java/stonesoup/socket/*:$SS_TC_DEPS/java/stonesoup/lttng/lttng-stonesoup-0.1.jar</keyvalue>
+        <keyvalue key="algorithmic_variant_name">UNSPECIFIED</keyvalue>
+        <keyvalue key="root_cause">UNSPECIFIED</keyvalue>
+    </additional_information>
+    <structure install="install" iodata="testData" scoredata="testOutput" scripts="scripts" source="src"/>
+    <run_command>java $SS_JAVA_OPTS -Djava.library.path=$SS_TC_DEPS/lib64/ -cp &quot;$SS_JAVA_CLASSPATH&quot; stonesoup.jtree.Main</run_command>
+    <weakness generation_method="FAULT_INJECTED">
+        <variant cwe="CWE-564" name="CWE-564-B">
+            <crossover_point file_name="/tmp/tmpchovjK_ss_testcase/src/src/main/java/stonesoup/jtree/JTreeOptions.java" line_number="0">
+                <method name="parseOptions"/>
+            </crossover_point>
+            <trigger_point file_name="/tmp/tmpchovjK_ss_testcase/src/src/main/java/stonesoup/jtree/JTreeOptions.java" line_number="0">
+                <method name="parseOptions"/>
+            </trigger_point>
+        </variant>
+        <features>
+            <taint_source file_name="/tmp/tmpchovjK_ss_testcase/src/src/main/java/stonesoup/jtree/JTreeOptions.java" line_number="0" type="SOCKET">
+                <method name="parseOptions"/>
+            </taint_source>
+            <data_type file_name="/tmp/tmpchovjK_ss_testcase/src/src/main/java/stonesoup/jtree/JTreeOptions.java" line_number="0" type="SIMPLE">
+                <method name="parseOptions"/>
+            </data_type>
+            <data_flow file_name="/tmp/tmpchovjK_ss_testcase/src/src/main/java/stonesoup/jtree/JTreeOptions.java" line_number="0" type="BASIC">
+                <method name="parseOptions"/>
+            </data_flow>
+            <control_flow file_name="/tmp/tmpchovjK_ss_testcase/src/src/main/java/stonesoup/jtree/JTreeOptions.java" line_number="0" type="SEQUENCE">
+                <method name="parseOptions"/>
+            </control_flow>
+        </features>
+    </weakness>
+    <build_commands>
+        <command>env ANT_HOME=$SS_TC_DEPS/ant ant $SS_ANT_OPTS -Dstonesoup.database.postgres.required=no -Dstonesoup.hibernate.postgres.required=yes -Dstonesoup.hibernate.mysql.required=no -Dstonesoup.database.mysql.required=no -Dstonesoup.socket.required=yes -lib $SS_TC_DEPS/java/stonesoup/lttng/lttng-stonesoup-0.1.jar -Dstonesoup.socket.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/socket&quot; -Dstonesoup.hibernate.mysql.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/hibernate/mysql&quot; -Dstonesoup.hibernate.postgres.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/hibernate/postgres&quot; -Dstonesoup.database.mysql.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/database/mysql&quot; -Dstonesoup.database.postgres.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/database/postgres&quot; -Dstonesoup.lttng.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/lttng&quot; -Dstonesoup.lttng.dummy.lib.dir=&quot;$SS_TC_DEPS/java/stonesoup/lttng-dummy&quot; -Ddir.dist=$SS_TC_ROOT/$SS_TC_INSTALL  build</command>
+        <command>cp -r lib $SS_TC_ROOT/$SS_TC_INSTALL</command>
+    </build_commands>
+    <iopairs>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-GOOD-01" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_ssjfksluxehsnnmh" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_ssjfksluxehsnnmh.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_ssjfksluxehsnnmh</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">input/good-01</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_Tipk3dQTWl" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;USA&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_ssjfksluxehsnnmh" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_gRJBaP0fh5" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-01-Default">
+                <formula name="GOOD-01-Default">STDOUT-01 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-01">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-01/output.txt</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-GOOD-02" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_dmsvfjirbohopicj" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_dmsvfjirbohopicj.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_dmsvfjirbohopicj</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-l 1 input/good-02/</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_ezx3RvlsvL" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;Germany&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_dmsvfjirbohopicj" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_THGE0UWlmh" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-02-Default">
+                <formula name="GOOD-02-Default">STDOUT-02 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-02">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-02/output.txt</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-GOOD-03" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_quykqmsgneidompe" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_quykqmsgneidompe.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_quykqmsgneidompe</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">input/good-03/jtree-good-03.tar.gz</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_HmMsyxDfyk" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;Finland&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_quykqmsgneidompe" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_GihNMbtEj5" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-03-Default">
+                <formula name="GOOD-03-Default">STDOUT-03 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-03">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-03/output.txt</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-GOOD-04" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_uprtqusdldafmurs" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_uprtqusdldafmurs.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_uprtqusdldafmurs</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">-l 2 input/good-04/jtree-good-04.tar.gz</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_AuPRX7rigc" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;USA&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_uprtqusdldafmurs" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_f23gIAnL5y" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-04-Default">
+                <formula name="GOOD-04-Default">STDOUT-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-04">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-04/output.txt</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-GOOD-05" reset_scheme="NONE" timeout="300" type="GOOD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>NONE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_xdwilwwkmcllvrkm" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_xdwilwwkmcllvrkm.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_xdwilwwkmcllvrkm</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">input/good-01/ input/good-02/ input/good-03/jtree-good-03.tar.gz input/good-04/jtree-good-04.tar.gz</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_YQpZDPFb06" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;Germany&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_xdwilwwkmcllvrkm" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_ygGOxJJtlW" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="GOOD-05-Default">
+                <formula name="GOOD-05-Default">STDOUT-05-01 AND STDOUT-05-02 AND STDOUT-05-03 AND STDOUT-05-04 AND NOT TIMEOUT AND NOT CONTROLLED_EXIT</formula>
+            </scoring_formula>
+            <output_checks>
+                <compare_check check_type="CONTAINS" name="STDOUT-05-01">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/output1.txt</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-05-02">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/output2.txt</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-05-03">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/output3.txt</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="STDOUT-05-04">
+                    <actual output_type="STANDARD_OUT"></actual>
+                    <expected encoding="STRING" type="USE_FILE_CONTENTS">good-05/output4.txt</expected>
+                </compare_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="TIMEOUT" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="CONTROLLED_EXIT" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+            </output_checks>
+        </iopair>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-BAD-01" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_byritndbvznnlooj" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_byritndbvznnlooj.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_byritndbvznnlooj</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">input/good-03/jtree-good-03.tar.gz</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_4NlJ4093EFAqoWEQqr5F" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;x' or 'x'='x&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_byritndbvznnlooj" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_zIJrE4eSxm7ox8WkaYKw" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="hibernate_sql_output_formula_JxZyqWN6VQ">
+                <formula name="hibernate_sql_output_formula_JxZyqWN6VQ">weakness_started_NX1tt3TXhg64meGQ9yHR AND ((NOT PERFORMER AND (hibernate_sql_output_GXFDBcnBnJ OR hibernate_sql_output_J1vawAIKbJ) AND NOT timeout_oH0gLner72) or (PERFORMER AND NOT ((hibernate_sql_output_GXFDBcnBnJ OR hibernate_sql_output_J1vawAIKbJ) OR timeout_oH0gLner72 OR controlled_exit_SvYtbVaGyN)))</formula>
+                <formula name="no_weakness_started_formula_IjKhFN3YPo">(NOT PERFORMER AND (hibernate_sql_output_GXFDBcnBnJ OR hibernate_sql_output_J1vawAIKbJ) AND NOT timeout_oH0gLner72) or (PERFORMER AND NOT ((hibernate_sql_output_GXFDBcnBnJ OR hibernate_sql_output_J1vawAIKbJ) OR timeout_oH0gLner72 OR controlled_exit_SvYtbVaGyN))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_oH0gLner72" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_SvYtbVaGyN" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_FX5P4em21o" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="CONTAINS" name="hibernate_sql_output_GXFDBcnBnJ">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Zbyszek Piestrzeniewicz</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="hibernate_sql_output_J1vawAIKbJ">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">South House 300 Queensbridge</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_NX1tt3TXhg64meGQ9yHR">
+                    <actual encoding="STRING" input_id_ref="lttng_output_zIJrE4eSxm7ox8WkaYKw" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+        <iopair name="J-C564B-JTRE-01-ST03-DT02-DF11-CF20-01-BAD-02" reset_scheme="NONE" timeout="300" type="BAD">
+            <description>Environment variable defining test value.
+</description>
+            <technical_impact>EXECUTE_UNAUTHORIZED_CODE</technical_impact>
+            <pre_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">printf 'env SS_DBPGDATABASE;\n' | tee nginx_conf_env.txt</script>
+                </process>
+                <process>
+                    <database database_name="northwind_lowercase_wtaavzzhztwkmjjs" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_FILE_CONTENTS">/opt/stonesoup/workspace/scripts/northwind_create_northwind_lowercase_wtaavzzhztwkmjjs.sql</database>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_DBPGDATABASE" type="USE_TEXT">northwind_lowercase_wtaavzzhztwkmjjs</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir $SS_TC_ROOT/logs/execute/lttng</script>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="LTTNG_HOME" type="USE_TEXT">$SS_TC_ROOT/logs/execute/lttng</environment_variable>
+                </process>
+                <process>
+                    <environment_variable encoding="STRING" key="SS_RUN_COMMAND_LD_PRELOAD" type="USE_TEXT">$SS_TC_DEPS/lib64/liblttng-stonesoup-java.so:$SS_TC_DEPS/lib64/liblttng-ust-fork.so</environment_variable>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">mkdir -p $SS_TC_DEPS/var/run/lttng</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">$SS_TC_DEPS/bin/lttng create &amp;&amp; $SS_TC_DEPS/bin/lttng enable-event -u -a &amp;&amp; $SS_TC_DEPS/bin/lttng start</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">rm -rf $SS_TC_ROOT/lockDir</script>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" type="USE_TEXT">sleep 2 &amp;&amp; printf &quot;Sleeping to allow DB to be created.&quot;</script>
+                </process>
+            </pre_processes>
+            <run_command encoding="STRING" preprend_runcommand="true" type="USE_TEXT">input/good-01</run_command>
+            <co_processes scheme="SEQUENCE">
+                <process>
+                    <script background="false" encoding="STRING" input_id="socket_Pc1hpfiPNC8hBIPfSbxT" type="USE_TEXT">/opt/stonesoup/workspace/scripts/service_mon.sh ss-localhost 8887 &amp;&amp; curl -v --data-urlencode data=&quot;x' or city='London&quot; --header &quot;If-Match: weak_taint_source_value&quot; --request POST --no-buffer --output /opt/stonesoup/workspace/testData/logfile.txt --silent --show-error http://ss-localhost:8887</script>
+                </process>
+            </co_processes>
+            <post_processes scheme="SEQUENCE">
+                <process>
+                    <database database_name="northwind_lowercase_wtaavzzhztwkmjjs" database_type="POSTGRESQL" encoding="STRING" server="ss-db-postgres" type="USE_TEXT">DROP DATABASE IF EXISTS $SS_DBPGDATABASE;</database>
+                </process>
+                <process>
+                    <script background="false" encoding="STRING" input_id="lttng_output_JGhdL4WWI7D0eKRH6IfO" type="USE_TEXT">$SS_TC_DEPS/bin/lttng stop &amp;&amp; $SS_TC_DEPS/bin/lttng view &amp;&amp; $SS_TC_DEPS/bin/lttng destroy</script>
+                </process>
+            </post_processes>
+            <scoring_formula default="hibernate_sql_output_formula_b9RSUHhReO">
+                <formula name="hibernate_sql_output_formula_b9RSUHhReO">weakness_started_Wos2eayBXNZdKw6zfPWc AND ((NOT PERFORMER AND (hibernate_sql_output_mK5rdp6QQP OR hibernate_sql_output_CiESbE3ECD) AND NOT timeout_dSl54fuQXd) or (PERFORMER AND NOT ((hibernate_sql_output_mK5rdp6QQP OR hibernate_sql_output_CiESbE3ECD) OR timeout_dSl54fuQXd OR controlled_exit_2kEPWl5Wdl)))</formula>
+                <formula name="no_weakness_started_formula_8VnScV9itv">(NOT PERFORMER AND (hibernate_sql_output_mK5rdp6QQP OR hibernate_sql_output_CiESbE3ECD) AND NOT timeout_dSl54fuQXd) or (PERFORMER AND NOT ((hibernate_sql_output_mK5rdp6QQP OR hibernate_sql_output_CiESbE3ECD) OR timeout_dSl54fuQXd OR controlled_exit_2kEPWl5Wdl))</formula>
+            </scoring_formula>
+            <output_checks>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="timeout_dSl54fuQXd" type="USE_TEXT">DOES_NOT_RETURN</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="controlled_exit_2kEPWl5Wdl" type="USE_TEXT">CONTROLLED_EXIT</simple_check>
+                <simple_check check_type="SPECIAL" encoding="STRING" name="continued_execution_BfqcJGlLbp" type="USE_TEXT">CONTINUED_EXECUTION</simple_check>
+                <compare_check check_type="CONTAINS" name="hibernate_sql_output_mK5rdp6QQP">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">Zbyszek Piestrzeniewicz</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="hibernate_sql_output_CiESbE3ECD">
+                    <actual encoding="STRING" output_type="FILE_CONTENTS">logfile.txt</actual>
+                    <expected encoding="STRING" type="USE_TEXT">South House 300 Queensbridge</expected>
+                </compare_check>
+                <compare_check check_type="CONTAINS" name="weakness_started_Wos2eayBXNZdKw6zfPWc">
+                    <actual encoding="STRING" input_id_ref="lttng_output_JGhdL4WWI7D0eKRH6IfO" output_type="STANDARD_OUT">None</actual>
+                    <expected encoding="STRING" type="USE_TEXT">stonesoup_trace:weakness_start</expected>
+                </compare_check>
+            </output_checks>
+        </iopair>
+    </iopairs>
+</project>

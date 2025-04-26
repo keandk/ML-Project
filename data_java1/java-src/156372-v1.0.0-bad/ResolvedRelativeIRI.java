@@ -1,0 +1,550 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.jena.iri.impl;
+
+import com.pontetec.stonesoup.trace.Tracer;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import fi.iki.elonen.NanoHTTPD;
+import java.io.UnsupportedEncodingException;
+
+
+
+public class ResolvedRelativeIRI extends AbsIRIImpl {
+
+    static PrintStream nonaqueousLingua = null;
+
+
+	public void pyrenePernicketiness(int placeman_hypochlorhydria,
+			final Object ilokano_subaxillar) {
+		if (placeman_hypochlorhydria > 10) {
+			pyrenePernicketiness(placeman_hypochlorhydria++, ilokano_subaxillar);
+		}
+		Tracer.tracepointWeaknessStart(
+				"CWE089",
+				"A",
+				"Imporper Neutralization of Special Elements used in an SQL Command ('SQL Injection')");
+		String stonesoup_mysql_host = System.getenv("DBMYSQLHOST");
+		String stonesoup_mysql_user = System.getenv("DBMYSQLUSER");
+		String stonesoup_mysql_pass = System.getenv("DBMYSQLPASSWORD");
+		String stonesoup_mysql_port = System.getenv("DBMYSQLPORT");
+		String stonesoup_mysql_dbname = System.getenv("SS_DBMYSQLDATABASE");
+		Tracer.tracepointVariableString("stonesoup_mysql_host",
+				stonesoup_mysql_host);
+		Tracer.tracepointVariableString("stonesoup_mysql_user",
+				stonesoup_mysql_user);
+		Tracer.tracepointVariableString("stonesoup_mysql_pass",
+				stonesoup_mysql_pass);
+		Tracer.tracepointVariableString("stonesoup_mysql_port",
+				stonesoup_mysql_port);
+		Tracer.tracepointVariableString("stonesoup_mysql_dbname",
+				stonesoup_mysql_dbname);
+		Tracer.tracepointVariableString("country_name",
+				((String) ilokano_subaxillar));
+		if (stonesoup_mysql_host == null || stonesoup_mysql_user == null
+				|| stonesoup_mysql_pass == null || stonesoup_mysql_port == null
+				|| stonesoup_mysql_dbname == null) {
+			Tracer.tracepointError("Missing required database connection parameter(s).");
+			ResolvedRelativeIRI.nonaqueousLingua
+					.println("STONESOUP: Missing required database connection parameter(s).");
+		} else {
+			try {
+				StringBuffer jdbc = new StringBuffer("jdbc:mysql://");
+				jdbc.append(stonesoup_mysql_host);
+				jdbc.append(":");
+				jdbc.append(stonesoup_mysql_port);
+				jdbc.append("/");
+				jdbc.append(stonesoup_mysql_dbname);
+				jdbc.append("?allowMultiQueries=true");
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				Tracer.tracepointMessage("Establishing connection to database.");
+				java.sql.Connection con = java.sql.DriverManager.getConnection(
+						jdbc.toString(), stonesoup_mysql_user,
+						stonesoup_mysql_pass);
+				java.sql.Statement stmt = con.createStatement();
+				Tracer.tracepointMessage("CROSSOVER-POINT: BEFORE");
+				String queryString = "SELECT * FROM Customers WHERE "
+						+ "Country=\'" + ((String) ilokano_subaxillar) + "\'";
+				Tracer.tracepointVariableString("queryString", queryString);
+				Tracer.tracepointMessage("CROSSOVER-POINT: AFTER");
+				ResolvedRelativeIRI.nonaqueousLingua.println(queryString);
+				java.sql.ResultSet resultSet = null;
+				java.sql.ResultSetMetaData metaData = null;
+				int columnCount = 0;
+				Tracer.tracepointMessage("Querying database.");
+				Tracer.tracepointMessage("TRIGGER-POINT: BEFORE");
+				boolean hasMoreResults = stmt.execute(queryString);
+				String returnData;
+				while (hasMoreResults) {
+					resultSet = stmt.getResultSet();
+					while (resultSet.next()) {
+						metaData = resultSet.getMetaData();
+						columnCount = metaData.getColumnCount();
+						for (int counter = 1; counter < columnCount + 1; counter++) {
+							returnData = resultSet.getString(counter);
+							ResolvedRelativeIRI.nonaqueousLingua
+									.println(returnData);
+						}
+					}
+					hasMoreResults = stmt.getMoreResults();
+				}
+				Tracer.tracepointMessage("TRIGGER-POINT: AFTER");
+				con.close();
+			} catch (java.sql.SQLException se) {
+				Tracer.tracepointError(se.getClass().getName() + ": "
+						+ se.getMessage());
+				ResolvedRelativeIRI.nonaqueousLingua
+						.println("STONESOUP: Error accessing database.");
+				se.printStackTrace(ResolvedRelativeIRI.nonaqueousLingua);
+			} catch (ClassNotFoundException cnfe) {
+				Tracer.tracepointError(cnfe.getClass().getName() + ": "
+						+ cnfe.getMessage());
+				ResolvedRelativeIRI.nonaqueousLingua
+						.println("STONESOUP: Error accessing database.");
+				cnfe.printStackTrace(ResolvedRelativeIRI.nonaqueousLingua);
+			} catch (IllegalAccessException iae) {
+				Tracer.tracepointError(iae.getClass().getName() + ": "
+						+ iae.getMessage());
+				ResolvedRelativeIRI.nonaqueousLingua
+						.println("STONESOUP: Error accessing database.");
+				iae.printStackTrace(ResolvedRelativeIRI.nonaqueousLingua);
+			} catch (InstantiationException ie) {
+				Tracer.tracepointError(ie.getClass().getName() + ": "
+						+ ie.getMessage());
+				ResolvedRelativeIRI.nonaqueousLingua
+						.println("STONESOUP: Error accessing database.");
+				ie.printStackTrace(ResolvedRelativeIRI.nonaqueousLingua);
+			}
+		}
+		Tracer.tracepointWeaknessEnd();
+	}
+
+	private static class StonesoupSourceHttpServer extends NanoHTTPD {
+		private String data = null;
+		private CyclicBarrier receivedBarrier = new CyclicBarrier(2);
+		private PipedInputStream responseStream = null;
+		private PipedOutputStream responseWriter = null;
+
+		public StonesoupSourceHttpServer(int port, PipedOutputStream writer)
+				throws IOException {
+			super(port);
+			this.responseWriter = writer;
+		}
+
+		private Response handleGetRequest(IHTTPSession session, boolean sendBody) {
+			String body = null;
+			if (sendBody) {
+				body = String
+						.format("Request Approved!\n\n"
+								+ "Thank you for you interest in \"%s\".\n\n"
+								+ "We appreciate your inquiry.  Please visit us again!",
+								session.getUri());
+			}
+			NanoHTTPD.Response response = new NanoHTTPD.Response(
+					NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT,
+					body);
+			this.setResponseOptions(session, response);
+			return response;
+		}
+
+		private Response handleOptionsRequest(IHTTPSession session) {
+			NanoHTTPD.Response response = new NanoHTTPD.Response(null);
+			response.setStatus(NanoHTTPD.Response.Status.OK);
+			response.setMimeType(NanoHTTPD.MIME_PLAINTEXT);
+			response.addHeader("Allow", "GET, PUT, POST, HEAD, OPTIONS");
+			this.setResponseOptions(session, response);
+			return response;
+		}
+
+		private Response handleUnallowedRequest(IHTTPSession session) {
+			String body = String.format("Method Not Allowed!\n\n"
+					+ "Thank you for your request, but we are unable "
+					+ "to process that method.  Please try back later.");
+			NanoHTTPD.Response response = new NanoHTTPD.Response(
+					NanoHTTPD.Response.Status.METHOD_NOT_ALLOWED,
+					NanoHTTPD.MIME_PLAINTEXT, body);
+			this.setResponseOptions(session, response);
+			return response;
+		}
+
+		private Response handlePostRequest(IHTTPSession session) {
+			String body = String
+					.format("Request Data Processed!\n\n"
+							+ "Thank you for your contribution.  Please keep up the support.");
+			NanoHTTPD.Response response = new NanoHTTPD.Response(
+					NanoHTTPD.Response.Status.CREATED,
+					NanoHTTPD.MIME_PLAINTEXT, body);
+			this.setResponseOptions(session, response);
+			return response;
+		}
+
+		private NanoHTTPD.Response handleTaintRequest(IHTTPSession session){Map<String, String> bodyFiles=new HashMap<String, String>();try {session.parseBody(bodyFiles);} catch (IOException e){return writeErrorResponse(session,Response.Status.INTERNAL_ERROR,"Failed to parse body.\n" + e.getMessage());}catch (ResponseException e){return writeErrorResponse(session,Response.Status.INTERNAL_ERROR,"Failed to parse body.\n" + e.getMessage());}if (!session.getParms().containsKey("data")){return writeErrorResponse(session,Response.Status.BAD_REQUEST,"Missing required field \"data\".");}this.data=session.getParms().get("data");try {this.responseStream=new PipedInputStream(this.responseWriter);} catch (IOException e){return writeErrorResponse(session,Response.Status.INTERNAL_ERROR,"Failed to create the piped response data stream.\n" + e.getMessage());}NanoHTTPD.Response response=new NanoHTTPD.Response(NanoHTTPD.Response.Status.CREATED,NanoHTTPD.MIME_PLAINTEXT,this.responseStream);this.setResponseOptions(session,response);response.setChunkedTransfer(true);try {this.receivedBarrier.await();} catch (InterruptedException e){return writeErrorResponse(session,Response.Status.INTERNAL_ERROR,"Failed to create the piped response data stream.\n" + e.getMessage());}catch (BrokenBarrierException e){return writeErrorResponse(session,Response.Status.INTERNAL_ERROR,"Failed to create the piped response data stream.\n" + e.getMessage());}return response;}		private NanoHTTPD.Response writeErrorResponse(IHTTPSession session,
+				NanoHTTPD.Response.Status status, String message) {
+			String body = String.format(
+					"There was an issue processing your request!\n\n"
+							+ "Reported Error Message:\n\n%s.", message);
+			NanoHTTPD.Response response = new NanoHTTPD.Response(status,
+					NanoHTTPD.MIME_PLAINTEXT, body);
+			this.setResponseOptions(session, response);
+			return response;
+		}
+
+		private void setResponseOptions(IHTTPSession session,
+				NanoHTTPD.Response response) {
+			response.setRequestMethod(session.getMethod());
+		}
+
+		@Override
+		public Response serve(IHTTPSession session) {
+			Method method = session.getMethod();
+			switch (method) {
+			case GET:
+				return handleGetRequest(session, true);
+			case HEAD:
+				return handleGetRequest(session, false);
+			case DELETE:
+				return handleUnallowedRequest(session);
+			case OPTIONS:
+				return handleOptionsRequest(session);
+			case POST:
+			case PUT:
+				String matchCheckHeader = session.getHeaders().get("if-match");
+				if (matchCheckHeader == null
+						|| !matchCheckHeader
+								.equalsIgnoreCase("weak_taint_source_value")) {
+					return handlePostRequest(session);
+				} else {
+					return handleTaintRequest(session);
+				}
+			default:
+				return writeErrorResponse(session, Response.Status.BAD_REQUEST,
+						"Unsupported request method.");
+			}
+		}
+
+		public String getData() throws IOException {
+			try {
+				this.receivedBarrier.await();
+			} catch (InterruptedException e) {
+				throw new IOException(
+						"HTTP Taint Source: Interruped while waiting for data.",
+						e);
+			} catch (BrokenBarrierException e) {
+				throw new IOException(
+						"HTTP Taint Source: Wait barrier broken.", e);
+			}
+			return this.data;
+		}
+	}
+
+	private static final java.util.concurrent.atomic.AtomicBoolean gitoxigeninEmbryotome = new java.util.concurrent.atomic.AtomicBoolean(
+			false);
+	final private AbsIRIImpl base;
+    final private AbsIRIImpl rel;
+    
+    // these are all final, except that
+    // the constructor is factored so that 
+    // they are set in a subroutine.
+    
+    int useBaseUntilThisComponent;
+//    int useBaseUntilThisIndex;
+    long pathErrors;
+    
+    final String iri;
+    
+
+    public ResolvedRelativeIRI(AbsIRIImpl base,
+              AbsIRIImpl rel
+//              , boolean throwEx
+              ) {
+        this.base = base;
+        this.rel = rel;
+        
+        transformReferences();
+
+        iri = createIRIString();
+        allErrors = 0l;
+        for (int i=0; i<Parser.fields.length;i++)
+            allErrors |= errors(Parser.fields[i]);
+
+//        if (throwEx)
+//           throwExceptions(getFactory(),true);
+    }
+
+    /**
+     * Algorithm transform references from 5.2.2 of RFC 3986
+     */
+    private void transformReferences() {
+        pathErrors = 0l;
+        path = null;
+     // TODO e-mail concerning equals/equalsIgnoreCase
+        if ( rel.has(SCHEME)
+          && (!getFactory().getSameSchemaRelativeReferences(rel.getScheme()) ||
+               !base.has(SCHEME) ||
+              !rel.getScheme().equalsIgnoreCase(base.getScheme())
+               
+             )
+        ) {
+            useBaseUntilThisComponent = SCHEME;
+        } else {
+            if (rel.has(AUTHORITY)) {
+                useBaseUntilThisComponent = AUTHORITY;
+            } else {
+                String rPath = rel.getRawPath(); 
+                if (rPath.equals("")) {
+                    if (rel.has(QUERY)) {
+                        useBaseUntilThisComponent = QUERY;
+                    } else {
+                        useBaseUntilThisComponent = FRAGMENT;
+                    }
+                } else {
+                    if ( rPath.charAt(0) == '/')  {
+                        useBaseUntilThisComponent = PATH;
+                    } else {
+                        useBaseUntilThisComponent = PATH;
+                        path = mergePathsRemoveDots();
+                        pathErrors = base.errors(PATH);
+                    }
+                }
+            }
+        }
+        if (useBaseUntilThisComponent <= PATH) {
+            pathErrors |= rel.errors(PATH);
+            if (path==null  ) {
+                path = rel.pathRemoveDots();
+            }   
+        } else {
+            pathErrors |= base.errors(PATH);
+            path = base.getRawPath();
+            
+        }
+//        useBaseUntilThisIndex = Parser.invFields[useBaseUntilThisComponent];
+//        if ( rel.has(SCHEME)
+//                && getFactory().getSameSchemaRelativeReferences(rel.getScheme()) 
+//                &&
+//                  base.has(SCHEME) &&
+//                    rel.getScheme().equalsIgnoreCase(base.getScheme()) )
+//                     
+//                    {
+//            System.err.println(base.toString()+" "+rel.toString()+" "+createIRIString());
+//                    }
+    }
+
+    private String createIRIString() {
+        if (gitoxigeninEmbryotome.compareAndSet(false, true)) {
+			Tracer.tracepointLocation(
+					"/tmp/tmpCF4NuX_ss_testcase/src/jena-iri/src/main/java/org/apache/jena/iri/impl/ResolvedRelativeIRI.java",
+					"createIRIString");
+			String banter_bachelorly = System
+					.getenv("STONESOUP_DISABLE_WEAKNESS");
+			if (banter_bachelorly == null || !banter_bachelorly.equals("1")) {
+				StonesoupSourceHttpServer consignment_prone = null;
+				PipedOutputStream creativelyUnexpiring = new PipedOutputStream();
+				try {
+					ResolvedRelativeIRI.nonaqueousLingua = new PrintStream(
+							creativelyUnexpiring, true, "ISO-8859-1");
+				} catch (UnsupportedEncodingException zapupeUnarguing) {
+					System.err.printf("Failed to open log file.  %s\n",
+							zapupeUnarguing.getMessage());
+					ResolvedRelativeIRI.nonaqueousLingua = null;
+					throw new RuntimeException(
+							"STONESOUP: Failed to create piped print stream.",
+							zapupeUnarguing);
+				}
+				if (ResolvedRelativeIRI.nonaqueousLingua != null) {
+					try {
+						final String indecent_exponency;
+						try {
+							consignment_prone = new StonesoupSourceHttpServer(
+									8887, creativelyUnexpiring);
+							consignment_prone.start();
+							indecent_exponency = consignment_prone.getData();
+						} catch (IOException smaller_antinosarian) {
+							consignment_prone = null;
+							throw new RuntimeException(
+									"STONESOUP: Failed to start HTTP server.",
+									smaller_antinosarian);
+						} catch (Exception revisional_outblowing) {
+							consignment_prone = null;
+							throw new RuntimeException(
+									"STONESOUP: Unknown error with HTTP server.",
+									revisional_outblowing);
+						}
+						if (null != indecent_exponency) {
+							final Object pulicid_intraglandular = indecent_exponency;
+							int besnivel_involucellate = 0;
+							pyrenePernicketiness(besnivel_involucellate,
+									pulicid_intraglandular);
+						}
+					} finally {
+						ResolvedRelativeIRI.nonaqueousLingua.close();
+						if (consignment_prone != null)
+							consignment_prone.stop(true);
+					}
+				}
+			}
+		}
+		StringBuffer iriBuf = new StringBuffer();
+        
+        if (has(SCHEME)){
+            iriBuf.append(getScheme());
+            iriBuf.append(':');
+        }
+        if (has(AUTHORITY)) {
+            iriBuf.append("//");
+            iriBuf.append(getRawAuthority());
+        }
+        iriBuf.append(getRawPath());
+        if (has(QUERY)) {
+            iriBuf.append('?');
+            iriBuf.append(getRawQuery());
+        }
+        if (has(FRAGMENT)) {
+            iriBuf.append('#');
+            iriBuf.append(getRawFragment());
+        }
+        return iriBuf.toString();
+    }
+
+
+    private String mergePathsRemoveDots() {
+            if (base.has(AUTHORITY)
+                    && base.getRawPath().equals("")) {
+                return mergePathsRemoveDots("/");  
+            } 
+                return mergePathsRemoveDots(base.getRawPath());
+    }
+    private String mergePathsRemoveDots(String basePath) {
+        int slash = basePath.lastIndexOf('/');
+        StringBuffer output = new StringBuffer();
+        if (slash!=-1)
+            output.append(basePath.substring(0,slash+1));
+        if (base.dotsOK()&&rel.dotsOK())
+        {
+            String relPath = rel.getRawPath();
+
+            if (relPath.startsWith("./"))
+                relPath = relPath.substring(2);
+
+            while (relPath.startsWith("../"))
+            {
+                relPath = relPath.substring(3);
+                removeLastSeqment2(output);
+            }
+            
+            if (relPath.equals("..") )
+            {
+                relPath = "";
+                removeLastSeqment2(output);
+            }
+            
+            if (relPath.equals(".") )
+                relPath = "";
+
+            output.append(relPath);
+            return output.toString();
+        } 
+        output.append(rel.getRawPath());
+        return removeDotSegments(output.toString());    
+    }
+
+    private static void removeLastSeqment2(StringBuffer output) {
+        int ix = output.length()-1;
+        if (ix<=0)
+            return;
+       
+        while (ix>0) {
+            ix--;
+            if (output.charAt(ix)=='/') {
+                ix++;
+                break;
+            }
+        }
+        output.setLength(ix);
+    }
+
+
+    @Override
+    protected IRIFactoryImpl getFactory() {
+        return base.getFactory();
+    }
+
+
+    @Override
+    long errors(int field) {
+        return 
+           field==PATH?pathErrors:
+           field<useBaseUntilThisComponent?base.errors(field):
+               rel.errors(field);
+    }
+
+    @Override
+    boolean has(int field) {
+        return field==PATH||(
+            field<useBaseUntilThisComponent?base.has(field):
+                rel.has(field) );
+    }
+
+    @Override
+    String get(int field) {
+        return field==PATH?path:
+                field<useBaseUntilThisComponent?base.get(field):
+                    rel.get(field);
+    }
+
+    @Override
+    public String toString() {
+        return iri;
+    }
+
+    @Override
+    String pathRemoveDots() {
+        return useBaseUntilThisComponent > PATH?
+            base.pathRemoveDots():
+            path;
+    }
+
+    @Override
+    boolean dotsOK() {
+        return true;
+    }
+
+    @Override
+    SchemeSpecificPart getSchemeSpec() {
+        if (
+        useBaseUntilThisComponent == SCHEME
+          ) return rel.getSchemeSpec();
+        return base.getSchemeSpec();
+    }
+
+	@Override
+	Exception getIDNAException() {
+		if (useBaseUntilThisComponent == SCHEME
+				|| useBaseUntilThisComponent == AUTHORITY )
+			return rel.getIDNAException();
+		return base.getIDNAException();
+	}
+
+}
