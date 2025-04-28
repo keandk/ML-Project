@@ -106,7 +106,7 @@ def main():
     method_stats = {}
     code_by_label = {}
     code_by_method = {}
-    exclude = ["BLOCK", "TYPE_REF", "LITERAL", "<empty>", "RET", "try", "c", "e", "i", "cfg", "Tracer", "class", ]
+    exclude = ["BLOCK", "TYPE_REF", "LITERAL", "<empty>", "RET", "try", "c", "e", "i", "cfg", "Tracer", "class", "ioe", "ie"]
 
     for node in all_nodes:
         label = node['node_label']
