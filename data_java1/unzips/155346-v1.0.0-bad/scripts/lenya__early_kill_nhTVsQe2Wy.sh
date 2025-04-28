@@ -1,3 +1,0 @@
-#!/bin/bash
-
-while [[ ( ! -f "logfile.txt" ) || ( $(/bin/grep "java.lang.NegativeArraySizeException" "logfile.txt" | wc -l) -eq 0 ) ]];  do sleep 5; done; killtree.sh -d -f "$SS_TC_ROOT/rc_parent.pid"; killall run-sikuli.sh

@@ -1,5 +1,5 @@
 #!/bin/bash
-OUTPUT_DIR="/workspaces/ML-Project/data_c/cpg-output"
+OUTPUT_DIR="/home/keanlt/ML-Project/data_cpp/cpg-output"
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -14,11 +14,17 @@ LOG_DIR="${OUTPUT_DIR}/logs"
 mkdir -p "$LOG_DIR"
 
 # Process projects in parallel
-for dir in '/workspaces/ML-Project/data_c/c-src'/*/; do
+for dir in '/home/keanlt/ML-Project/data_cpp/cpp-src'/*/; do
   project_name=$(basename "$dir")
-  echo "Processing $project_name..."
-
   project_output_dir="$OUTPUT_DIR/$project_name"
+  
+  # Skip if project has already been processed
+  if [ -d "$project_output_dir" ] && [ -n "$(ls -A "$project_output_dir" 2>/dev/null)" ]; then
+    echo "Skipping $project_name - already processed"
+    continue
+  fi
+  
+  echo "Processing $project_name..."
 
   # Run parsing and export in background using a subshell
   ( # Start subshell for background processing
