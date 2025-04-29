@@ -78,5 +78,3 @@ ChannelBuffer buf;
             }
         }
 """
-
-print(extract_and_replace_tokens(java_code))
