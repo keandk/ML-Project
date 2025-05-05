@@ -1,0 +1,68 @@
+# Subgraphs for folder: 248482-v2.0.0-mixed
+# Total center nodes with subgraphs: 3
+
+START_SUBGRAPH center_node=30064771145
+# Node count: 4
+# Neighbor count: 3
+  "30064771144" -> "30064771145" [label="CDG"];
+  "30064771144" [label="CALL", ARGUMENT_INDEX="-1", CODE="CLOSE_SOCKET(listenSocket)", COLUMN_NUMBER="13", DISPATCH_TYPE="INLINED", LINE_NUMBER="116", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_listen_socket_w32_execvp_84_bad.cpp:35:35:CLOSE_SOCKET:0", NAME="CLOSE_SOCKET", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771145" -> "68719476784" [label="POST_DOMINATE"];
+  "30064771145" -> "68719476785" [label="CFG"];
+  "30064771145" [label="CALL", ARGUMENT_INDEX="1", CODE="close(listenSocket)", COLUMN_NUMBER="13", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="116", METHOD_FULL_NAME="<unresolvedNamespace>.close:<unresolvedSignature>(1)", NAME="close", ORDER="1", SIGNATURE="<unresolvedSignature>", TYPE_FULL_NAME="ANY"];
+  "68719476784" -> "30064771145" [label="REACHING_DEF", property="listenSocket"];
+  "68719476784" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="listenSocket", COLUMN_NUMBER="26", LINE_NUMBER="116", NAME="listenSocket", ORDER="1", TYPE_FULL_NAME="int"];
+  "68719476785" -> "30064771145" [label="POST_DOMINATE"];
+  "68719476785" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="acceptSocket", COLUMN_NUMBER="13", LINE_NUMBER="118", NAME="acceptSocket", ORDER="1", TYPE_FULL_NAME="int"];
+END_SUBGRAPH center_node=30064771145
+
+START_SUBGRAPH center_node=47244640256
+# Node count: 1
+# Neighbor count: 0
+  "47244640256" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do
+        {
+#ifdef _WIN32
+            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
+            {
+                break;
+            }
+            wsaDataInit = 1;
+#endif
+            /* POTENTIAL FLAW: Read data using a listen socket */
+            listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+            if (listenSocket == INVALID_SOCKET)
+            {
+                break;
+            }
+            memset(&service, 0, sizeof(service));
+            service.sin_family = AF_INET;
+            service.sin_addr.s_addr = INADDR_ANY;
+            service.sin_port = htons(TCP_PORT);
+            if (bind(listenSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
+            {
+                break;
+            }
+            if (listen(listenSocket, LISTEN_BACKLOG) == SOCKET_ERROR)
+            {
+                break;
+            }
+            acceptSocket = accept(listenSocket, NULL, NULL);
+            if (acceptSocket == SOCKET_ERROR)
+            {
+   ...", COLUMN_NUMBER="9", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="61", ORDER="10", PARSER_TYPE_NAME="CPPASTDoStatement"];
+END_SUBGRAPH center_node=47244640256
+
+START_SUBGRAPH center_node=30064771151
+# Node count: 4
+# Neighbor count: 3
+  "30064771151" -> "30064771152" [label="POST_DOMINATE"];
+  "30064771151" -> "30064771153" [label="DOMINATE"];
+  "30064771151" -> "68719476787" [label="AST"];
+  "30064771151" [label="CALL", ARGUMENT_INDEX="2", CODE="*args[] = {COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}", COLUMN_NUMBER="17", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="134", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="wchar_t*[]"];
+  "30064771152" -> "30064771151" [label="REACHING_DEF", property="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}"];
+  "30064771152" [label="CALL", ARGUMENT_INDEX="2", CODE="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}", COLUMN_NUMBER="27", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="134", METHOD_FULL_NAME="<operator>.arrayInitializer", NAME="<operator>.arrayInitializer", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771153" -> "30064771151" [label="POST_DOMINATE"];
+  "30064771153" [label="CALL", ARGUMENT_INDEX="-1", CODE="EXECVP(COMMAND_INT, args)", COLUMN_NUMBER="9", DISPATCH_TYPE="INLINED", LINE_NUMBER="138", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_listen_socket_w32_execvp_84_bad.cpp:43:43:EXECVP:0", NAME="EXECVP", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719476787" -> "30064771151" [label="REACHING_DEF", property="args"];
+  "68719476787" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="args", COLUMN_NUMBER="18", LINE_NUMBER="134", NAME="args", ORDER="1", TYPE_FULL_NAME="wchar_t*[]"];
+END_SUBGRAPH center_node=30064771151
+

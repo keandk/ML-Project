@@ -52,17 +52,22 @@ logging.getLogger('tqdm').propagate = False
 
 
 # --- Define Paths ---
-base_cpg_path = "data_java/cpg-output"
-json_path = "data_java/center_nodes_result_specific.json"
-output_base_path = "data_java/subgraph_contexts"
-tokenized_output_path = "data_java/tokenized_contexts"
+base_cpg_path = "data_cpp/cpg-output"
+json_path = "data_cpp/center_nodes_result.json"
+output_base_path = "data_cpp/subgraph_contexts"
+tokenized_output_path = "data_cpp/tokenized_contexts"
 
 # --- Define Constants ---
+# allowed_neighbor_labels = {
+#     'arrayInitializer', 'CatchClause', 'stonesoup_array', 'assignment',
+#     'fieldAccess', 'addition', 'CONTROL_STRUCTURE', 'FIELD_IDENTIFIER',
+#     'cast', 'IDENTIFIER', 'indexAccess', 'logicalAnd', 'CALL',
+#     'logicalNot', 'alloc'
+# }
 allowed_neighbor_labels = {
-    'arrayInitializer', 'CatchClause', 'stonesoup_array', 'assignment',
-    'fieldAccess', 'addition', 'CONTROL_STRUCTURE', 'FIELD_IDENTIFIER',
-    'cast', 'IDENTIFIER', 'indexAccess', 'logicalAnd', 'CALL',
-    'logicalNot', 'alloc'
+    'free', 'malloc', 'CALL', 'IDENTIFIER', 'indirectIndexAccess', 'FIELD_IDENTIFIER', 
+    'fieldAccess', 'indirectFieldAccess', 'assignment', 'multiplication', 'cast',
+    'CONTROL_STRUCTURE'
 }
 # Regex to extract the first word from the label attribute
 label_type_pattern = re.compile(r'^"?([a-zA-Z_<>]+)')
