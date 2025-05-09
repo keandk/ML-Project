@@ -1,0 +1,124 @@
+# Subgraphs for folder: 247068-v2.0.0-mixed
+# Total center nodes with subgraphs: 7
+
+START_SUBGRAPH center_node=47244640256
+# Node count: 1
+# Neighbor count: 0
+  "47244640256" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="1", CODE="if(1)
+    {
+        {
+            /* Read input from the console */
+            size_t dataLen = wcslen(data);
+            /* if there is room in data, read into it from the console */
+            if (100-dataLen > 1)
+            {
+                /* POTENTIAL FLAW: Read data from the console */
+                if (fgetws(data+dataLen, (int)(100-dataLen), stdin) != NULL)
+                {
+                    /* The next few lines remove the carriage return from the string that is
+                     * inserted by fgetws() */
+                    dataLen = wcslen(data);
+                    if (dataLen > 0 && data[dataLen-1] == L'\\n')
+                    {
+                        data[dataLen-1] = L'\\0';
+                    }
+                }
+                else
+                {
+                    printLine(\"fgetws() failed\");
+                    /* Restore NUL terminator if fgetws fails */
+                    data[dataLen] = L'\\0';
+                }
+            }
+        }
+    }", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="IF", LINE_NUMBER="46", ORDER="6", PARSER_TYPE_NAME="CASTIfStatement"];
+END_SUBGRAPH center_node=47244640256
+
+START_SUBGRAPH center_node=47244640261
+# Node count: 2
+# Neighbor count: 1
+  "47244640261" -> "47244640262" [label="AST"];
+  "47244640261" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="1", CODE="if(0)
+    {
+        /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+        printLine(\"Benign, fixed string\");
+    }
+    else
+    {
+        /* FIX: Append a fixed string to data (not user / external input) */
+        wcscat(data, L\"*.*\");
+    }", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="IF", LINE_NUMBER="93", ORDER="6", PARSER_TYPE_NAME="CASTIfStatement"];
+  "47244640262" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="else", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="ELSE", LINE_NUMBER="99", ORDER="3", PARSER_TYPE_NAME="CASTCompoundStatement"];
+END_SUBGRAPH center_node=47244640261
+
+START_SUBGRAPH center_node=30064771114
+# Node count: 7
+# Neighbor count: 6
+  "30064771113" -> "30064771114" [label="POST_DOMINATE"];
+  "30064771113" [label="CALL", ARGUMENT_INDEX="2", CODE="*args[] = {COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}", COLUMN_NUMBER="17", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="104", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="wchar_t**[]"];
+  "30064771114" -> "30064771113" [label="REACHING_DEF", property="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}"];
+  "30064771114" -> "30064771115" [label="AST"];
+  "30064771114" -> "30064771116" [label="AST"];
+  "30064771114" -> "30064771117" [label="AST"];
+  "30064771114" -> "68719476766" [label="REACHING_DEF", property="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}"];
+  "30064771114" -> "68719476768" [label="POST_DOMINATE"];
+  "30064771114" [label="CALL", ARGUMENT_INDEX="2", CODE="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}", COLUMN_NUMBER="27", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="104", METHOD_FULL_NAME="<operator>.arrayInitializer", NAME="<operator>.arrayInitializer", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771115" -> "30064771114" [label="REACHING_DEF", property="COMMAND_INT_PATH"];
+  "30064771115" [label="CALL", ARGUMENT_INDEX="1", CODE="COMMAND_INT_PATH", COLUMN_NUMBER="28", DISPATCH_TYPE="INLINED", LINE_NUMBER="104", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_console_w32_execvp_02.c:29:29:COMMAND_INT_PATH:0", NAME="COMMAND_INT_PATH", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="char*"];
+  "30064771116" -> "30064771114" [label="REACHING_DEF", property="COMMAND_ARG1"];
+  "30064771116" [label="CALL", ARGUMENT_INDEX="2", CODE="COMMAND_ARG1", COLUMN_NUMBER="46", DISPATCH_TYPE="INLINED", LINE_NUMBER="104", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_console_w32_execvp_02.c:31:31:COMMAND_ARG1:0", NAME="COMMAND_ARG1", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="char*"];
+  "30064771117" -> "30064771114" [label="REACHING_DEF", property="COMMAND_ARG3"];
+  "30064771117" [label="CALL", ARGUMENT_INDEX="3", CODE="COMMAND_ARG3", COLUMN_NUMBER="60", DISPATCH_TYPE="INLINED", LINE_NUMBER="104", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_console_w32_execvp_02.c:33:33:COMMAND_ARG3:0", NAME="COMMAND_ARG3", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719476766" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="args", COLUMN_NUMBER="18", LINE_NUMBER="104", NAME="args", ORDER="1", TYPE_FULL_NAME="wchar_t**[]"];
+  "68719476768" -> "30064771114" [label="REACHING_DEF", property="NULL"];
+  "68719476768" [label="IDENTIFIER", ARGUMENT_INDEX="4", CODE="NULL", COLUMN_NUMBER="74", LINE_NUMBER="104", NAME="NULL", ORDER="4", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=30064771114
+
+START_SUBGRAPH center_node=68719476755
+# Node count: 6
+# Neighbor count: 5
+  "30064771081" -> "68719476755" [label="CDG"];
+  "30064771081" [label="CALL", ARGUMENT_INDEX="-1", CODE="fgetws(data+dataLen, (int)(100-dataLen), stdin) != NULL", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="55", METHOD_FULL_NAME="<operator>.notEquals", NAME="<operator>.notEquals", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771096" -> "68719476755" [label="DOMINATE"];
+  "30064771096" [label="CALL", ARGUMENT_INDEX="-1", CODE="printLine(\"fgetws() failed\")", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="67", METHOD_FULL_NAME="printLine", NAME="printLine", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771098" -> "68719476755" [label="AST"];
+  "30064771098" [label="CALL", ARGUMENT_INDEX="1", CODE="data[dataLen]", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="69", METHOD_FULL_NAME="<operator>.indirectIndexAccess", NAME="<operator>.indirectIndexAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719476743" -> "68719476755" [label="REACHING_DEF", property="data"];
+  "68719476743" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="28", LINE_NUMBER="55", NAME="data", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+  "68719476755" -> "30064771096" [label="POST_DOMINATE"];
+  "68719476755" -> "68719476756" [label="DOMINATE"];
+  "68719476755" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="21", LINE_NUMBER="69", NAME="data", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+  "68719476756" -> "68719476755" [label="POST_DOMINATE"];
+  "68719476756" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="dataLen", COLUMN_NUMBER="26", LINE_NUMBER="69", NAME="dataLen", ORDER="2", TYPE_FULL_NAME="size_t"];
+END_SUBGRAPH center_node=68719476755
+
+START_SUBGRAPH center_node=30064771133
+# Node count: 2
+# Neighbor count: 1
+  "30064771133" -> "30064771134" [label="DOMINATE"];
+  "30064771133" [label="CALL", ARGUMENT_INDEX="-1", CODE="goodG2B1()", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="134", METHOD_FULL_NAME="goodG2B1", NAME="goodG2B1", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="void"];
+  "30064771134" -> "30064771133" [label="POST_DOMINATE"];
+  "30064771134" [label="CALL", ARGUMENT_INDEX="-1", CODE="goodG2B2()", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="135", METHOD_FULL_NAME="goodG2B2", NAME="goodG2B2", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="void"];
+END_SUBGRAPH center_node=30064771133
+
+START_SUBGRAPH center_node=68719476774
+# Node count: 3
+# Neighbor count: 2
+  "30064771125" -> "68719476774" [label="AST"];
+  "30064771125" [label="CALL", ARGUMENT_INDEX="-1", CODE="wcscat(data, L\"*.*\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="121", METHOD_FULL_NAME="wcscat", NAME="wcscat", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719476772" -> "68719476774" [label="REACHING_DEF", property="data"];
+  "68719476772" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="5", LINE_NUMBER="117", NAME="data", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+  "68719476774" -> "30064771125" [label="REACHING_DEF", property="data"];
+  "68719476774" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="16", LINE_NUMBER="121", NAME="data", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+END_SUBGRAPH center_node=68719476774
+
+START_SUBGRAPH center_node=47244640263
+# Node count: 1
+# Neighbor count: 0
+  "47244640263" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="1", CODE="if(1)
+    {
+        /* FIX: Append a fixed string to data (not user / external input) */
+        wcscat(data, L\"*.*\");
+    }", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="IF", LINE_NUMBER="118", ORDER="6", PARSER_TYPE_NAME="CASTIfStatement"];
+END_SUBGRAPH center_node=47244640263
+
