@@ -1,20 +1,33 @@
 import re
 
-def extract_and_replace_tokens(java_code):
-    # Reserved keywords in Java
-    java_keywords = {
-        "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
-        "default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "goto", "if",
-        "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "null", "package",
-        "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized",
-        "this", "throw", "throws", "transient", "try", "void", "volatile", "while", "true", "false", "Object",
-        "module", "open", "opens", "permits", "provides", "record", "requires", "sealed", "to", "transitive",
-        "uses", "var", "with", "yield"
+def extract_and_replace_tokens(code):
+    # Reserved keywords in C/C++/Java
+    keywords = {
+        # C keywords
+        "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
+        "else", "enum", "extern", "float", "for", "goto", "if", "int", "long", "register",
+        "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef",
+        "union", "unsigned", "void", "volatile", "while",
+        
+        # C++ additional keywords
+        "asm", "bool", "catch", "class", "const_cast", "delete", "dynamic_cast",
+        "explicit", "export", "false", "friend", "inline", "mutable", "namespace",
+        "new", "operator", "private", "protected", "public", "reinterpret_cast",
+        "static_cast", "template", "this", "throw", "true", "try", "typeid",
+        "typename", "using", "virtual", "wchar_t",
+        
+        # Java keywords
+        "abstract", "assert", "boolean", "byte", "extends", "final", "finally",
+        "implements", "import", "instanceof", "interface", "native", "null", "package",
+        "strictfp", "super", "synchronized", "throws", "transient",
+        "Object", "module", "open", "opens", "permits", "provides", "record", 
+        "requires", "sealed", "to", "transitive", "uses", "var", "with", "yield"
     }
 
-    # Control-flow keywords: không coi là function
+    # Control-flow keywords: don't treat as functions
     control_flow_keywords = {
-        "if", "for", "while", "switch", "catch", "throw", "return", "synchronized", "instanceof", "try", "else"
+        "if", "for", "while", "switch", "catch", "throw", "return", 
+        "synchronized", "instanceof", "try", "else"
     }
 
     variable_map = {}
@@ -22,12 +35,12 @@ def extract_and_replace_tokens(java_code):
     variable_counter = 1
     function_counter = 1
 
-    # 1. Add spaces around symbols
-    java_code = re.sub(r'([{}();,\.])', r' \1 ', java_code)
-    java_code = re.sub(r'\s+', ' ', java_code).strip()
+    # 1. Add spaces around symbols including square brackets
+    code = re.sub(r'([{}()\[\];,\.])', r' \1 ', code)
+    code = re.sub(r'\s+', ' ', code).strip()
 
     # 2. Split tokens
-    tokens = java_code.split()
+    tokens = code.split()
 
     # 3. Process tokens
     processed_tokens = []
@@ -40,14 +53,14 @@ def extract_and_replace_tokens(java_code):
             if (i + 1 < len(tokens)) and (tokens[i + 1] == '('):
                 # Check if it's NOT a control-flow keyword
                 if token not in control_flow_keywords:
-                    if token not in java_keywords and token not in function_map:
+                    if token not in keywords and token not in function_map:
                         function_map[token] = f"FUN{function_counter}"
                         function_counter += 1
                     processed_tokens.append(function_map.get(token, token))
                 else:
                     processed_tokens.append(token)
             else:
-                if token not in java_keywords and token not in variable_map and token not in function_map:
+                if token not in keywords and token not in variable_map and token not in function_map:
                     variable_map[token] = f"VAR{variable_counter}"
                     variable_counter += 1
                 processed_tokens.append(variable_map.get(token, token))
@@ -59,7 +72,7 @@ def extract_and_replace_tokens(java_code):
     return ' '.join(processed_tokens)
 
 # Example usage
-java_code = """
+code = """
 ChannelBuffer buf;
         try {
             if (response instanceof XContentRestResponse) {

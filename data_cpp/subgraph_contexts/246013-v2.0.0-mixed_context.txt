@@ -31,6 +31,42 @@ START_SUBGRAPH center_node=30064771167
   "68719476800" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="19", LINE_NUMBER="178", NAME="data", ORDER="1", TYPE_FULL_NAME="char*"];
 END_SUBGRAPH center_node=30064771167
 
+START_SUBGRAPH center_node=47244640256
+# Node count: 1
+# Neighbor count: 0
+  "47244640256" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do
+        {
+#ifdef _WIN32
+            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
+            {
+                break;
+            }
+            wsaDataInit = 1;
+#endif
+            /* POTENTIAL FLAW: Read data using a listen socket */
+            listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+            if (listenSocket == INVALID_SOCKET)
+            {
+                break;
+            }
+            memset(&service, 0, sizeof(service));
+            service.sin_family = AF_INET;
+            service.sin_addr.s_addr = INADDR_ANY;
+            service.sin_port = htons(TCP_PORT);
+            if (bind(listenSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
+            {
+                break;
+            }
+            if (listen(listenSocket, LISTEN_BACKLOG) == SOCKET_ERROR)
+            {
+                break;
+            }
+            acceptSocket = accept(listenSocket, NULL, NULL);
+            if (acceptSocket == SOCKET_ERROR)
+            {
+   ...", COLUMN_NUMBER="9", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="75", ORDER="10", PARSER_TYPE_NAME="CPPASTDoStatement"];
+END_SUBGRAPH center_node=47244640256
+
 START_SUBGRAPH center_node=68719476795
 # Node count: 2
 # Neighbor count: 1
@@ -67,40 +103,4 @@ START_SUBGRAPH center_node=30064771145
   "68719476783" -> "30064771145" [label="REACHING_DEF", property="acceptSocket"];
   "68719476783" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="acceptSocket", COLUMN_NUMBER="13", LINE_NUMBER="132", NAME="acceptSocket", ORDER="1", TYPE_FULL_NAME="int"];
 END_SUBGRAPH center_node=30064771145
-
-START_SUBGRAPH center_node=47244640256
-# Node count: 1
-# Neighbor count: 0
-  "47244640256" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do
-        {
-#ifdef _WIN32
-            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
-            {
-                break;
-            }
-            wsaDataInit = 1;
-#endif
-            /* POTENTIAL FLAW: Read data using a listen socket */
-            listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if (listenSocket == INVALID_SOCKET)
-            {
-                break;
-            }
-            memset(&service, 0, sizeof(service));
-            service.sin_family = AF_INET;
-            service.sin_addr.s_addr = INADDR_ANY;
-            service.sin_port = htons(TCP_PORT);
-            if (bind(listenSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
-            {
-                break;
-            }
-            if (listen(listenSocket, LISTEN_BACKLOG) == SOCKET_ERROR)
-            {
-                break;
-            }
-            acceptSocket = accept(listenSocket, NULL, NULL);
-            if (acceptSocket == SOCKET_ERROR)
-            {
-   ...", COLUMN_NUMBER="9", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="75", ORDER="10", PARSER_TYPE_NAME="CPPASTDoStatement"];
-END_SUBGRAPH center_node=47244640256
 

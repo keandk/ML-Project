@@ -13,6 +13,52 @@ START_SUBGRAPH center_node=30064771152
   "68719476791" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="pipe", COLUMN_NUMBER="9", LINE_NUMBER="170", NAME="pipe", ORDER="1", TYPE_FULL_NAME="FILE*"];
 END_SUBGRAPH center_node=30064771152
 
+START_SUBGRAPH center_node=30064771159
+# Node count: 1
+# Neighbor count: 0
+  "30064771159" [label="CALL", ARGUMENT_INDEX="-1", CODE="goodG2B()", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="180", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_connect_socket_popen_43.goodG2B:void()", NAME="goodG2B", ORDER="1", SIGNATURE="void()", TYPE_FULL_NAME="void"];
+END_SUBGRAPH center_node=30064771159
+
+START_SUBGRAPH center_node=47244640256
+# Node count: 1
+# Neighbor count: 0
+  "47244640256" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do
+        {
+#ifdef _WIN32
+            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
+            {
+                break;
+            }
+            wsaDataInit = 1;
+#endif
+            /* POTENTIAL FLAW: Read data using a connect socket */
+            connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+            if (connectSocket == INVALID_SOCKET)
+            {
+                break;
+            }
+            memset(&service, 0, sizeof(service));
+            service.sin_family = AF_INET;
+            service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
+            service.sin_port = htons(TCP_PORT);
+            if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
+            {
+                break;
+            }
+            /* Abort on error or the connection was closed, make sure to recv one
+             * less char than is in the recv_buf in order to append a terminator */
+            /* Abort on error or the connection was closed */...", COLUMN_NUMBER="9", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="74", ORDER="8", PARSER_TYPE_NAME="CPPASTDoStatement"];
+END_SUBGRAPH center_node=47244640256
+
+START_SUBGRAPH center_node=68719476785
+# Node count: 2
+# Neighbor count: 1
+  "30064771146" -> "68719476785" [label="AST"];
+  "30064771146" [label="CALL", ARGUMENT_INDEX="-1", CODE="wcscat(data, L\"*.*\")", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="158", METHOD_FULL_NAME="<unresolvedNamespace>.wcscat:<unresolvedSignature>(2)", NAME="wcscat", ORDER="1", SIGNATURE="<unresolvedSignature>", TYPE_FULL_NAME="ANY"];
+  "68719476785" -> "30064771146" [label="REACHING_DEF", property="data"];
+  "68719476785" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="12", LINE_NUMBER="158", NAME="data", ORDER="1", TYPE_FULL_NAME="wchar_t*&"];
+END_SUBGRAPH center_node=68719476785
+
 START_SUBGRAPH center_node=68719476750
 # Node count: 9
 # Neighbor count: 8
@@ -49,50 +95,4 @@ START_SUBGRAPH center_node=30064771139
   "68719476780" -> "30064771139" [label="POST_DOMINATE"];
   "68719476780" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="pipe", COLUMN_NUMBER="9", LINE_NUMBER="142", NAME="pipe", ORDER="1", TYPE_FULL_NAME="FILE*"];
 END_SUBGRAPH center_node=30064771139
-
-START_SUBGRAPH center_node=47244640256
-# Node count: 1
-# Neighbor count: 0
-  "47244640256" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do
-        {
-#ifdef _WIN32
-            if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
-            {
-                break;
-            }
-            wsaDataInit = 1;
-#endif
-            /* POTENTIAL FLAW: Read data using a connect socket */
-            connectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-            if (connectSocket == INVALID_SOCKET)
-            {
-                break;
-            }
-            memset(&service, 0, sizeof(service));
-            service.sin_family = AF_INET;
-            service.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-            service.sin_port = htons(TCP_PORT);
-            if (connect(connectSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
-            {
-                break;
-            }
-            /* Abort on error or the connection was closed, make sure to recv one
-             * less char than is in the recv_buf in order to append a terminator */
-            /* Abort on error or the connection was closed */...", COLUMN_NUMBER="9", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="74", ORDER="8", PARSER_TYPE_NAME="CPPASTDoStatement"];
-END_SUBGRAPH center_node=47244640256
-
-START_SUBGRAPH center_node=30064771159
-# Node count: 1
-# Neighbor count: 0
-  "30064771159" [label="CALL", ARGUMENT_INDEX="-1", CODE="goodG2B()", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="180", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_connect_socket_popen_43.goodG2B:void()", NAME="goodG2B", ORDER="1", SIGNATURE="void()", TYPE_FULL_NAME="void"];
-END_SUBGRAPH center_node=30064771159
-
-START_SUBGRAPH center_node=68719476785
-# Node count: 2
-# Neighbor count: 1
-  "30064771146" -> "68719476785" [label="AST"];
-  "30064771146" [label="CALL", ARGUMENT_INDEX="-1", CODE="wcscat(data, L\"*.*\")", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="158", METHOD_FULL_NAME="<unresolvedNamespace>.wcscat:<unresolvedSignature>(2)", NAME="wcscat", ORDER="1", SIGNATURE="<unresolvedSignature>", TYPE_FULL_NAME="ANY"];
-  "68719476785" -> "30064771146" [label="REACHING_DEF", property="data"];
-  "68719476785" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="data", COLUMN_NUMBER="12", LINE_NUMBER="158", NAME="data", ORDER="1", TYPE_FULL_NAME="wchar_t*&"];
-END_SUBGRAPH center_node=68719476785
 
