@@ -1,0 +1,779 @@
+# Subgraphs for folder: 153804-v1.0.0-bad
+# Total center nodes with subgraphs: 28
+
+START_SUBGRAPH center_node=47244640346
+# Node count: 1
+# Neighbor count: 0
+  "47244640346" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do {
+#ifdef AES_XTS_ASM
+#else
+      xctx -> stream = ((void *)0);
+#endif
+/* key_len is two AES keys */
+#ifdef BSAES_CAPABLE
+      if (OPENSSL_ia32cap_P[1] & (1 << 41 - 32)) {
+        xctx -> stream = (enc?bsaes_xts_encrypt : bsaes_xts_decrypt);
+      }
+      else {
+#endif
+#ifdef VPAES_CAPABLE
+        if (OPENSSL_ia32cap_P[1] & (1 << 41 - 32)) {
+          if (enc) {
+            vpaes_set_encrypt_key(key,ctx -> key_len * 4,&xctx -> ks1);
+            xctx -> xts . block1 = ((block128_f )vpaes_encrypt);
+          }
+          else {
+            vpaes_set_decrypt_key(key,ctx -> key_len * 4,&xctx -> ks1);
+            xctx -> xts . block1 = ((block128_f )vpaes_decrypt);
+          }
+          vpaes_set_encrypt_key(key + ctx -> key_len / 2,ctx -> key_len * 4,&xctx -> ks2);
+          xctx -> xts . block2 = ((block128_f )vpaes_encrypt);
+          xctx -> xts . key1 = (&xctx -> ks1);
+          break; 
+        }
+      }
+#endif
+      if (enc) {
+        AES_set_encrypt_key(key,ctx -> key_len * 4,&x...", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="1201", ORDER="1", PARSER_TYPE_NAME="CASTDoStatement"];
+END_SUBGRAPH center_node=47244640346
+
+START_SUBGRAPH center_node=30064771094
+# Node count: 7
+# Neighbor count: 6
+  "30064771079" -> "30064771094" [label="CDG"];
+  "30064771079" [label="CALL", ARGUMENT_INDEX="-1", CODE="(mode == 0x1 || mode == 0x2) && !enc", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="470", METHOD_FULL_NAME="<operator>.logicalAnd", NAME="<operator>.logicalAnd", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771093" -> "30064771094" [label="AST"];
+  "30064771093" [label="CALL", ARGUMENT_INDEX="-1", CODE="dat -> stream . cbc = (mode == 0x2?((cbc128_f )AES_cbc_encrypt) : ((void *)0))", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="490", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771094" -> "30064771093" [label="REACHING_DEF", property="dat -> stream . cbc"];
+  "30064771094" -> "30064771095" [label="AST"];
+  "30064771094" -> "55834574855" [label="POST_DOMINATE"];
+  "30064771094" -> "68719476750" [label="DOMINATE"];
+  "30064771094" [label="CALL", ARGUMENT_INDEX="1", CODE="dat -> stream . cbc", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="490", METHOD_FULL_NAME="<operator>.fieldAccess", NAME="<operator>.fieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771095" [label="CALL", ARGUMENT_INDEX="1", CODE="dat -> stream", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="490", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771096" -> "30064771094" [label="REACHING_DEF", property="mode == 0x2?((cbc128_f )AES_cbc_encrypt) : ((void *)0)"];
+  "30064771096" [label="CALL", ARGUMENT_INDEX="2", CODE="mode == 0x2?((cbc128_f )AES_cbc_encrypt) : ((void *)0)", COLUMN_NUMBER="32", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="490", METHOD_FULL_NAME="<operator>.conditional", NAME="<operator>.conditional", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574855" -> "30064771094" [label="DOMINATE"];
+  "55834574855" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="cbc", CODE="cbc", COLUMN_NUMBER="9", LINE_NUMBER="490", ORDER="2"];
+  "68719476750" -> "30064771094" [label="POST_DOMINATE"];
+  "68719476750" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="mode", COLUMN_NUMBER="32", LINE_NUMBER="490", NAME="mode", ORDER="1", TYPE_FULL_NAME="int"];
+END_SUBGRAPH center_node=30064771094
+
+START_SUBGRAPH center_node=30064771169
+# Node count: 12
+# Neighbor count: 11
+  "30064771166" -> "30064771169" [label="AST"];
+  "30064771166" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_cfb128_8_encrypt(in,out,len,(&dat -> ks),ctx -> iv,&ctx -> num,ctx -> encrypt,dat -> block)", COLUMN_NUMBER="3", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="574", METHOD_FULL_NAME="CRYPTO_cfb128_8_encrypt", NAME="CRYPTO_cfb128_8_encrypt", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771167" -> "30064771169" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771167" [label="CALL", ARGUMENT_INDEX="4", CODE="&dat -> ks", COLUMN_NUMBER="39", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="574", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771169" -> "30064771166" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "30064771167" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "30064771170" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "30064771172" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "30064771173" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "55834574889" [label="POST_DOMINATE"];
+  "30064771169" -> "68719476815" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "68719476816" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "68719476817" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771169" -> "68719476819" [label="AST"];
+  "30064771169" -> "68719476820" [label="DOMINATE"];
+  "30064771169" [label="CALL", ARGUMENT_INDEX="5", CODE="ctx -> iv", COLUMN_NUMBER="51", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="574", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771170" -> "30064771169" [label="REACHING_DEF", property="&ctx -> num"];
+  "30064771170" [label="CALL", ARGUMENT_INDEX="6", CODE="&ctx -> num", COLUMN_NUMBER="61", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="574", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771172" -> "30064771169" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771172" [label="CALL", ARGUMENT_INDEX="7", CODE="ctx -> encrypt", COLUMN_NUMBER="73", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="574", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771173" -> "30064771169" [label="REACHING_DEF", property="dat -> block"];
+  "30064771173" [label="CALL", ARGUMENT_INDEX="8", CODE="dat -> block", COLUMN_NUMBER="88", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="574", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="8", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574889" -> "30064771169" [label="DOMINATE"];
+  "55834574889" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="iv", CODE="iv", COLUMN_NUMBER="51", LINE_NUMBER="574", ORDER="2"];
+  "68719476815" -> "30064771169" [label="REACHING_DEF", property="in"];
+  "68719476815" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="27", LINE_NUMBER="574", NAME="in", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719476816" -> "30064771169" [label="REACHING_DEF", property="out"];
+  "68719476816" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="out", COLUMN_NUMBER="30", LINE_NUMBER="574", NAME="out", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719476817" -> "30064771169" [label="REACHING_DEF", property="len"];
+  "68719476817" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="len", COLUMN_NUMBER="34", LINE_NUMBER="574", NAME="len", ORDER="3", TYPE_FULL_NAME="size_t"];
+  "68719476819" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="ctx", COLUMN_NUMBER="51", LINE_NUMBER="574", NAME="ctx", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+  "68719476820" -> "30064771169" [label="POST_DOMINATE"];
+  "68719476820" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="ctx", COLUMN_NUMBER="62", LINE_NUMBER="574", NAME="ctx", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+END_SUBGRAPH center_node=30064771169
+
+START_SUBGRAPH center_node=68719477420
+# Node count: 10
+# Neighbor count: 9
+  "30064772062" -> "68719477420" [label="CDG"];
+  "30064772062" [label="CALL", ARGUMENT_INDEX="1", CODE="cctx -> str", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1415", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772063" -> "68719477420" [label="AST"];
+  "30064772063" [label="CALL", ARGUMENT_INDEX="2", CODE="CRYPTO_ccm128_encrypt_ccm64(ccm,in,out,len,cctx -> str)", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1415", METHOD_FULL_NAME="CRYPTO_ccm128_encrypt_ccm64", NAME="CRYPTO_ccm128_encrypt_ccm64", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772064" -> "68719477420" [label="REACHING_DEF", property="cctx -> str"];
+  "30064772064" [label="CALL", ARGUMENT_INDEX="5", CODE="cctx -> str", COLUMN_NUMBER="64", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1415", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477413" -> "68719477420" [label="REACHING_DEF", property="len"];
+  "68719477413" [label="IDENTIFIER", ARGUMENT_INDEX="4", CODE="len", COLUMN_NUMBER="62", LINE_NUMBER="1409", NAME="len", ORDER="4", TYPE_FULL_NAME="size_t"];
+  "68719477417" -> "68719477420" [label="REACHING_DEF", property="ccm"];
+  "68719477417" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="ccm", COLUMN_NUMBER="49", LINE_NUMBER="1415", NAME="ccm", ORDER="1", TYPE_FULL_NAME="CCM128_CONTEXT*"];
+  "68719477418" -> "68719477420" [label="REACHING_DEF", property="in"];
+  "68719477418" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="in", COLUMN_NUMBER="53", LINE_NUMBER="1415", NAME="in", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719477419" -> "68719477420" [label="REACHING_DEF", property="out"];
+  "68719477419" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="out", COLUMN_NUMBER="56", LINE_NUMBER="1415", NAME="out", ORDER="3", TYPE_FULL_NAME="unsigned char*"];
+  "68719477420" -> "30064772063" [label="REACHING_DEF", property="len"];
+  "68719477420" -> "30064772064" [label="REACHING_DEF", property="len"];
+  "68719477420" -> "68719477417" [label="REACHING_DEF", property="len"];
+  "68719477420" -> "68719477418" [label="REACHING_DEF", property="len"];
+  "68719477420" -> "68719477419" [label="REACHING_DEF", property="len"];
+  "68719477420" -> "68719477421" [label="DOMINATE"];
+  "68719477420" -> "68719477427" [label="REACHING_DEF", property="len"];
+  "68719477420" [label="IDENTIFIER", ARGUMENT_INDEX="4", CODE="len", COLUMN_NUMBER="60", LINE_NUMBER="1415", NAME="len", ORDER="4", TYPE_FULL_NAME="size_t"];
+  "68719477421" -> "68719477420" [label="POST_DOMINATE"];
+  "68719477421" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="64", LINE_NUMBER="1415", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477427" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="len", COLUMN_NUMBER="12", LINE_NUMBER="1419", NAME="len", ORDER="1", TYPE_FULL_NAME="size_t"];
+END_SUBGRAPH center_node=68719477420
+
+START_SUBGRAPH center_node=30064771927
+# Node count: 4
+# Neighbor count: 3
+  "30064771927" -> "30064771928" [label="POST_DOMINATE"];
+  "30064771927" -> "30064771932" [label="POST_DOMINATE"];
+  "30064771927" -> "30064771933" [label="POST_DOMINATE"];
+  "30064771927" [label="CALL", ARGUMENT_INDEX="-1", CODE="OPENSSL_ia32cap_P[1] & (1 << 57 - 32)?&aesni_256_xts : &aes_256_xts", COLUMN_NUMBER="10", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1287", METHOD_FULL_NAME="<operator>.conditional", NAME="<operator>.conditional", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771928" -> "30064771927" [label="REACHING_DEF", property="OPENSSL_ia32cap_P[1] & (1 << 57 - 32)"];
+  "30064771928" [label="CALL", ARGUMENT_INDEX="1", CODE="OPENSSL_ia32cap_P[1] & (1 << 57 - 32)", COLUMN_NUMBER="10", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1287", METHOD_FULL_NAME="<operator>.and", NAME="<operator>.and", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771932" -> "30064771927" [label="REACHING_DEF", property="&aesni_256_xts"];
+  "30064771932" [label="CALL", ARGUMENT_INDEX="2", CODE="&aesni_256_xts", COLUMN_NUMBER="48", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1287", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771933" -> "30064771927" [label="REACHING_DEF", property="&aes_256_xts"];
+  "30064771933" [label="CALL", ARGUMENT_INDEX="3", CODE="&aes_256_xts", COLUMN_NUMBER="65", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1287", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=30064771927
+
+START_SUBGRAPH center_node=30064771151
+# Node count: 11
+# Neighbor count: 10
+  "30064771145" -> "30064771151" [label="POST_DOMINATE"];
+  "30064771145" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_ofb128_encrypt(in,out,len,(&dat -> ks),ctx -> iv,&ctx -> num,dat -> block)", COLUMN_NUMBER="3", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="560", METHOD_FULL_NAME="CRYPTO_ofb128_encrypt", NAME="CRYPTO_ofb128_encrypt", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771146" -> "30064771151" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771146" [label="CALL", ARGUMENT_INDEX="4", CODE="&dat -> ks", COLUMN_NUMBER="37", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="560", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771148" -> "30064771151" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771148" [label="CALL", ARGUMENT_INDEX="5", CODE="ctx -> iv", COLUMN_NUMBER="49", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="560", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771149" -> "30064771151" [label="REACHING_DEF", property="&ctx -> num"];
+  "30064771149" [label="CALL", ARGUMENT_INDEX="6", CODE="&ctx -> num", COLUMN_NUMBER="59", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="560", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771151" -> "30064771145" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "30064771146" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "30064771148" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "30064771149" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "55834574880" [label="POST_DOMINATE"];
+  "30064771151" -> "68719476796" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "68719476797" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "68719476798" [label="REACHING_DEF", property="dat -> block"];
+  "30064771151" -> "68719476802" [label="AST"];
+  "30064771151" [label="CALL", ARGUMENT_INDEX="7", CODE="dat -> block", COLUMN_NUMBER="71", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="560", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574880" -> "30064771151" [label="DOMINATE"];
+  "55834574880" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="block", CODE="block", COLUMN_NUMBER="71", LINE_NUMBER="560", ORDER="2"];
+  "68719476794" -> "30064771151" [label="REACHING_DEF", property="dat"];
+  "68719476794" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="16", LINE_NUMBER="559", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+  "68719476796" -> "30064771151" [label="REACHING_DEF", property="in"];
+  "68719476796" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="25", LINE_NUMBER="560", NAME="in", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719476797" -> "30064771151" [label="REACHING_DEF", property="out"];
+  "68719476797" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="out", COLUMN_NUMBER="28", LINE_NUMBER="560", NAME="out", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719476798" -> "30064771151" [label="REACHING_DEF", property="len"];
+  "68719476798" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="len", COLUMN_NUMBER="32", LINE_NUMBER="560", NAME="len", ORDER="3", TYPE_FULL_NAME="size_t"];
+  "68719476802" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="71", LINE_NUMBER="560", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+END_SUBGRAPH center_node=30064771151
+
+START_SUBGRAPH center_node=68719477148
+# Node count: 16
+# Neighbor count: 15
+  "30064771653" -> "68719477148" [label="REACHING_DEF", property="gctx -> ks"];
+  "30064771653" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> ks", COLUMN_NUMBER="51", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="988", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771656" -> "68719477148" [label="REACHING_DEF", property="gctx -> gcm"];
+  "30064771656" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> gcm", COLUMN_NUMBER="27", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="989", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771658" -> "68719477148" [label="REACHING_DEF", property="gctx -> ks"];
+  "30064771658" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> ks", COLUMN_NUMBER="41", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="989", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771661" -> "68719477148" [label="REACHING_DEF", property="gctx -> ctr"];
+  "30064771661" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> ctr", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="992", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771666" -> "68719477148" [label="REACHING_DEF", property="gctx -> iv_set"];
+  "30064771666" [label="CALL", ARGUMENT_INDEX="2", CODE="gctx -> iv_set", COLUMN_NUMBER="30", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="998", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771668" -> "68719477148" [label="REACHING_DEF", property="gctx -> iv"];
+  "30064771668" [label="CALL", ARGUMENT_INDEX="2", CODE="gctx -> iv", COLUMN_NUMBER="13", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="999", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771671" -> "68719477148" [label="REACHING_DEF", property="gctx -> gcm"];
+  "30064771671" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> gcm", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1002", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771672" -> "68719477148" [label="REACHING_DEF", property="gctx -> ivlen"];
+  "30064771672" [label="CALL", ARGUMENT_INDEX="3", CODE="gctx -> ivlen", COLUMN_NUMBER="44", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1002", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771673" -> "68719477148" [label="CFG"];
+  "30064771673" [label="CALL", ARGUMENT_INDEX="-1", CODE="gctx -> iv_set = 1", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1003", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771674" -> "68719477148" [label="REACHING_DEF", property="gctx -> iv_set"];
+  "30064771674" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> iv_set", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1003", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771676" -> "68719477148" [label="AST"];
+  "30064771676" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> key_set", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1005", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834575002" -> "68719477148" [label="POST_DOMINATE"];
+  "55834575002" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="key_set", CODE="key_set", COLUMN_NUMBER="5", LINE_NUMBER="1005", ORDER="2"];
+  "68719477127" -> "68719477148" [label="REACHING_DEF", property="gctx"];
+  "68719477127" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="gctx", COLUMN_NUMBER="20", LINE_NUMBER="964", NAME="gctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_GCM_CTX*"];
+  "68719477131" -> "68719477148" [label="CDG"];
+  "68719477131" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="key", COLUMN_NUMBER="7", LINE_NUMBER="968", NAME="key", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719477143" -> "68719477148" [label="DOMINATE"];
+  "68719477143" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="iv", COLUMN_NUMBER="9", LINE_NUMBER="1001", NAME="iv", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719477148" -> "30064771673" [label="POST_DOMINATE"];
+  "68719477148" -> "55834575002" [label="DOMINATE"];
+  "68719477148" -> "68719477143" [label="POST_DOMINATE"];
+  "68719477148" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="gctx", COLUMN_NUMBER="5", LINE_NUMBER="1005", NAME="gctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_GCM_CTX*"];
+END_SUBGRAPH center_node=68719477148
+
+START_SUBGRAPH center_node=47244640295
+# Node count: 1
+# Neighbor count: 0
+  "47244640295" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do {
+#ifdef BSAES_CAPABLE
+      if (OPENSSL_ia32cap_P[1] & (1 << 41 - 32)) {
+        AES_set_encrypt_key(key,ctx -> key_len * 8,&gctx -> ks);
+        CRYPTO_gcm128_init(&gctx -> gcm,(&gctx -> ks),((block128_f )AES_encrypt));
+        gctx -> ctr = ((ctr128_f )bsaes_ctr32_encrypt_blocks);
+        break; 
+      }
+      else {
+#endif
+#ifdef VPAES_CAPABLE
+        if (OPENSSL_ia32cap_P[1] & (1 << 41 - 32)) {
+          vpaes_set_encrypt_key(key,ctx -> key_len * 8,&gctx -> ks);
+          CRYPTO_gcm128_init(&gctx -> gcm,(&gctx -> ks),((block128_f )vpaes_encrypt));
+          gctx -> ctr = ((void *)0);
+          break; 
+        }
+      }
+#endif
+      AES_set_encrypt_key(key,ctx -> key_len * 8,&gctx -> ks);
+      CRYPTO_gcm128_init(&gctx -> gcm,(&gctx -> ks),((block128_f )AES_encrypt));
+#ifdef AES_CTR_ASM
+#else
+      gctx -> ctr = ((void *)0);
+#endif
+    }while (0);", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="969", ORDER="1", PARSER_TYPE_NAME="CASTDoStatement"];
+END_SUBGRAPH center_node=47244640295
+
+START_SUBGRAPH center_node=30064771141
+# Node count: 7
+# Neighbor count: 6
+  "30064771133" -> "30064771141" [label="CDG"];
+  "30064771133" [label="CALL", ARGUMENT_INDEX="-1", CODE="i <= len", COLUMN_NUMBER="29", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="552", METHOD_FULL_NAME="<operator>.lessEqualsThan", NAME="<operator>.lessEqualsThan", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771140" -> "30064771141" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771140" [label="CALL", ARGUMENT_INDEX="3", CODE="&dat -> ks", COLUMN_NUMBER="38", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="553", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771141" -> "30064771140" [label="REACHING_DEF", property="dat -> ks"];
+  "30064771141" -> "55834574875" [label="POST_DOMINATE"];
+  "30064771141" -> "68719476788" [label="REACHING_DEF", property="dat -> ks"];
+  "30064771141" -> "68719476793" [label="REACHING_DEF", property="dat -> ks"];
+  "30064771141" [label="CALL", ARGUMENT_INDEX="1", CODE="dat -> ks", COLUMN_NUMBER="39", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="553", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574875" -> "30064771141" [label="DOMINATE"];
+  "55834574875" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="ks", CODE="ks", COLUMN_NUMBER="39", LINE_NUMBER="553", ORDER="2"];
+  "68719476777" -> "30064771141" [label="REACHING_DEF", property="dat"];
+  "68719476777" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="16", LINE_NUMBER="548", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+  "68719476788" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="8", LINE_NUMBER="553", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+  "68719476793" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="39", LINE_NUMBER="553", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+END_SUBGRAPH center_node=30064771141
+
+START_SUBGRAPH center_node=30064771220
+# Node count: 14
+# Neighbor count: 13
+  "30064771205" -> "30064771220" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771205" [label="CALL", ARGUMENT_INDEX="7", CODE="ctx -> encrypt", COLUMN_NUMBER="117", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="586", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771213" -> "30064771220" [label="AST"];
+  "30064771213" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_cfb128_1_encrypt(in,out,len * 8,(&dat -> ks),ctx -> iv,&ctx -> num,ctx -> encrypt,dat -> block)", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="CRYPTO_cfb128_1_encrypt", NAME="CRYPTO_cfb128_1_encrypt", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771214" -> "30064771220" [label="REACHING_DEF", property="len * 8"];
+  "30064771214" [label="CALL", ARGUMENT_INDEX="3", CODE="len * 8", COLUMN_NUMBER="36", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="<operator>.multiplication", NAME="<operator>.multiplication", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771215" -> "30064771220" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771215" [label="CALL", ARGUMENT_INDEX="4", CODE="&dat -> ks", COLUMN_NUMBER="45", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771217" -> "30064771220" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771217" [label="CALL", ARGUMENT_INDEX="5", CODE="ctx -> iv", COLUMN_NUMBER="57", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771218" -> "30064771220" [label="REACHING_DEF", property="&ctx -> num"];
+  "30064771218" [label="CALL", ARGUMENT_INDEX="6", CODE="&ctx -> num", COLUMN_NUMBER="67", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771220" -> "30064771213" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "30064771214" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "30064771215" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "30064771217" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "30064771218" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "30064771221" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "55834574908" [label="POST_DOMINATE"];
+  "30064771220" -> "68719476847" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "68719476848" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771220" -> "68719476853" [label="AST"];
+  "30064771220" -> "68719476854" [label="DOMINATE"];
+  "30064771220" [label="CALL", ARGUMENT_INDEX="7", CODE="ctx -> encrypt", COLUMN_NUMBER="79", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771221" -> "30064771220" [label="REACHING_DEF", property="dat -> block"];
+  "30064771221" [label="CALL", ARGUMENT_INDEX="8", CODE="dat -> block", COLUMN_NUMBER="94", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="590", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="8", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574908" -> "30064771220" [label="DOMINATE"];
+  "55834574908" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="encrypt", CODE="encrypt", COLUMN_NUMBER="79", LINE_NUMBER="590", ORDER="2"];
+  "68719476846" -> "30064771220" [label="CDG"];
+  "68719476846" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="len", COLUMN_NUMBER="7", LINE_NUMBER="589", NAME="len", ORDER="1", TYPE_FULL_NAME="size_t"];
+  "68719476847" -> "30064771220" [label="REACHING_DEF", property="in"];
+  "68719476847" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="29", LINE_NUMBER="590", NAME="in", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719476848" -> "30064771220" [label="REACHING_DEF", property="out"];
+  "68719476848" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="out", COLUMN_NUMBER="32", LINE_NUMBER="590", NAME="out", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719476853" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="ctx", COLUMN_NUMBER="79", LINE_NUMBER="590", NAME="ctx", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+  "68719476854" -> "30064771220" [label="POST_DOMINATE"];
+  "68719476854" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="94", LINE_NUMBER="590", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+END_SUBGRAPH center_node=30064771220
+
+START_SUBGRAPH center_node=30064771724
+# Node count: 5
+# Neighbor count: 4
+  "30064771713" -> "30064771724" [label="CDG"];
+  "30064771713" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_gcm128_encrypt_ctr32(&gctx -> gcm,in,out,len,gctx -> ctr)", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1051", METHOD_FULL_NAME="CRYPTO_gcm128_encrypt_ctr32", NAME="CRYPTO_gcm128_encrypt_ctr32", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771717" -> "30064771724" [label="CDG"];
+  "30064771717" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_gcm128_encrypt(&gctx -> gcm,in,out,len)", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1056", METHOD_FULL_NAME="CRYPTO_gcm128_encrypt", NAME="CRYPTO_gcm128_encrypt", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771724" -> "30064771725" [label="POST_DOMINATE"];
+  "30064771724" -> "68719477188" [label="AST"];
+  "30064771724" [label="CALL", ARGUMENT_INDEX="-1", CODE="rv = (len + 8 + 16)", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1063", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771725" -> "30064771724" [label="REACHING_DEF", property="len + 8 + 16"];
+  "30064771725" [label="CALL", ARGUMENT_INDEX="2", CODE="len + 8 + 16", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1063", METHOD_FULL_NAME="<operator>.addition", NAME="<operator>.addition", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477188" -> "30064771724" [label="REACHING_DEF", property="rv"];
+  "68719477188" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="rv", COLUMN_NUMBER="5", LINE_NUMBER="1063", NAME="rv", ORDER="1", TYPE_FULL_NAME="int"];
+END_SUBGRAPH center_node=30064771724
+
+START_SUBGRAPH center_node=68719477366
+# Node count: 19
+# Neighbor count: 18
+  "30064771990" -> "68719477366" [label="AST"];
+  "30064771990" [label="CALL", ARGUMENT_INDEX="2", CODE="*cctx = (ctx -> cipher_data)", COLUMN_NUMBER="19", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1349", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "30064771991" -> "68719477366" [label="REACHING_DEF", property="ctx -> cipher_data"];
+  "30064771991" [label="CALL", ARGUMENT_INDEX="2", CODE="ctx -> cipher_data", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1349", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771999" [label="CALL", ARGUMENT_INDEX="1", CODE="cctx -> ks", COLUMN_NUMBER="51", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1364", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772002" [label="CALL", ARGUMENT_INDEX="1", CODE="cctx -> ccm", COLUMN_NUMBER="27", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1365", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772003" [label="CALL", ARGUMENT_INDEX="2", CODE="cctx -> M", COLUMN_NUMBER="40", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1365", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772004" [label="CALL", ARGUMENT_INDEX="3", CODE="cctx -> L", COLUMN_NUMBER="52", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1365", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772006" [label="CALL", ARGUMENT_INDEX="1", CODE="cctx -> ks", COLUMN_NUMBER="65", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1365", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772016" [label="CALL", ARGUMENT_INDEX="2", CODE="cctx -> L", COLUMN_NUMBER="33", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1371", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477366" -> "30064771990" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "30064771999" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "30064772002" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "30064772003" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "30064772004" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "30064772006" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "30064772016" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477367" [label="DOMINATE"];
+  "68719477366" -> "68719477373" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477374" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477375" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477376" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477377" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477379" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477380" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477384" [label="REACHING_DEF", property="cctx"];
+  "68719477366" -> "68719477385" [label="REACHING_DEF", property="cctx"];
+  "68719477366" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="20", LINE_NUMBER="1349", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477367" -> "68719477366" [label="POST_DOMINATE"];
+  "68719477367" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="ctx", COLUMN_NUMBER="28", LINE_NUMBER="1349", NAME="ctx", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+  "68719477373" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="51", LINE_NUMBER="1364", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477374" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="27", LINE_NUMBER="1365", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477375" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="40", LINE_NUMBER="1365", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477376" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="52", LINE_NUMBER="1365", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477377" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="65", LINE_NUMBER="1365", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477379" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="7", LINE_NUMBER="1366", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477380" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="7", LINE_NUMBER="1367", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477384" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="33", LINE_NUMBER="1371", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+  "68719477385" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="5", LINE_NUMBER="1372", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+END_SUBGRAPH center_node=68719477366
+
+START_SUBGRAPH center_node=30064771375
+# Node count: 40
+# Neighbor count: 39
+  "30064771355" -> "30064771375" [label="CDG"];
+  "30064771355" [label="CALL", ARGUMENT_INDEX="-1", CODE="agonia_terrazzos != 0", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="712", METHOD_FULL_NAME="<operator>.notEquals", NAME="<operator>.notEquals", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771375" -> "30064771376" [label="POST_DOMINATE"];
+  "30064771375" -> "30064771377" [label="CDG"];
+  "30064771375" -> "30064771378" [label="CDG"];
+  "30064771375" -> "30064771379" [label="CDG"];
+  "30064771375" -> "30064771380" [label="CDG"];
+  "30064771375" -> "30064771381" [label="CDG"];
+  "30064771375" -> "30064771382" [label="CDG"];
+  "30064771375" -> "30064771383" [label="CDG"];
+  "30064771375" -> "30064771384" [label="CDG"];
+  "30064771375" -> "30064771385" [label="CDG"];
+  "30064771375" -> "30064771386" [label="CDG"];
+  "30064771375" -> "30064771387" [label="CDG"];
+  "30064771375" -> "30064771388" [label="CDG"];
+  "30064771375" -> "30064771394" [label="CDG"];
+  "30064771375" -> "30064771395" [label="CDG"];
+  "30064771375" -> "68719476945" [label="AST"];
+  "30064771375" -> "68719476946" [label="DOMINATE"];
+  "30064771375" -> "68719476947" [label="CDG"];
+  "30064771375" -> "68719476948" [label="CDG"];
+  "30064771375" -> "68719476949" [label="CDG"];
+  "30064771375" -> "68719476950" [label="CDG"];
+  "30064771375" -> "68719476951" [label="CDG"];
+  "30064771375" -> "68719476952" [label="CDG"];
+  "30064771375" -> "68719476953" [label="CDG"];
+  "30064771375" -> "68719476954" [label="CDG"];
+  "30064771375" -> "68719476955" [label="CDG"];
+  "30064771375" -> "68719476956" [label="CDG"];
+  "30064771375" -> "68719476957" [label="CDG"];
+  "30064771375" -> "68719476958" [label="CDG"];
+  "30064771375" -> "68719476959" [label="CDG"];
+  "30064771375" -> "68719476960" [label="CDG"];
+  "30064771375" -> "68719476961" [label="CDG"];
+  "30064771375" -> "68719476962" [label="CDG"];
+  "30064771375" -> "68719476968" [label="CDG"];
+  "30064771375" -> "68719476969" [label="CDG"];
+  "30064771375" -> "68719476970" [label="CDG"];
+  "30064771375" -> "68719476971" [label="DOMINATE"];
+  "30064771375" [label="CALL", ARGUMENT_INDEX="-1", CODE="stonesoup_file_desc > -1", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="722", METHOD_FULL_NAME="<operator>.greaterThan", NAME="<operator>.greaterThan", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771376" -> "30064771375" [label="REACHING_DEF", property="-1"];
+  "30064771376" [label="CALL", ARGUMENT_INDEX="2", CODE="-1", COLUMN_NUMBER="31", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="722", METHOD_FULL_NAME="<operator>.minus", NAME="<operator>.minus", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771377" [label="CALL", ARGUMENT_INDEX="-1", CODE="tracepoint(stonesoup_trace, trace_point, \"CROSSOVER-POINT: BEFORE\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="723", METHOD_FULL_NAME="tracepoint", NAME="tracepoint", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771378" [label="CALL", ARGUMENT_INDEX="-1", CODE="read(stonesoup_file_desc,stonesoup_input_buf,128)", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="725", METHOD_FULL_NAME="read", NAME="read", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771379" [label="CALL", ARGUMENT_INDEX="-1", CODE="close(stonesoup_file_desc)", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="726", METHOD_FULL_NAME="close", NAME="close", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771380" [label="CALL", ARGUMENT_INDEX="-1", CODE="tracepoint(stonesoup_trace, trace_point, \"CROSSOVER-POINT: AFTER\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="727", METHOD_FULL_NAME="tracepoint", NAME="tracepoint", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771381" [label="CALL", ARGUMENT_INDEX="-1", CODE="tracepoint(stonesoup_trace, trace_point, \"TRIGGER-POINT: BEFORE\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="728", METHOD_FULL_NAME="tracepoint", NAME="tracepoint", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771382" [label="CALL", ARGUMENT_INDEX="-1", CODE="strcpy(stonesoup_buffer,stonesoup_input_buf)", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="730", METHOD_FULL_NAME="strcpy", NAME="strcpy", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771383" [label="CALL", ARGUMENT_INDEX="-1", CODE="tracepoint(stonesoup_trace, variable_signed_integral, \"(stonesoup_buffer[127])\", (stonesoup_buffer[127]), &(stonesoup_buffer[127]), \"TRIGGER-STATE\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="731", METHOD_FULL_NAME="tracepoint", NAME="tracepoint", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771384" [label="CALL", ARGUMENT_INDEX="4", CODE="stonesoup_buffer[127]", COLUMN_NUMBER="91", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="731", METHOD_FULL_NAME="<operator>.indirectIndexAccess", NAME="<operator>.indirectIndexAccess", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771385" [label="CALL", ARGUMENT_INDEX="5", CODE="&(stonesoup_buffer[127])", COLUMN_NUMBER="115", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="731", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771386" [label="CALL", ARGUMENT_INDEX="1", CODE="stonesoup_buffer[127]", COLUMN_NUMBER="117", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="731", METHOD_FULL_NAME="<operator>.indirectIndexAccess", NAME="<operator>.indirectIndexAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771387" [label="CALL", ARGUMENT_INDEX="-1", CODE="stonesoup_oc_i < strlen(stonesoup_buffer)", COLUMN_NUMBER="16", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="732", METHOD_FULL_NAME="<operator>.lessThan", NAME="<operator>.lessThan", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771388" [label="CALL", ARGUMENT_INDEX="2", CODE="strlen(stonesoup_buffer)", COLUMN_NUMBER="33", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="732", METHOD_FULL_NAME="strlen", NAME="strlen", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771394" [label="CALL", ARGUMENT_INDEX="-1", CODE="stonesoup_printf(\"%s\\n\",stonesoup_buffer)", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="735", METHOD_FULL_NAME="stonesoup_printf", NAME="stonesoup_printf", ORDER="9", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771395" [label="CALL", ARGUMENT_INDEX="-1", CODE="tracepoint(stonesoup_trace, trace_point, \"TRIGGER-POINT: AFTER\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="736", METHOD_FULL_NAME="tracepoint", NAME="tracepoint", ORDER="10", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "47244640271" -> "30064771375" [label="CONDITION"];
+  "47244640271" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="1", CODE="if (stonesoup_file_desc > -1) {
+        tracepoint(stonesoup_trace, trace_point, \"CROSSOVER-POINT: BEFORE\");
+  /* STONESOUP: CROSSOVER-POINT (Improper Null Termination) */
+        read(stonesoup_file_desc,stonesoup_input_buf,128);
+        close(stonesoup_file_desc);
+        tracepoint(stonesoup_trace, trace_point, \"CROSSOVER-POINT: AFTER\");
+        tracepoint(stonesoup_trace, trace_point, \"TRIGGER-POINT: BEFORE\");
+  /* STONESOUP: TRIGGER-POINT (Improper Null Termination: Stack Over Read) */
+        strcpy(stonesoup_buffer,stonesoup_input_buf);
+        tracepoint(stonesoup_trace, variable_signed_integral, \"(stonesoup_buffer[127])\", (stonesoup_buffer[127]), &(stonesoup_buffer[127]), \"TRIGGER-STATE\");
+        for (; stonesoup_oc_i < strlen(stonesoup_buffer); ++stonesoup_oc_i) {
+   stonesoup_buffer[stonesoup_oc_i] = stonesoup_toupper(stonesoup_buffer[stonesoup_oc_i]);
+        }
+        stonesoup_printf(\"%s\\n\",stonesoup_buffer);
+        tracepoint(stonesoup_trace, trace_point, \"TRIGGER-P...", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="IF", LINE_NUMBER="722", ORDER="10", PARSER_TYPE_NAME="CASTIfStatement"];
+  "68719476945" -> "30064771375" [label="REACHING_DEF", property="stonesoup_file_desc"];
+  "68719476945" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_file_desc", COLUMN_NUMBER="9", LINE_NUMBER="722", NAME="stonesoup_file_desc", ORDER="1", TYPE_FULL_NAME="int"];
+  "68719476946" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_trace", COLUMN_NUMBER="20", LINE_NUMBER="723", NAME="stonesoup_trace", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476947" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="trace_point", COLUMN_NUMBER="37", LINE_NUMBER="723", NAME="trace_point", ORDER="2", TYPE_FULL_NAME="ANY"];
+  "68719476948" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_file_desc", COLUMN_NUMBER="14", LINE_NUMBER="725", NAME="stonesoup_file_desc", ORDER="1", TYPE_FULL_NAME="int"];
+  "68719476949" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="stonesoup_input_buf", COLUMN_NUMBER="34", LINE_NUMBER="725", NAME="stonesoup_input_buf", ORDER="2", TYPE_FULL_NAME="char[128]"];
+  "68719476950" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_file_desc", COLUMN_NUMBER="15", LINE_NUMBER="726", NAME="stonesoup_file_desc", ORDER="1", TYPE_FULL_NAME="int"];
+  "68719476951" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_trace", COLUMN_NUMBER="20", LINE_NUMBER="727", NAME="stonesoup_trace", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476952" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="trace_point", COLUMN_NUMBER="37", LINE_NUMBER="727", NAME="trace_point", ORDER="2", TYPE_FULL_NAME="ANY"];
+  "68719476953" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_trace", COLUMN_NUMBER="20", LINE_NUMBER="728", NAME="stonesoup_trace", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476954" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="trace_point", COLUMN_NUMBER="37", LINE_NUMBER="728", NAME="trace_point", ORDER="2", TYPE_FULL_NAME="ANY"];
+  "68719476955" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_buffer", COLUMN_NUMBER="16", LINE_NUMBER="730", NAME="stonesoup_buffer", ORDER="1", TYPE_FULL_NAME="char[128]"];
+  "68719476956" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="stonesoup_input_buf", COLUMN_NUMBER="33", LINE_NUMBER="730", NAME="stonesoup_input_buf", ORDER="2", TYPE_FULL_NAME="char[128]"];
+  "68719476957" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_trace", COLUMN_NUMBER="20", LINE_NUMBER="731", NAME="stonesoup_trace", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476958" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="variable_signed_integral", COLUMN_NUMBER="37", LINE_NUMBER="731", NAME="variable_signed_integral", ORDER="2", TYPE_FULL_NAME="ANY"];
+  "68719476959" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_buffer", COLUMN_NUMBER="91", LINE_NUMBER="731", NAME="stonesoup_buffer", ORDER="1", TYPE_FULL_NAME="char[128]"];
+  "68719476960" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_buffer", COLUMN_NUMBER="117", LINE_NUMBER="731", NAME="stonesoup_buffer", ORDER="1", TYPE_FULL_NAME="char[128]"];
+  "68719476961" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_oc_i", COLUMN_NUMBER="16", LINE_NUMBER="732", NAME="stonesoup_oc_i", ORDER="1", TYPE_FULL_NAME="int"];
+  "68719476962" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_buffer", COLUMN_NUMBER="40", LINE_NUMBER="732", NAME="stonesoup_buffer", ORDER="1", TYPE_FULL_NAME="char[128]"];
+  "68719476968" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="stonesoup_buffer", COLUMN_NUMBER="33", LINE_NUMBER="735", NAME="stonesoup_buffer", ORDER="2", TYPE_FULL_NAME="char[128]"];
+  "68719476969" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_trace", COLUMN_NUMBER="20", LINE_NUMBER="736", NAME="stonesoup_trace", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476970" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="trace_point", COLUMN_NUMBER="37", LINE_NUMBER="736", NAME="trace_point", ORDER="2", TYPE_FULL_NAME="ANY"];
+  "68719476971" -> "30064771375" [label="POST_DOMINATE"];
+  "68719476971" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="stonesoup_trace", COLUMN_NUMBER="16", LINE_NUMBER="738", NAME="stonesoup_trace", ORDER="1", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=30064771375
+
+START_SUBGRAPH center_node=68719477297
+# Node count: 19
+# Neighbor count: 18
+  "30064771844" -> "68719477297" [label="CDG"];
+  "30064771844" [label="CALL", ARGUMENT_INDEX="-1", CODE="!iv && !key", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1197", METHOD_FULL_NAME="<operator>.logicalAnd", NAME="<operator>.logicalAnd", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771885" [label="CALL", ARGUMENT_INDEX="-1", CODE="xctx -> xts . key2 = (&xctx -> ks2)", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1244", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771886" [label="CALL", ARGUMENT_INDEX="1", CODE="xctx -> xts . key2", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1244", METHOD_FULL_NAME="<operator>.fieldAccess", NAME="<operator>.fieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771887" [label="CALL", ARGUMENT_INDEX="1", CODE="xctx -> xts", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1244", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771888" [label="CALL", ARGUMENT_INDEX="2", CODE="&xctx -> ks2", COLUMN_NUMBER="27", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1244", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771889" [label="CALL", ARGUMENT_INDEX="1", CODE="xctx -> ks2", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1244", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771890" [label="CALL", ARGUMENT_INDEX="-1", CODE="memcpy((ctx -> iv),iv,16)", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1245", METHOD_FULL_NAME="memcpy", NAME="memcpy", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771891" [label="CALL", ARGUMENT_INDEX="1", CODE="ctx -> iv", COLUMN_NUMBER="13", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1245", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "47244640349" -> "68719477297" [label="CONDITION"];
+  "47244640349" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="1", CODE="if (iv) {
+    xctx -> xts . key2 = (&xctx -> ks2);
+    memcpy((ctx -> iv),iv,16);
+  }", COLUMN_NUMBER="3", CONTROL_STRUCTURE_TYPE="IF", LINE_NUMBER="1243", ORDER="5", PARSER_TYPE_NAME="CASTIfStatement"];
+  "55834575077" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="xts", CODE="xts", COLUMN_NUMBER="5", LINE_NUMBER="1244", ORDER="2"];
+  "55834575078" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="key2", CODE="key2", COLUMN_NUMBER="5", LINE_NUMBER="1244", ORDER="2"];
+  "55834575079" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="ks2", CODE="ks2", COLUMN_NUMBER="28", LINE_NUMBER="1244", ORDER="2"];
+  "55834575080" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="iv", CODE="iv", COLUMN_NUMBER="13", LINE_NUMBER="1245", ORDER="2"];
+  "68719477276" -> "68719477297" [label="DOMINATE"];
+  "68719477276" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="key", COLUMN_NUMBER="7", LINE_NUMBER="1200", NAME="key", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719477297" -> "30064771885" [label="CDG"];
+  "68719477297" -> "30064771886" [label="CDG"];
+  "68719477297" -> "30064771887" [label="CDG"];
+  "68719477297" -> "30064771888" [label="CDG"];
+  "68719477297" -> "30064771889" [label="CDG"];
+  "68719477297" -> "30064771890" [label="CDG"];
+  "68719477297" -> "30064771891" [label="CDG"];
+  "68719477297" -> "55834575077" [label="CDG"];
+  "68719477297" -> "55834575078" [label="CDG"];
+  "68719477297" -> "55834575079" [label="CDG"];
+  "68719477297" -> "55834575080" [label="CDG"];
+  "68719477297" -> "68719477276" [label="POST_DOMINATE"];
+  "68719477297" -> "68719477298" [label="DOMINATE"];
+  "68719477297" -> "68719477299" [label="CDG"];
+  "68719477297" -> "68719477300" [label="CDG"];
+  "68719477297" -> "68719477301" [label="CDG"];
+  "68719477297" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="iv", COLUMN_NUMBER="7", LINE_NUMBER="1243", NAME="iv", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719477298" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="xctx", COLUMN_NUMBER="5", LINE_NUMBER="1244", NAME="xctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_XTS_CTX*"];
+  "68719477299" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="xctx", COLUMN_NUMBER="28", LINE_NUMBER="1244", NAME="xctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_XTS_CTX*"];
+  "68719477300" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="ctx", COLUMN_NUMBER="13", LINE_NUMBER="1245", NAME="ctx", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+  "68719477301" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="iv", COLUMN_NUMBER="24", LINE_NUMBER="1245", NAME="iv", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+END_SUBGRAPH center_node=68719477297
+
+START_SUBGRAPH center_node=68719477105
+# Node count: 11
+# Neighbor count: 10
+  "30064771596" -> "68719477105" [label="CDG"];
+  "30064771596" [label="CALL", ARGUMENT_INDEX="-1", CODE="gctx -> iv_gen == 0 || gctx -> key_set == 0 || c -> encrypt", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="927", METHOD_FULL_NAME="<operator>.logicalOr", NAME="<operator>.logicalOr", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771599" -> "68719477105" [label="REACHING_DEF", property="gctx -> iv_gen"];
+  "30064771599" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> iv_gen", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="927", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771601" -> "68719477105" [label="REACHING_DEF", property="gctx -> key_set"];
+  "30064771601" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> key_set", COLUMN_NUMBER="34", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="927", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771606" -> "68719477105" [label="REACHING_DEF", property="gctx -> iv"];
+  "30064771606" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> iv", COLUMN_NUMBER="15", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="930", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771607" -> "68719477105" [label="REACHING_DEF", property="gctx -> ivlen"];
+  "30064771607" [label="CALL", ARGUMENT_INDEX="2", CODE="gctx -> ivlen", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="930", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771610" -> "68719477105" [label="REACHING_DEF", property="gctx -> gcm"];
+  "30064771610" [label="CALL", ARGUMENT_INDEX="1", CODE="gctx -> gcm", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="931", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771611" -> "68719477105" [label="DOMINATE"];
+  "30064771611" [label="CALL", ARGUMENT_INDEX="2", CODE="gctx -> iv", COLUMN_NUMBER="41", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="931", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771612" -> "68719477105" [label="AST"];
+  "30064771612" [label="CALL", ARGUMENT_INDEX="3", CODE="gctx -> ivlen", COLUMN_NUMBER="54", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="931", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574982" -> "68719477105" [label="POST_DOMINATE"];
+  "55834574982" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="ivlen", CODE="ivlen", COLUMN_NUMBER="54", LINE_NUMBER="931", ORDER="2"];
+  "68719477020" -> "68719477105" [label="REACHING_DEF", property="gctx"];
+  "68719477020" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="gctx", COLUMN_NUMBER="20", LINE_NUMBER="834", NAME="gctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_GCM_CTX*"];
+  "68719477105" -> "30064771611" [label="POST_DOMINATE"];
+  "68719477105" -> "55834574982" [label="DOMINATE"];
+  "68719477105" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="gctx", COLUMN_NUMBER="54", LINE_NUMBER="931", NAME="gctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_GCM_CTX*"];
+END_SUBGRAPH center_node=68719477105
+
+START_SUBGRAPH center_node=30064771904
+# Node count: 4
+# Neighbor count: 3
+  "30064771902" -> "30064771904" [label="POST_DOMINATE"];
+  "30064771902" [label="CALL", ARGUMENT_INDEX="1", CODE="!out || !in", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1256", METHOD_FULL_NAME="<operator>.logicalOr", NAME="<operator>.logicalOr", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771903" -> "30064771904" [label="REACHING_DEF", property="!out"];
+  "30064771903" [label="CALL", ARGUMENT_INDEX="1", CODE="!out", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1256", METHOD_FULL_NAME="<operator>.logicalNot", NAME="<operator>.logicalNot", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771904" -> "30064771902" [label="REACHING_DEF", property="!in"];
+  "30064771904" -> "30064771903" [label="REACHING_DEF", property="!in"];
+  "30064771904" -> "68719477307" [label="POST_DOMINATE"];
+  "30064771904" [label="CALL", ARGUMENT_INDEX="2", CODE="!in", COLUMN_NUMBER="15", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1256", METHOD_FULL_NAME="<operator>.logicalNot", NAME="<operator>.logicalNot", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477307" -> "30064771904" [label="REACHING_DEF", property="in"];
+  "68719477307" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="16", LINE_NUMBER="1256", NAME="in", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+END_SUBGRAPH center_node=30064771904
+
+START_SUBGRAPH center_node=30064771985
+# Node count: 4
+# Neighbor count: 3
+  "30064771978" -> "30064771985" [label="CDG"];
+  "30064771978" [label="CALL", ARGUMENT_INDEX="-1", CODE="!CRYPTO_ccm128_tag(&cctx -> ccm,ptr,((size_t )arg))", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1334", METHOD_FULL_NAME="<operator>.logicalNot", NAME="<operator>.logicalNot", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771985" -> "30064771986" [label="AST"];
+  "30064771985" -> "68719477365" [label="DOMINATE"];
+  "30064771985" [label="CALL", ARGUMENT_INDEX="-1", CODE="cctx -> iv_set = 0", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1338", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771986" -> "30064771985" [label="REACHING_DEF", property="cctx -> iv_set"];
+  "30064771986" [label="CALL", ARGUMENT_INDEX="1", CODE="cctx -> iv_set", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1338", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477365" -> "30064771985" [label="POST_DOMINATE"];
+  "68719477365" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="cctx", COLUMN_NUMBER="7", LINE_NUMBER="1339", NAME="cctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_CCM_CTX*"];
+END_SUBGRAPH center_node=30064771985
+
+START_SUBGRAPH center_node=68719476807
+# Node count: 10
+# Neighbor count: 9
+  "30064771155" -> "68719476807" [label="AST"];
+  "30064771155" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_cfb128_encrypt(in,out,len,(&dat -> ks),ctx -> iv,&ctx -> num,ctx -> encrypt,dat -> block)", COLUMN_NUMBER="3", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="567", METHOD_FULL_NAME="CRYPTO_cfb128_encrypt", NAME="CRYPTO_cfb128_encrypt", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771156" -> "68719476807" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771156" [label="CALL", ARGUMENT_INDEX="4", CODE="&dat -> ks", COLUMN_NUMBER="37", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="567", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771158" -> "68719476807" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771158" [label="CALL", ARGUMENT_INDEX="5", CODE="ctx -> iv", COLUMN_NUMBER="49", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="567", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771159" -> "68719476807" [label="REACHING_DEF", property="&ctx -> num"];
+  "30064771159" [label="CALL", ARGUMENT_INDEX="6", CODE="&ctx -> num", COLUMN_NUMBER="59", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="567", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771161" -> "68719476807" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771161" [label="CALL", ARGUMENT_INDEX="7", CODE="ctx -> encrypt", COLUMN_NUMBER="71", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="567", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771162" -> "68719476807" [label="REACHING_DEF", property="dat -> block"];
+  "30064771162" [label="CALL", ARGUMENT_INDEX="8", CODE="dat -> block", COLUMN_NUMBER="86", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="567", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="8", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719476805" -> "68719476807" [label="REACHING_DEF", property="in"];
+  "68719476805" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="25", LINE_NUMBER="567", NAME="in", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719476806" -> "68719476807" [label="REACHING_DEF", property="out"];
+  "68719476806" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="out", COLUMN_NUMBER="28", LINE_NUMBER="567", NAME="out", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719476807" -> "30064771155" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "30064771156" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "30064771158" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "30064771159" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "30064771161" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "30064771162" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "68719476805" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "68719476806" [label="REACHING_DEF", property="len"];
+  "68719476807" -> "68719476808" [label="DOMINATE"];
+  "68719476807" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="len", COLUMN_NUMBER="32", LINE_NUMBER="567", NAME="len", ORDER="3", TYPE_FULL_NAME="size_t"];
+  "68719476808" -> "68719476807" [label="POST_DOMINATE"];
+  "68719476808" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="38", LINE_NUMBER="567", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+END_SUBGRAPH center_node=68719476807
+
+START_SUBGRAPH center_node=47244640364
+# Node count: 1
+# Neighbor count: 0
+  "47244640364" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do {
+#ifdef VPAES_CAPABLE
+      if (OPENSSL_ia32cap_P[1] & (1 << 41 - 32)) {
+        vpaes_set_encrypt_key(key,ctx -> key_len * 8,&cctx -> ks);
+        CRYPTO_ccm128_init(&cctx -> ccm,(cctx -> M),(cctx -> L),(&cctx -> ks),((block128_f )vpaes_encrypt));
+        cctx -> str = ((void *)0);
+        cctx -> key_set = 1;
+        break; 
+      }
+#endif
+      AES_set_encrypt_key(key,ctx -> key_len * 8,&cctx -> ks);
+      CRYPTO_ccm128_init(&cctx -> ccm,(cctx -> M),(cctx -> L),(&cctx -> ks),((block128_f )AES_encrypt));
+      cctx -> str = ((void *)0);
+      cctx -> key_set = 1;
+    }while (0);", COLUMN_NUMBER="5", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="1354", ORDER="1", PARSER_TYPE_NAME="CASTDoStatement"];
+END_SUBGRAPH center_node=47244640364
+
+START_SUBGRAPH center_node=30064771265
+# Node count: 2
+# Neighbor count: 1
+  "30064771264" -> "30064771265" [label="POST_DOMINATE"];
+  "30064771264" [label="CALL", ARGUMENT_INDEX="2", CODE="1 << 57 - 32", COLUMN_NUMBER="34", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="627", METHOD_FULL_NAME="<operator>.shiftLeft", NAME="<operator>.shiftLeft", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771265" -> "30064771264" [label="REACHING_DEF", property="57 - 32"];
+  "30064771265" [label="CALL", ARGUMENT_INDEX="2", CODE="57 - 32", COLUMN_NUMBER="39", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="627", METHOD_FULL_NAME="<operator>.subtraction", NAME="<operator>.subtraction", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=30064771265
+
+START_SUBGRAPH center_node=68719477003
+# Node count: 4
+# Neighbor count: 3
+  "30064771467" -> "68719477003" [label="AST"];
+  "30064771467" [label="CALL", ARGUMENT_INDEX="2", CODE="c -> cipher_data", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="808", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574924" -> "68719477003" [label="POST_DOMINATE"];
+  "55834574924" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="cipher_data", CODE="cipher_data", COLUMN_NUMBER="28", LINE_NUMBER="808", ORDER="2"];
+  "68719477002" -> "68719477003" [label="DOMINATE"];
+  "68719477002" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="gctx", COLUMN_NUMBER="20", LINE_NUMBER="808", NAME="gctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_GCM_CTX*"];
+  "68719477003" -> "55834574924" [label="DOMINATE"];
+  "68719477003" -> "68719477002" [label="POST_DOMINATE"];
+  "68719477003" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="c", COLUMN_NUMBER="28", LINE_NUMBER="808", NAME="c", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+END_SUBGRAPH center_node=68719477003
+
+START_SUBGRAPH center_node=30064772784
+# Node count: 3
+# Neighbor count: 2
+  "30064772783" -> "30064772784" [label="AST"];
+  "30064772783" [label="CALL", ARGUMENT_INDEX="3", CODE="((0x7 == 0x10001?2 : 1)) * 192 / 8", COLUMN_NUMBER="53", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1449", METHOD_FULL_NAME="<operator>.division", NAME="<operator>.division", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772784" -> "30064772783" [label="REACHING_DEF", property="((0x7 == 0x10001?2 : 1)) * 192"];
+  "30064772784" -> "30064772785" [label="AST"];
+  "30064772784" [label="CALL", ARGUMENT_INDEX="1", CODE="((0x7 == 0x10001?2 : 1)) * 192", COLUMN_NUMBER="53", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1449", METHOD_FULL_NAME="<operator>.multiplication", NAME="<operator>.multiplication", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772785" -> "30064772784" [label="REACHING_DEF", property="0x7 == 0x10001?2 : 1"];
+  "30064772785" [label="CALL", ARGUMENT_INDEX="1", CODE="0x7 == 0x10001?2 : 1", COLUMN_NUMBER="55", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1449", METHOD_FULL_NAME="<operator>.conditional", NAME="<operator>.conditional", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=30064772784
+
+START_SUBGRAPH center_node=30064771798
+# Node count: 2
+# Neighbor count: 1
+  "30064771792" -> "30064771798" [label="CDG"];
+  "30064771792" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_gcm128_finish(&gctx -> gcm,(ctx -> buf),(gctx -> taglen)) != 0", COLUMN_NUMBER="11", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1144", METHOD_FULL_NAME="<operator>.notEquals", NAME="<operator>.notEquals", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771798" [label="CALL", ARGUMENT_INDEX="-1", CODE="- 1", COLUMN_NUMBER="16", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1145", METHOD_FULL_NAME="<operator>.minus", NAME="<operator>.minus", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=30064771798
+
+START_SUBGRAPH center_node=68719476758
+# Node count: 9
+# Neighbor count: 8
+  "30064771103" -> "68719476758" [label="CDG"];
+  "30064771103" [label="CALL", ARGUMENT_INDEX="-1", CODE="dat -> stream . cbc", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="530", METHOD_FULL_NAME="<operator>.fieldAccess", NAME="<operator>.fieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771105" -> "68719476758" [label="AST"];
+  "30064771105" [label="CALL", ARGUMENT_INDEX="-1", CODE="( *dat -> stream . cbc)(in,out,len,(&dat -> ks),ctx -> iv,ctx -> encrypt)", COLUMN_NUMBER="5", DISPATCH_TYPE="DYNAMIC_DISPATCH", LINE_NUMBER="531", METHOD_FULL_NAME="<operator>.pointerCall", NAME="<operator>.pointerCall", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771109" -> "68719476758" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771109" [label="CALL", ARGUMENT_INDEX="4", CODE="&dat -> ks", COLUMN_NUMBER="41", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="531", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771111" -> "68719476758" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771111" [label="CALL", ARGUMENT_INDEX="5", CODE="ctx -> iv", COLUMN_NUMBER="53", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="531", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771112" -> "68719476758" [label="REACHING_DEF", property="ctx -> encrypt"];
+  "30064771112" [label="CALL", ARGUMENT_INDEX="6", CODE="ctx -> encrypt", COLUMN_NUMBER="63", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="531", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719476756" -> "68719476758" [label="REACHING_DEF", property="in"];
+  "68719476756" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="29", LINE_NUMBER="531", NAME="in", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719476757" -> "68719476758" [label="REACHING_DEF", property="out"];
+  "68719476757" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="out", COLUMN_NUMBER="32", LINE_NUMBER="531", NAME="out", ORDER="3", TYPE_FULL_NAME="unsigned char*"];
+  "68719476758" -> "30064771105" [label="REACHING_DEF", property="len"];
+  "68719476758" -> "30064771109" [label="REACHING_DEF", property="len"];
+  "68719476758" -> "30064771111" [label="REACHING_DEF", property="len"];
+  "68719476758" -> "30064771112" [label="REACHING_DEF", property="len"];
+  "68719476758" -> "68719476756" [label="REACHING_DEF", property="len"];
+  "68719476758" -> "68719476757" [label="REACHING_DEF", property="len"];
+  "68719476758" -> "68719476759" [label="DOMINATE"];
+  "68719476758" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="len", COLUMN_NUMBER="36", LINE_NUMBER="531", NAME="len", ORDER="4", TYPE_FULL_NAME="size_t"];
+  "68719476759" -> "68719476758" [label="POST_DOMINATE"];
+  "68719476759" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="42", LINE_NUMBER="531", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+END_SUBGRAPH center_node=68719476758
+
+START_SUBGRAPH center_node=68719477579
+# Node count: 4
+# Neighbor count: 3
+  "30064772565" -> "68719477579" [label="AST"];
+  "30064772565" [label="CALL", ARGUMENT_INDEX="2", CODE="{(895), (1), (((0x6 == 0x10001?2 : 1)) * 128 / 8), (12), ((0x4000 | 0x200000 | (0x1000 | 0x10 | 0x100000 | 0x20 | 0x40) | 0x6)), (aesni_gcm_init_key), (aes_gcm_cipher), (aes_gcm_cleanup), ((sizeof(EVP_AES_GCM_CTX ))), (((void *)0)), (((void *)0)), (aes_gcm_ctrl), ((void *)0)}", COLUMN_NUMBER="41", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1160", METHOD_FULL_NAME="<operator>.arrayInitializer", NAME="<operator>.arrayInitializer", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064772570" -> "68719477579" [label="DOMINATE"];
+  "30064772570" [label="CALL", ARGUMENT_INDEX="5", CODE="0x4000 | 0x200000 | (0x1000 | 0x10 | 0x100000 | 0x20 | 0x40) | 0x6", COLUMN_NUMBER="100", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1160", METHOD_FULL_NAME="<operator>.or", NAME="<operator>.or", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477579" -> "30064772565" [label="REACHING_DEF", property="aesni_gcm_init_key"];
+  "68719477579" -> "30064772570" [label="POST_DOMINATE"];
+  "68719477579" -> "68719477584" [label="REACHING_DEF", property="aesni_gcm_init_key"];
+  "68719477579" [label="IDENTIFIER", ARGUMENT_INDEX="6", CODE="aesni_gcm_init_key", COLUMN_NUMBER="171", LINE_NUMBER="1160", NAME="aesni_gcm_init_key", ORDER="6", TYPE_FULL_NAME="ANY"];
+  "68719477584" [label="IDENTIFIER", ARGUMENT_INDEX="6", CODE="aesni_gcm_init_key", COLUMN_NUMBER="171", LINE_NUMBER="1167", NAME="aesni_gcm_init_key", ORDER="6", TYPE_FULL_NAME="ANY"];
+END_SUBGRAPH center_node=68719477579
+
+START_SUBGRAPH center_node=30064771243
+# Node count: 13
+# Neighbor count: 12
+  "30064771227" -> "30064771243" [label="CDG"];
+  "30064771227" [label="CALL", ARGUMENT_INDEX="-1", CODE="dat -> stream . ctr", COLUMN_NUMBER="7", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="599", METHOD_FULL_NAME="<operator>.fieldAccess", NAME="<operator>.fieldAccess", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771237" -> "30064771243" [label="POST_DOMINATE"];
+  "30064771237" [label="CALL", ARGUMENT_INDEX="-1", CODE="CRYPTO_ctr128_encrypt(in,out,len,(&dat -> ks),ctx -> iv,ctx -> buf,&num,dat -> block)", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="603", METHOD_FULL_NAME="CRYPTO_ctr128_encrypt", NAME="CRYPTO_ctr128_encrypt", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771238" -> "30064771243" [label="REACHING_DEF", property="&dat -> ks"];
+  "30064771238" [label="CALL", ARGUMENT_INDEX="4", CODE="&dat -> ks", COLUMN_NUMBER="39", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="603", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="4", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771240" -> "30064771243" [label="REACHING_DEF", property="ctx -> iv"];
+  "30064771240" [label="CALL", ARGUMENT_INDEX="5", CODE="ctx -> iv", COLUMN_NUMBER="51", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="603", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="5", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771241" -> "30064771243" [label="REACHING_DEF", property="ctx -> buf"];
+  "30064771241" [label="CALL", ARGUMENT_INDEX="6", CODE="ctx -> buf", COLUMN_NUMBER="61", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="603", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="6", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771242" -> "30064771243" [label="REACHING_DEF", property="&num"];
+  "30064771242" [label="CALL", ARGUMENT_INDEX="7", CODE="&num", COLUMN_NUMBER="72", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="603", METHOD_FULL_NAME="<operator>.addressOf", NAME="<operator>.addressOf", ORDER="7", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771243" -> "30064771237" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "30064771238" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "30064771240" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "30064771241" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "30064771242" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "55834574922" [label="POST_DOMINATE"];
+  "30064771243" -> "68719476868" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "68719476869" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "68719476870" [label="REACHING_DEF", property="dat -> block"];
+  "30064771243" -> "68719476875" [label="AST"];
+  "30064771243" [label="CALL", ARGUMENT_INDEX="8", CODE="dat -> block", COLUMN_NUMBER="77", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="603", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="8", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834574922" -> "30064771243" [label="DOMINATE"];
+  "55834574922" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="block", CODE="block", COLUMN_NUMBER="77", LINE_NUMBER="603", ORDER="2"];
+  "68719476857" -> "30064771243" [label="REACHING_DEF", property="dat"];
+  "68719476857" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="16", LINE_NUMBER="598", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+  "68719476868" -> "30064771243" [label="REACHING_DEF", property="in"];
+  "68719476868" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="in", COLUMN_NUMBER="27", LINE_NUMBER="603", NAME="in", ORDER="1", TYPE_FULL_NAME="unsigned char*"];
+  "68719476869" -> "30064771243" [label="REACHING_DEF", property="out"];
+  "68719476869" [label="IDENTIFIER", ARGUMENT_INDEX="2", CODE="out", COLUMN_NUMBER="30", LINE_NUMBER="603", NAME="out", ORDER="2", TYPE_FULL_NAME="unsigned char*"];
+  "68719476870" -> "30064771243" [label="REACHING_DEF", property="len"];
+  "68719476870" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="len", COLUMN_NUMBER="34", LINE_NUMBER="603", NAME="len", ORDER="3", TYPE_FULL_NAME="size_t"];
+  "68719476875" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="dat", COLUMN_NUMBER="77", LINE_NUMBER="603", NAME="dat", ORDER="1", TYPE_FULL_NAME="EVP_AES_KEY*"];
+END_SUBGRAPH center_node=30064771243
+
+START_SUBGRAPH center_node=68719477268
+# Node count: 4
+# Neighbor count: 3
+  "30064771831" -> "68719477268" [label="AST"];
+  "30064771831" [label="CALL", ARGUMENT_INDEX="2", CODE="c -> cipher_data", COLUMN_NUMBER="28", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="1184", METHOD_FULL_NAME="<operator>.indirectFieldAccess", NAME="<operator>.indirectFieldAccess", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "55834575054" -> "68719477268" [label="POST_DOMINATE"];
+  "55834575054" [label="FIELD_IDENTIFIER", ARGUMENT_INDEX="2", CANONICAL_NAME="cipher_data", CODE="cipher_data", COLUMN_NUMBER="28", LINE_NUMBER="1184", ORDER="2"];
+  "68719477267" -> "68719477268" [label="DOMINATE"];
+  "68719477267" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="xctx", COLUMN_NUMBER="20", LINE_NUMBER="1184", NAME="xctx", ORDER="1", TYPE_FULL_NAME="EVP_AES_XTS_CTX*"];
+  "68719477268" -> "55834575054" [label="DOMINATE"];
+  "68719477268" -> "68719477267" [label="POST_DOMINATE"];
+  "68719477268" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="c", COLUMN_NUMBER="28", LINE_NUMBER="1184", NAME="c", ORDER="1", TYPE_FULL_NAME="EVP_CIPHER_CTX*"];
+END_SUBGRAPH center_node=68719477268
+
+START_SUBGRAPH center_node=30064771479
+# Node count: 4
+# Neighbor count: 3
+  "30064771479" -> "68719477010" [label="POST_DOMINATE"];
+  "30064771479" -> "68719477011" [label="DOMINATE"];
+  "30064771479" [label="CALL", ARGUMENT_INDEX="-1", CODE="--n", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="822", METHOD_FULL_NAME="<operator>.preDecrement", NAME="<operator>.preDecrement", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "68719477010" -> "30064771479" [label="REACHING_DEF", property="n"];
+  "68719477010" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="n", COLUMN_NUMBER="7", LINE_NUMBER="822", NAME="n", ORDER="1", TYPE_FULL_NAME="int"];
+  "68719477011" -> "30064771479" [label="POST_DOMINATE"];
+  "68719477011" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="c", COLUMN_NUMBER="5", LINE_NUMBER="823", NAME="c", ORDER="1", TYPE_FULL_NAME="unsigned char"];
+  "68719477019" -> "30064771479" [label="CDG"];
+  "68719477019" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="n", COLUMN_NUMBER="11", LINE_NUMBER="829", NAME="n", ORDER="2", TYPE_FULL_NAME="int"];
+END_SUBGRAPH center_node=30064771479
+

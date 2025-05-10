@@ -1,0 +1,110 @@
+# Subgraphs for folder: 248684-v2.0.0-mixed
+# Total center nodes with subgraphs: 5
+
+START_SUBGRAPH center_node=47244640257
+# Node count: 1
+# Neighbor count: 0
+  "47244640257" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="-1", CODE="do
+            {
+#ifdef _WIN32
+                if (WSAStartup(MAKEWORD(2,2), &wsaData) != NO_ERROR)
+                {
+                    break;
+                }
+                wsaDataInit = 1;
+#endif
+                /* POTENTIAL FLAW: Read data using a listen socket */
+                listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+                if (listenSocket == INVALID_SOCKET)
+                {
+                    break;
+                }
+                memset(&service, 0, sizeof(service));
+                service.sin_family = AF_INET;
+                service.sin_addr.s_addr = INADDR_ANY;
+                service.sin_port = htons(TCP_PORT);
+                if (bind(listenSocket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR)
+                {
+                    break;
+                }
+                if (listen(listenSocket, LISTEN_BACKLOG) == SOCKET_ERROR)
+                {
+                    break;
+                }
+                acceptSocket...", COLUMN_NUMBER="13", CONTROL_STRUCTURE_TYPE="DO", LINE_NUMBER="78", ORDER="10", PARSER_TYPE_NAME="CASTDoStatement"];
+END_SUBGRAPH center_node=47244640257
+
+START_SUBGRAPH center_node=30064771188
+# Node count: 4
+# Neighbor count: 3
+  "30064771187" -> "30064771188" [label="AST"];
+  "30064771187" [label="CALL", ARGUMENT_INDEX="-1", CODE="_wspawnvp(_P_WAIT, COMMAND_INT, args)", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="201", METHOD_FULL_NAME="_wspawnvp", NAME="_wspawnvp", ORDER="3", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771188" -> "30064771187" [label="REACHING_DEF", property="COMMAND_INT"];
+  "30064771188" -> "68719476815" [label="REACHING_DEF", property="COMMAND_INT"];
+  "30064771188" -> "68719476816" [label="REACHING_DEF", property="COMMAND_INT"];
+  "30064771188" [label="CALL", ARGUMENT_INDEX="2", CODE="COMMAND_INT", COLUMN_NUMBER="28", DISPATCH_TYPE="INLINED", LINE_NUMBER="201", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_listen_socket_w32_spawnvp_10.c:30:30:COMMAND_INT:0", NAME="COMMAND_INT", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="char*"];
+  "68719476815" -> "30064771188" [label="REACHING_DEF", property="_P_WAIT"];
+  "68719476815" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="_P_WAIT", COLUMN_NUMBER="19", LINE_NUMBER="201", NAME="_P_WAIT", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476816" -> "30064771188" [label="REACHING_DEF", property="args"];
+  "68719476816" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="args", COLUMN_NUMBER="41", LINE_NUMBER="201", NAME="args", ORDER="3", TYPE_FULL_NAME="wchar_t**[]"];
+END_SUBGRAPH center_node=30064771188
+
+START_SUBGRAPH center_node=68719476780
+# Node count: 8
+# Neighbor count: 7
+  "30064771127" -> "68719476780" [label="CDG"];
+  "30064771127" [label="CALL", ARGUMENT_INDEX="-1", CODE="recvResult == SOCKET_ERROR || recvResult == 0", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="112", METHOD_FULL_NAME="<operator>.logicalOr", NAME="<operator>.logicalOr", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771137" -> "68719476780" [label="DOMINATE"];
+  "30064771137" [label="CALL", ARGUMENT_INDEX="-1", CODE="replace = wcschr(data, L'\\r')", COLUMN_NUMBER="17", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="119", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="14", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771139" [label="CALL", ARGUMENT_INDEX="-1", CODE="*replace = L'\\0'", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="122", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771140" [label="CALL", ARGUMENT_INDEX="1", CODE="*replace", COLUMN_NUMBER="21", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="122", METHOD_FULL_NAME="<operator>.indirection", NAME="<operator>.indirection", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "47244640268" -> "68719476780" [label="CONDITION"];
+  "47244640268" [label="CONTROL_STRUCTURE", ARGUMENT_INDEX="1", CODE="if (replace)
+                {
+                    *replace = L'\\0';
+                }", COLUMN_NUMBER="17", CONTROL_STRUCTURE_TYPE="IF", LINE_NUMBER="120", ORDER="15", PARSER_TYPE_NAME="CASTIfStatement"];
+  "68719476780" -> "30064771137" [label="POST_DOMINATE"];
+  "68719476780" -> "30064771139" [label="CDG"];
+  "68719476780" -> "30064771140" [label="CDG"];
+  "68719476780" -> "68719476781" [label="DOMINATE"];
+  "68719476780" -> "68719476782" [label="DOMINATE"];
+  "68719476780" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="replace", COLUMN_NUMBER="21", LINE_NUMBER="120", NAME="replace", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+  "68719476781" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="replace", COLUMN_NUMBER="22", LINE_NUMBER="122", NAME="replace", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+  "68719476782" -> "68719476780" [label="POST_DOMINATE"];
+  "68719476782" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="replace", COLUMN_NUMBER="17", LINE_NUMBER="124", NAME="replace", ORDER="1", TYPE_FULL_NAME="wchar_t*"];
+END_SUBGRAPH center_node=68719476780
+
+START_SUBGRAPH center_node=68719476801
+# Node count: 8
+# Neighbor count: 7
+  "30064771167" -> "68719476801" [label="CFG"];
+  "30064771167" [label="CALL", ARGUMENT_INDEX="-1", CODE="printLine(\"Benign, fixed string\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="169", METHOD_FULL_NAME="printLine", NAME="printLine", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771168" -> "68719476801" [label="CFG"];
+  "30064771168" [label="CALL", ARGUMENT_INDEX="-1", CODE="wcscat(data, L\"*.*\")", COLUMN_NUMBER="9", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="174", METHOD_FULL_NAME="wcscat", NAME="wcscat", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771169" -> "68719476801" [label="AST"];
+  "30064771169" [label="CALL", ARGUMENT_INDEX="2", CODE="*args[] = {COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}", COLUMN_NUMBER="17", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="177", METHOD_FULL_NAME="<operator>.assignment", NAME="<operator>.assignment", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="wchar_t**[]"];
+  "30064771170" -> "68719476801" [label="REACHING_DEF", property="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}"];
+  "30064771170" [label="CALL", ARGUMENT_INDEX="2", CODE="{COMMAND_INT_PATH, COMMAND_ARG1, COMMAND_ARG3, NULL}", COLUMN_NUMBER="27", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="177", METHOD_FULL_NAME="<operator>.arrayInitializer", NAME="<operator>.arrayInitializer", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="ANY"];
+  "30064771171" -> "68719476801" [label="POST_DOMINATE"];
+  "30064771171" [label="CALL", ARGUMENT_INDEX="1", CODE="COMMAND_INT_PATH", COLUMN_NUMBER="28", DISPATCH_TYPE="INLINED", LINE_NUMBER="177", METHOD_FULL_NAME="CWE78_OS_Command_Injection__wchar_t_listen_socket_w32_spawnvp_10.c:29:29:COMMAND_INT_PATH:0", NAME="COMMAND_INT_PATH", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="char*"];
+  "68719476799" -> "68719476801" [label="DOMINATE"];
+  "68719476799" [label="IDENTIFIER", ARGUMENT_INDEX="-1", CODE="globalFalse", COLUMN_NUMBER="8", LINE_NUMBER="166", NAME="globalFalse", ORDER="1", TYPE_FULL_NAME="ANY"];
+  "68719476801" -> "30064771167" [label="POST_DOMINATE"];
+  "68719476801" -> "30064771168" [label="POST_DOMINATE"];
+  "68719476801" -> "30064771169" [label="REACHING_DEF", property="args"];
+  "68719476801" -> "30064771171" [label="DOMINATE"];
+  "68719476801" -> "68719476799" [label="POST_DOMINATE"];
+  "68719476801" -> "68719476805" [label="REACHING_DEF", property="args"];
+  "68719476801" [label="IDENTIFIER", ARGUMENT_INDEX="1", CODE="args", COLUMN_NUMBER="18", LINE_NUMBER="177", NAME="args", ORDER="1", TYPE_FULL_NAME="wchar_t**[]"];
+  "68719476805" [label="IDENTIFIER", ARGUMENT_INDEX="3", CODE="args", COLUMN_NUMBER="41", LINE_NUMBER="181", NAME="args", ORDER="3", TYPE_FULL_NAME="wchar_t**[]"];
+END_SUBGRAPH center_node=68719476801
+
+START_SUBGRAPH center_node=30064771189
+# Node count: 2
+# Neighbor count: 1
+  "30064771189" -> "30064771190" [label="DOMINATE"];
+  "30064771189" [label="CALL", ARGUMENT_INDEX="-1", CODE="goodG2B1()", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="207", METHOD_FULL_NAME="goodG2B1", NAME="goodG2B1", ORDER="1", SIGNATURE="", TYPE_FULL_NAME="void"];
+  "30064771190" -> "30064771189" [label="POST_DOMINATE"];
+  "30064771190" [label="CALL", ARGUMENT_INDEX="-1", CODE="goodG2B2()", COLUMN_NUMBER="5", DISPATCH_TYPE="STATIC_DISPATCH", LINE_NUMBER="208", METHOD_FULL_NAME="goodG2B2", NAME="goodG2B2", ORDER="2", SIGNATURE="", TYPE_FULL_NAME="void"];
+END_SUBGRAPH center_node=30064771189
+
