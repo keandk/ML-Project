@@ -52,10 +52,10 @@ logging.getLogger('tqdm').propagate = False
 
 
 # --- Define Paths ---
-base_cpg_path = "data_cpp/cpg-output"
-json_path = "data_cpp/center_nodes_result.json"
-output_base_path = "data_cpp/subgraph_contexts"
-tokenized_output_path = "data_cpp/tokenized_contexts"
+base_cpg_path = "data_c/cpg-output"
+json_path = "data_c/center_nodes_result.json"
+output_base_path = "data_c/subgraph_contexts"
+tokenized_output_path = "data_c/tokenized_contexts"
 # for javaa
 # allowed_neighbor_labels = {
 #     'arrayInitializer', 'CatchClause', 'stonesoup_array', 'assignment',
@@ -307,18 +307,30 @@ def process_context_file(context_file_path, tokenized_output_path):
           continue
 
         # 1b) Node-def line?
-        if '[' in line and 'CODE=' in line:
+        if '[' in line and ']' in line:
+          # Split into node ID and attributes parts
           node_id_part, attr_part = line.split('[', 1)
+          attr_part = attr_part.rsplit(']', 1)[0]
+          
+          # Extract node ID
           node_id = node_id_part.strip().strip('"')
-          attrs   = dict(re.findall(r'(\w+)="([^"]*)"', attr_part))
-          lab      = attrs.get('label','')
+          
+          # Extract attributes using regex that handles escaped quotes
+          attrs = {}
+          for m in re.finditer(r'(\w+)="((?:[^"\\]|\\.)*)"', attr_part):
+            key, val = m.groups()
+            attrs[key] = val.replace('\\"', '"') # Unescape quotes
+
+          # Get type and code
+          lab = attrs.get('label','')
           node_type = re.split(r'[,\s]', lab, 1)[0] if lab else None
           code_frag = attrs.get('CODE')
+          
           if node_type and code_frag is not None:
             code_fragments[current_center].append({
               'node_id': node_id,
-              'type':    node_type,
-              'code':    code_frag
+              'type': node_type,
+              'code': code_frag
             })
 
     # --- 2) Ensure center fragment is first in each list ---
@@ -355,6 +367,25 @@ def process_context_file(context_file_path, tokenized_output_path):
         # tokenize
         try:
           tok = extract_and_replace_tokens(code)
+           
+          # Post-processing for string array initializers in Java
+          # This handles a special case where string literals in array initializers
+          # might be incorrectly tokenized as variables (VAR1, VAR2, etc.)
+          # We detect array patterns and convert these variables to string tokens (STR1, STR2, etc.)
+          # This is particularly important for Java code with string array literals
+          if '{' in tok and '}' in tok and 'VAR' in tok:
+            # Match all VAR tokens within array initializer braces
+            array_content = re.search(r'\{\s*(.*?)\s*\}', tok)
+            if array_content:
+              content = array_content.group(1)
+              # Replace VAR with STR for comma-separated items in array initializers
+              vars_in_array = re.findall(r'VAR\d+', content)
+              str_counter = 1
+              for var in vars_in_array:
+                if ',' in content:  # Only replace if it looks like an array of items
+                  tok = tok.replace(var, f'STR{str_counter}')
+                  str_counter += 1
+           
           err = None
         except Exception as e:
           tok = code
