@@ -42,7 +42,11 @@ print(f"Đã lưu Word2Vec model vào: {model_path}")
 
 # 4. Load lại model (nếu muốn)
 loaded_model = Word2Vec.load(model_path)
-
+"""
+Theo defination 7: trung binh cong cac token 
+Input: Token of statement S (all), number of token of S
+Output: represiontation vector of all embedding vector
+"""
 # 5. Ví dụ: chuyển token → vector trung bình
 def tokens_to_vectors(tokens, model):
     vectors = []
