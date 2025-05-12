@@ -18,15 +18,15 @@ def read_unique_tokens(folder_path):
             for line in f:
                 if "TOKENIZED" in line:
                     parts = line.partition(":")[2].strip().split()
-                    tokens.extend(parts)
+                    tokens.append(parts)
     # loại trùng giữ thứ tự
-    return list(dict.fromkeys(tokens))
+    return tokens
 
-unique_tokens = read_unique_tokens(folder_token)
+tokens = read_unique_tokens(folder_token)
 
 # 2. Huấn luyện Word2Vec (CBOW)
 model = Word2Vec(
-    sentences=[ unique_tokens ],
+    sentences= tokens ,
     vector_size=512,
     window=5,
     min_count=1,
@@ -49,6 +49,7 @@ def tokens_to_vectors(tokens, model):
     for token in tokens:
         if token in model.wv:
             vectors.append(model.wv[token])
+    # return vectors
     if vectors:
         # Tính vector trung bình
         return [sum(x) / len(x) for x in zip(*vectors)]
@@ -56,6 +57,6 @@ def tokens_to_vectors(tokens, model):
         # Nếu không có token nào trong model, trả về vector 0
         return [0.0] * model.wv.vector_size
 
-example_tokens = ["VAR1", "=", "VAR2", "[", "9", "]"]
+example_tokens = ["VAR1", "VAR1", "=", "VAR2", "[", "9", "]"]
 vectors = tokens_to_vectors(example_tokens, loaded_model)
 print("Vectors for example_tokens:", vectors)
