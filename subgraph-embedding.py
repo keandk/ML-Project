@@ -1,15 +1,18 @@
-import os, re, csv, pickle
+import os, re
 import numpy as np
 import pandas as pd
 from gensim.models import Word2Vec
-from extractToken import extract_and_replace_tokens_c
+from extractToken import extract_and_replace_tokens
+import torch
+from torch_geometric.data import Data
 
 # ———————— Cấu hình đường dẫn ————————
-BASE        = "data_c"
+BASE        = "data_java"
 CTX_FOLDER  = os.path.join(BASE, "subgraph_contexts")
 OUT_FOLDER  = os.path.join(BASE, "processed_subgraphs")
 MODEL_PATH  = os.path.join(BASE, "model", "word2vec.model")
 CHAR_CSV    = os.path.join(BASE, "vuln-char-table-final.csv")
+PYG_DATA_FILE = os.path.join(OUT_FOLDER, "all_subgraphs_pyg.pt")
 
 # ———————— 1. Hàm parse 1 file context ————————
 def parse_context_file(path):
@@ -165,7 +168,7 @@ vec_size = w2v.vector_size
 
 def compute_code_vector(code: str):
     code = code or ""
-    toks = extract_and_replace_tokens_c(code).split()
+    toks = extract_and_replace_tokens(code).split()
     vecs = [w2v.wv[t] for t in toks if t in w2v.wv]
     return np.mean(vecs, axis=0) if vecs else np.zeros(vec_size,)
 
@@ -179,10 +182,22 @@ def add_vectors(subgraphs):
             n['feature_vector'] = fv.tolist()
     return subgraphs
 
+def add_feature_matrix(subgraphs):
+    for sg in subgraphs:
+        # Collect all feature vectors from nodes
+        features = [n['feature_vector'] for n in sg['nodes']]
+        # Concatenate along axis 0 (rows = nodes, cols = features)
+        feature_matrix = np.stack(features, axis=0) if features else np.zeros((0, 1 + vec_size))
+        sg['feature_matrix'] = feature_matrix
+    return subgraphs
+
 # ———————— 5. Main loop: process & save ————————
 def main():
     os.makedirs(OUT_FOLDER, exist_ok=True)
     node_map = load_type_mapping(CHAR_CSV)
+
+    all_pyg_data = []
+    skipped_graphs_count = 0
 
     for fname in os.listdir(CTX_FOLDER):
         path_in = os.path.join(CTX_FOLDER, fname)
@@ -196,13 +211,73 @@ def main():
         subs = classify_edges(subs)
         # 3) vectors
         subs = add_vectors(subs)
+        # 4) add feature matrix (this step can be integrated into Data object creation)
+        # No need to call add_feature_matrix separately if creating Data objects directly
+        # subs = add_feature_matrix(subs) 
 
-        # 4) save list of subgraphs vào 1 file pickle
-        base, _ = os.path.splitext(fname)
-        out_path = os.path.join(OUT_FOLDER, f"{base}.pkl")
-        with open(out_path, 'wb') as f:
-            pickle.dump(subs, f)
-        print(f"Processed {fname}: {len(subs)} subgraphs → {out_path}")
+        # Determine label from filename
+        label = 0 if 'good' in fname or 'mixed' in fname else 1
+
+        # Convert each subgraph dict to a PyG Data object and add to the list
+        for i, sg_dict in enumerate(subs):
+            # Calculate feature_matrix for the current subgraph
+            features = [n['feature_vector'] for n in sg_dict['nodes']]
+            feature_matrix = np.stack(features, axis=0) if features else np.empty((0, 1 + vec_size))
+
+            # Validation: Check if graph has nodes
+            if feature_matrix.shape[0] == 0:
+                # print(f"  [WARN] Skipping subgraph {i} in {fname}: No nodes after processing.")
+                skipped_graphs_count += 1
+                continue # Skip this subgraph if it has no nodes
+
+            # Node features (x)
+            x = torch.tensor(feature_matrix, dtype=torch.float)
+            num_nodes = x.shape[0] # Get actual number of nodes
+
+            # Edges (edge_index, edge_type)
+            if sg_dict.get('edges') and len(sg_dict['edges']) > 0:
+                # Filter edges again to ensure indices are valid *after* node processing
+                valid_edges = [e for e in sg_dict['edges'] if e['src'] < num_nodes and e['dst'] < num_nodes]
+                
+                if valid_edges:
+                    edge_index = torch.tensor(
+                        [[e['src'], e['dst']] for e in valid_edges],
+                        dtype=torch.long
+                    ).t().contiguous()
+                    edge_type = torch.tensor(
+                        [e.get('type_id', 0) for e in valid_edges], 
+                        dtype=torch.long
+                    )
+                else: # No valid edges remain
+                    edge_index = torch.empty((2, 0), dtype=torch.long)
+                    edge_type = torch.empty((0,), dtype=torch.long)
+            else:
+                # Handle cases with originally no edges
+                edge_index = torch.empty((2, 0), dtype=torch.long)
+                edge_type = torch.empty((0,), dtype=torch.long)
+
+            # Label (y)
+            y = torch.tensor([label], dtype=torch.long)
+            
+            # Create Data object
+            data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y)
+            
+            # Final Sanity Check (optional but recommended)
+            if data.edge_index.numel() > 0 and data.edge_index.max().item() >= data.num_nodes:
+                 print(f"  [CRITICAL WARN] Graph {i} in {fname}: Detected invalid edge index ({data.edge_index.max().item()}) vs num_nodes ({data.num_nodes}) AFTER filtering. Skipping.")
+                 skipped_graphs_count += 1
+                 continue
+                 
+            all_pyg_data.append(data)
+
+        print(f"Processed {fname}: Added {len(subs) - skipped_graphs_count} subgraphs (skipped {skipped_graphs_count} empty). Total added: {len(all_pyg_data)}")
+        # Reset skip counter for next file if counting per file
+        # skipped_graphs_count = 0 
+
+    # Save the consolidated list of PyG Data objects using torch.save
+    torch.save(all_pyg_data, PYG_DATA_FILE) 
+    print(f"Total skipped graphs due to no nodes: {skipped_graphs_count}") # Print total skipped count
+    print(f"All valid PyG Data objects ({len(all_pyg_data)} total) saved to {PYG_DATA_FILE}")
 
 if __name__ == "__main__":
     main()
