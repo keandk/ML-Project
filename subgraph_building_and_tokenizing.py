@@ -56,14 +56,16 @@ base_cpg_path = "data_c/cpg-output"
 json_path = "data_c/center_nodes_result.json"
 output_base_path = "data_c/subgraph_contexts"
 tokenized_output_path = "data_c/tokenized_contexts"
-# for javaa
+
+"""--- Define Constants --- """
+## for java
 # allowed_neighbor_labels = {
 #     'arrayInitializer', 'CatchClause', 'stonesoup_array', 'assignment',
 #     'fieldAccess', 'addition', 'CONTROL_STRUCTURE', 'FIELD_IDENTIFIER',
 #     'cast', 'IDENTIFIER', 'indexAccess', 'logicalAnd', 'CALL',
 #     'logicalNot', 'alloc'
 # }
-# --- Define Constants ---
+## for cpp
 allowed_neighbor_labels = {
     'CALL',
     'IDENTIFIER', 
@@ -455,62 +457,62 @@ def process_context_file(context_file_path, tokenized_output_path):
 if __name__ == "__main__":
     multiprocessing.freeze_support() # For Windows compatibility
 
-    # # --- Stage 1: Subgraph Extraction ---
-    # logging.info("--- Starting Subgraph Extraction Stage ---")
+    """ --- Stage 1: Subgraph Extraction --- """
+    logging.info("--- Starting Subgraph Extraction Stage ---")
 
-    # # Load the center nodes data from JSON
-    # try:
-    #     with open(json_path, 'r') as f:
-    #         center_nodes_data = json.load(f)
-    #     logging.info(f"Successfully loaded center nodes data from {json_path}")
-    # except FileNotFoundError:
-    #     logging.error(f"FATAL: JSON file not found at {json_path}. Exiting.")
-    #     exit(1)
-    # except json.JSONDecodeError:
-    #     logging.error(f"FATAL: Could not decode JSON from {json_path}. Exiting.")
-    #     exit(1)
+    # Load the center nodes data from JSON
+    try:
+        with open(json_path, 'r') as f:
+            center_nodes_data = json.load(f)
+        logging.info(f"Successfully loaded center nodes data from {json_path}")
+    except FileNotFoundError:
+        logging.error(f"FATAL: JSON file not found at {json_path}. Exiting.")
+        exit(1)
+    except json.JSONDecodeError:
+        logging.error(f"FATAL: Could not decode JSON from {json_path}. Exiting.")
+        exit(1)
 
-    # # Create the output directory
-    # os.makedirs(output_base_path, exist_ok=True)
-    # logging.info(f"Ensured subgraph output directory exists: {output_base_path}")
+    # Create the output directory
+    os.makedirs(output_base_path, exist_ok=True)
+    logging.info(f"Ensured subgraph output directory exists: {output_base_path}")
 
-    # # Prepare data for multiprocessing
-    # folder_items = list(center_nodes_data.items())
-    # num_folders = len(folder_items)
-    # logging.info(f"Found {num_folders} folders to process for subgraph extraction.")
+    # Prepare data for multiprocessing
+    folder_items = list(center_nodes_data.items())
+    num_folders = len(folder_items)
+    logging.info(f"Found {num_folders} folders to process for subgraph extraction.")
 
-    # if num_folders > 0:
-    #     # Use context manager for the pool
-    #     num_processes = min(multiprocessing.cpu_count(), num_folders) # Don't use more processes than tasks
-    #     logging.info(f"Starting subgraph extraction pool with {num_processes} processes.")
+    if num_folders > 0:
+        # Use context manager for the pool
+        num_processes = min(multiprocessing.cpu_count(), num_folders) # Don't use more processes than tasks
+        logging.info(f"Starting subgraph extraction pool with {num_processes} processes.")
 
-    #     # Use partial to fix the arguments that are the same for all calls
-    #     worker_func = partial(
-    #         process_folder_for_subgraphs,
-    #         base_cpg_path=base_cpg_path,
-    #         output_base_path=output_base_path,
-    #         allowed_neighbor_labels=allowed_neighbor_labels,
-    #         label_type_pattern=label_type_pattern
-    #     )
+        # Use partial to fix the arguments that are the same for all calls
+        worker_func = partial(
+            process_folder_for_subgraphs,
+            base_cpg_path=base_cpg_path,
+            output_base_path=output_base_path,
+            allowed_neighbor_labels=allowed_neighbor_labels,
+            label_type_pattern=label_type_pattern
+        )
 
-    #     results = []
-    #     with multiprocessing.Pool(processes=num_processes) as pool:
-    #         # Use tqdm for progress bar on the console
-    #         with tqdm(total=num_folders, desc="Extracting Subgraphs") as pbar:
-    #             for result in pool.imap_unordered(worker_func, folder_items):
-    #                 # imap_unordered yields results as they complete
-    #                 results.append(result)
-    #                 pbar.update(1) # Update progress bar for each completed task
+        results = []
+        with multiprocessing.Pool(processes=num_processes) as pool:
+            # Use tqdm for progress bar on the console
+            with tqdm(total=num_folders, desc="Extracting Subgraphs") as pbar:
+                for result in pool.imap_unordered(worker_func, folder_items):
+                    # imap_unordered yields results as they complete
+                    results.append(result)
+                    pbar.update(1) # Update progress bar for each completed task
 
-    #     successful_extractions = sum(1 for r in results if r)
-    #     logging.info(f"Subgraph extraction pool finished. Successfully processed {successful_extractions}/{num_folders} folders.")
-    # else:
-    #     logging.info("No folders found in JSON data to process for subgraphs.")
+        successful_extractions = sum(1 for r in results if r)
+        logging.info(f"Subgraph extraction pool finished. Successfully processed {successful_extractions}/{num_folders} folders.")
+    else:
+        logging.info("No folders found in JSON data to process for subgraphs.")
 
-    # logging.info("--- Finished Subgraph Extraction Stage ---")
+    logging.info("--- Finished Subgraph Extraction Stage ---")
 
 
-    # --- Stage 2: Tokenization ---
+    """ --- Stage 2: Tokenization --- """
     logging.info("--- Starting Tokenization Stage ---")
 
     # Create the output directory

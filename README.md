@@ -1,4 +1,13 @@
- # Joern Installation and CPG Export Guide
+# Pipeline
+ 
+1. get_samples.py: Download and extract malicious code samples from SARD dataset
+2. process_c_cpgs.sh (or process_java_cpgs.sh): Generates Code Property Graphs (CPGs) from source code using Joern (have to run on Linux)
+3. create_vuln_char_table.py: Create table mapping node types to malicious characteristics
+4. select_centernode.py: Select center nodes that represent malicious code patterns
+5. subgraph_building_and_tokenizing.py: buile and tokenize subgraphs (1-hop) from CPGs from malicious center nodes
+6. subgraph_embedding.py: Generate embeddings (from node represetion and edge represiontation) for malicious code subgraphs
+
+# Joern Installation and CPG Export Guide
 
 This guide explains how to install Joern and use it to generate Code Property Graphs (CPGs) from Java source code.
 
