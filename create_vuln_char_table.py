@@ -90,7 +90,7 @@ def analyze_project(project_name):
 def create_table():
     all_nodes = []
 
-    project_names = [p for p in os.listdir(os.path.join(ROOT_DIR, "unzips")) if p.endswith("-mixed")] or p.endswith("-bad")
+    project_names = [p for p in os.listdir(os.path.join(ROOT_DIR, "unzips")) if p.endswith("-mixed") or p.endswith("-bad")]
     # project_names = project_names[:100]  # Test nhỏ nếu muốn
 
     # Use ThreadPoolExecutor
