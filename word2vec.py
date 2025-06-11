@@ -17,18 +17,25 @@ def stream_sentences(folder_path):
                         yield parts
 
 # Thư mục dữ liệu và model
-base_folder  = ["data_c", "data_cpp", "data_java"]
+base_folder  = ["data_c", "data_cpp"]
 for folder in base_folder:
     folder_token = os.path.join(folder, "tokenized_contexts")
     model_folder = os.path.join(folder, "model")
     os.makedirs(model_folder, exist_ok=True)
 
-    # Use the generator to stream sentences
-    sentences_iterable = stream_sentences(folder_token)
+    # Convert generator to list so Word2Vec can iterate multiple times
+    print(f"Loading sentences for {folder}...")
+    sentences_list = list(stream_sentences(folder_token))
+    print(f"Loaded {len(sentences_list)} sentences for {folder}")
+    
+    if not sentences_list:
+        print(f"No sentences found in {folder_token}, skipping...")
+        continue
 
     # 2. Huấn luyện Word2Vec (CBOW)
+    print(f"Training Word2Vec model for {folder}...")
     model = Word2Vec(
-        sentences=sentences_iterable,
+        sentences=sentences_list,
         vector_size=512,
         window=5,
         min_count=1,

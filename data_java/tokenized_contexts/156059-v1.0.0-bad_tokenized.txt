@@ -12,7 +12,7 @@ FRAGMENT_COUNT: 7
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: newSize != array.length
-  TOKENIZED[1]: VAR1 != VAR2 . VAR3
+  TOKENIZED[1]: VAR1 != VAR2 . length
   NODE_ID[2]: 30064771591
   NODE_INDEX[2]: 60
   EDGE_TYPE_INDEX[2]: 0
@@ -50,8 +50,8 @@ FRAGMENT_COUNT: 3
   NODE_INDEX[0]: 1
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: assert minSize >= 0 : \
-  TOKENIZED[0]: assert VAR1 >= 0 : \
+  ORIGINAL[0]: assert minSize >= 0 : "size must be positive (got " + minSize + "): likely integer overflow?";
+  TOKENIZED[0]: assert VAR1 >= 0 : STR1 + VAR1 + STR2 ;
   NODE_ID[1]: 30064771345
   NODE_INDEX[1]: 65
   EDGE_TYPE_INDEX[1]: 0
@@ -78,7 +78,7 @@ FRAGMENT_COUNT: 5
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771550
   NODE_INDEX[2]: 68
   EDGE_TYPE_INDEX[2]: 0
@@ -117,13 +117,13 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
   ORIGINAL[2]: code = code * 31 + array[i]
-  TOKENIZED[2]: VAR1 = VAR1 * 31 + array[i]
+  TOKENIZED[2]: VAR1 = VAR1 * 31 + VAR2 [ VAR3 ]
   NODE_ID[3]: 30064771598
   NODE_INDEX[3]: 73
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: code * 31 + array[i]
-  TOKENIZED[3]: VAR1 * 31 + array[i]
+  TOKENIZED[3]: VAR1 * 31 + VAR2 [ VAR3 ]
   NODE_ID[4]: 68719477294
   NODE_INDEX[4]: 74
   EDGE_TYPE_INDEX[4]: 0
@@ -171,13 +171,13 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771576
   NODE_INDEX[2]: 79
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: System.arraycopy(array, 0, newArray, 0, array.length)
-  TOKENIZED[2]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . VAR4 )
+  TOKENIZED[2]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . length )
   NODE_ID[3]: 68719477265
   NODE_INDEX[3]: 80
   EDGE_TYPE_INDEX[3]: 0
@@ -198,13 +198,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771332
   NODE_INDEX[2]: 82
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 30064771693  NODE_INDEX: 7
 FRAGMENT_COUNT: 4
@@ -213,19 +213,19 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: a.length
-  TOKENIZED[0]: VAR1 . VAR2
+  TOKENIZED[0]: VAR1 . length
   NODE_ID[1]: 30064771692
   NODE_INDEX[1]: 83
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: introSort(a, 0, a.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 0 , VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 0 , VAR1 . length )
   NODE_ID[2]: 55834574944
   NODE_INDEX[2]: 84
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: FIELD_IDENTIFIER
   ORIGINAL[2]: length
-  TOKENIZED[2]: VAR1
+  TOKENIZED[2]: length
   NODE_ID[3]: 68719477402
   NODE_INDEX[3]: 85
   EDGE_TYPE_INDEX[3]: 2
@@ -240,19 +240,19 @@ FRAGMENT_COUNT: 5
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: boolean[] newArray = new boolean[oversize(minSize, 1)]
-  TOKENIZED[0]: boolean[] VAR1 = new boolean[oversize ( VAR2 , 1 ) ]
+  TOKENIZED[0]: boolean [ ] VAR1 = new boolean [ FUN1 ( VAR2 , 1 ) ]
   NODE_ID[1]: 30064771500
   NODE_INDEX[1]: 86
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771503
   NODE_INDEX[2]: 87
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: new boolean[oversize(minSize, 1)]
-  TOKENIZED[2]: new boolean[oversize ( VAR1 , 1 ) ]
+  TOKENIZED[2]: new boolean [ FUN1 ( VAR1 , 1 ) ]
   NODE_ID[3]: 68719477170
   NODE_INDEX[3]: 88
   EDGE_TYPE_INDEX[3]: 2
@@ -273,13 +273,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: parseInt(chars, 0, chars.length, 10)
-  TOKENIZED[0]: FUN1 ( VAR1 , 0 , VAR1 . VAR2 , 10 )
+  TOKENIZED[0]: FUN1 ( VAR1 , 0 , VAR1 . length , 10 )
   NODE_ID[1]: 30064771190
   NODE_INDEX[1]: 90
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: chars.length
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . length
   NODE_ID[2]: 68719476845
   NODE_INDEX[2]: 91
   EDGE_TYPE_INDEX[2]: 2
@@ -294,19 +294,19 @@ FRAGMENT_COUNT: 7
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: arr[i]
-  TOKENIZED[0]: arr[i]
+  TOKENIZED[0]: VAR1 [ VAR2 ]
   NODE_ID[1]: 30064771675
   NODE_INDEX[1]: 92
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: arr[i] = arr[j]
-  TOKENIZED[1]: arr[i] = arr[j]
+  TOKENIZED[1]: VAR1 [ VAR2 ] = VAR1 [ VAR3 ]
   NODE_ID[2]: 30064771677
   NODE_INDEX[2]: 93
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: arr[j]
-  TOKENIZED[2]: arr[j]
+  TOKENIZED[2]: VAR1 [ VAR2 ]
   NODE_ID[3]: 68719477376
   NODE_INDEX[3]: 94
   EDGE_TYPE_INDEX[3]: 2
@@ -372,19 +372,19 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: newSize != array.length
-  TOKENIZED[1]: VAR1 != VAR2 . VAR3
+  TOKENIZED[1]: VAR1 != VAR2 . length
   NODE_ID[2]: 30064771565
   NODE_INDEX[2]: 102
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
   ORIGINAL[2]: int[][] newArray = new int[newSize][]
-  TOKENIZED[2]: int[][] VAR1 = new int[newSize][]
+  TOKENIZED[2]: int [ ] [ ] VAR1 = new int [ VAR2 ] [ ]
   NODE_ID[3]: 30064771566
   NODE_INDEX[3]: 103
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: new int[newSize][]
-  TOKENIZED[3]: new int[newSize][]
+  TOKENIZED[3]: new int [ VAR1 ] [ ]
   NODE_ID[4]: 68719477249
   NODE_INDEX[4]: 104
   EDGE_TYPE_INDEX[4]: 0
@@ -420,19 +420,19 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: 1 + array.length
-  TOKENIZED[0]: 1 + VAR1 . VAR2
+  TOKENIZED[0]: 1 + VAR1 . length
   NODE_ID[1]: 30064771578
   NODE_INDEX[1]: 107
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771580
   NODE_INDEX[2]: 108
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 68719477151  NODE_INDEX: 15
 FRAGMENT_COUNT: 3
@@ -447,13 +447,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771487
   NODE_INDEX[2]: 110
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 30064771686  NODE_INDEX: 16
 FRAGMENT_COUNT: 4
@@ -462,13 +462,13 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: introSort(a, 0, a.length, comp)
-  TOKENIZED[0]: FUN1 ( VAR1 , 0 , VAR1 . VAR2 , VAR3 )
+  TOKENIZED[0]: FUN1 ( VAR1 , 0 , VAR1 . length , VAR2 )
   NODE_ID[1]: 30064771687
   NODE_INDEX[1]: 111
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: a.length
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . length
   NODE_ID[2]: 68719477392
   NODE_INDEX[2]: 112
   EDGE_TYPE_INDEX[2]: 2
@@ -495,13 +495,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: array.length
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . length
   NODE_ID[2]: 55834574924
   NODE_INDEX[2]: 115
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: FIELD_IDENTIFIER
   ORIGINAL[2]: length
-  TOKENIZED[2]: VAR1
+  TOKENIZED[2]: length
 
 CENTER_NODE: 68719476977  NODE_INDEX: 18
 FRAGMENT_COUNT: 7
@@ -516,25 +516,25 @@ FRAGMENT_COUNT: 7
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771311
   NODE_INDEX[2]: 117
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: float[] newArray = new float[oversize(minSize, RamUsageEstimator.NUM_BYTES_FLOAT)]
-  TOKENIZED[2]: float[] VAR1 = new float[oversize ( VAR2 , VAR3 . VAR4 ) ]
+  TOKENIZED[2]: float [ ] VAR1 = new float [ FUN1 ( VAR2 , VAR3 . VAR4 ) ]
   NODE_ID[3]: 30064771315
   NODE_INDEX[3]: 118
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: System.arraycopy(array, 0, newArray, 0, array.length)
-  TOKENIZED[3]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . VAR4 )
+  TOKENIZED[3]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . length )
   NODE_ID[4]: 30064771316
   NODE_INDEX[4]: 119
   EDGE_TYPE_INDEX[4]: 0
   TYPE[4]: CALL
   ORIGINAL[4]: array.length
-  TOKENIZED[4]: VAR1 . VAR2
+  TOKENIZED[4]: VAR1 . length
   NODE_ID[5]: 68719476978
   NODE_INDEX[5]: 120
   EDGE_TYPE_INDEX[5]: 0
@@ -561,13 +561,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771380
   NODE_INDEX[2]: 123
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 68719476969  NODE_INDEX: 20
 FRAGMENT_COUNT: 3
@@ -582,13 +582,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: array.length
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . length
   NODE_ID[2]: 55834574868
   NODE_INDEX[2]: 125
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: FIELD_IDENTIFIER
   ORIGINAL[2]: length
-  TOKENIZED[2]: VAR1
+  TOKENIZED[2]: length
 
 CENTER_NODE: 30064771681  NODE_INDEX: 21
 FRAGMENT_COUNT: 4
@@ -630,13 +630,13 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: result[upto++] = v
-  TOKENIZED[1]: result[upto++] = VAR1
+  TOKENIZED[1]: VAR1 [ upto++ ] = VAR2
   NODE_ID[2]: 30064771665
   NODE_INDEX[2]: 130
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: result[upto++]
-  TOKENIZED[2]: result[upto++]
+  TOKENIZED[2]: VAR1 [ upto++ ]
   NODE_ID[3]: 68719477363
   NODE_INDEX[3]: 131
   EDGE_TYPE_INDEX[3]: 0
@@ -662,8 +662,8 @@ FRAGMENT_COUNT: 6
   NODE_INDEX[2]: 133
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
-  ORIGINAL[2]: String ballotage_uropsile = System.getenv(\
-  TOKENIZED[2]: VAR1 VAR2 = VAR3 . FUN1 ( \
+  ORIGINAL[2]: String ballotage_uropsile = System.getenv("STONESOUP_DISABLE_WEAKNESS")
+  TOKENIZED[2]: VAR1 VAR2 = VAR3 . FUN1 ( STR1 )
   NODE_ID[3]: 30064771444
   NODE_INDEX[3]: 134
   EDGE_TYPE_INDEX[3]: 2
@@ -696,19 +696,19 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771298
   NODE_INDEX[2]: 138
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
   ORIGINAL[2]: short[] newArray = new short[oversize(minSize, RamUsageEstimator.NUM_BYTES_SHORT)]
-  TOKENIZED[2]: short[] VAR1 = new short[oversize ( VAR2 , VAR3 . VAR4 ) ]
+  TOKENIZED[2]: short [ ] VAR1 = new short [ FUN1 ( VAR2 , VAR3 . VAR4 ) ]
   NODE_ID[3]: 30064771299
   NODE_INDEX[3]: 139
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: new short[oversize(minSize, RamUsageEstimator.NUM_BYTES_SHORT)]
-  TOKENIZED[3]: new short[oversize ( VAR1 , VAR2 . VAR3 ) ]
+  TOKENIZED[3]: new short [ FUN1 ( VAR1 , VAR2 . VAR3 ) ]
   NODE_ID[4]: 68719476959
   NODE_INDEX[4]: 140
   EDGE_TYPE_INDEX[4]: 0
@@ -729,31 +729,31 @@ FRAGMENT_COUNT: 7
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: right.length
-  TOKENIZED[0]: VAR1 . VAR2
+  TOKENIZED[0]: VAR1 . length
   NODE_ID[1]: 30064771641
   NODE_INDEX[1]: 142
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: offsetLeft + length <= left.length
-  TOKENIZED[1]: VAR1 + VAR2 <= VAR3 . VAR2
+  TOKENIZED[1]: VAR1 + length <= VAR2 . length
   NODE_ID[2]: 30064771644
   NODE_INDEX[2]: 143
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: offsetRight + length <= right.length
-  TOKENIZED[2]: VAR1 + VAR2 <= VAR3 . VAR2
+  TOKENIZED[2]: VAR1 + length <= VAR2 . length
   NODE_ID[3]: 30064771645
   NODE_INDEX[3]: 144
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: offsetRight + length
-  TOKENIZED[3]: VAR1 + VAR2
+  TOKENIZED[3]: VAR1 + length
   NODE_ID[4]: 55834574940
   NODE_INDEX[4]: 145
   EDGE_TYPE_INDEX[4]: 0
   TYPE[4]: FIELD_IDENTIFIER
   ORIGINAL[4]: length
-  TOKENIZED[4]: VAR1
+  TOKENIZED[4]: length
   NODE_ID[5]: 68719477346
   NODE_INDEX[5]: 146
   EDGE_TYPE_INDEX[5]: 2
@@ -780,7 +780,7 @@ FRAGMENT_COUNT: 2
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: timSort(a, 0, a.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 0 , VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 0 , VAR1 . length )
 
 CENTER_NODE: 30064771711  NODE_INDEX: 27
 FRAGMENT_COUNT: 3
@@ -831,7 +831,7 @@ FRAGMENT_COUNT: 7
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: int i = end - 1
-  TOKENIZED[1]: int VAR1 = VAR2 - 1
+  TOKENIZED[1]: int VAR1 = end - 1
   NODE_ID[2]: 30064771604
   NODE_INDEX[2]: 153
   EDGE_TYPE_INDEX[2]: 0
@@ -891,13 +891,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: array.length
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . length
   NODE_ID[2]: 55834574911
   NODE_INDEX[2]: 160
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: FIELD_IDENTIFIER
   ORIGINAL[2]: length
-  TOKENIZED[2]: VAR1
+  TOKENIZED[2]: length
 
 CENTER_NODE: 68719477206  NODE_INDEX: 32
 FRAGMENT_COUNT: 3
@@ -912,13 +912,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771523
   NODE_INDEX[2]: 162
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 30064771355  NODE_INDEX: 33
 FRAGMENT_COUNT: 3
@@ -927,19 +927,19 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: 1 + array.length
-  TOKENIZED[0]: 1 + VAR1 . VAR2
+  TOKENIZED[0]: 1 + VAR1 . length
   NODE_ID[1]: 30064771354
   NODE_INDEX[1]: 163
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771356
   NODE_INDEX[2]: 164
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 30064771713  NODE_INDEX: 34
 FRAGMENT_COUNT: 5
@@ -980,14 +980,14 @@ FRAGMENT_COUNT: 4
   NODE_INDEX[0]: 35
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: String stonesoup_psql_host = System.getenv(\
-  TOKENIZED[0]: VAR1 VAR2 = VAR3 . FUN1 ( \
+  ORIGINAL[0]: String stonesoup_psql_host = System.getenv("DBPGHOST")
+  TOKENIZED[0]: VAR1 VAR2 = VAR3 . FUN1 ( STR1 )
   NODE_ID[1]: 30064771077
   NODE_INDEX[1]: 169
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
-  ORIGINAL[1]: System.getenv(\
-  TOKENIZED[1]: VAR1 . FUN1 ( \
+  ORIGINAL[1]: System.getenv("DBPGHOST")
+  TOKENIZED[1]: VAR1 . FUN1 ( STR1 )
   NODE_ID[2]: 68719476740
   NODE_INDEX[2]: 170
   EDGE_TYPE_INDEX[2]: 2
@@ -1035,7 +1035,7 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: newSize != array.length
-  TOKENIZED[1]: VAR1 != VAR2 . VAR3
+  TOKENIZED[1]: VAR1 != VAR2 . length
   NODE_ID[2]: 30064771343
   NODE_INDEX[2]: 175
   EDGE_TYPE_INDEX[2]: 0
@@ -1062,13 +1062,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771532
   NODE_INDEX[2]: 178
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 68719476952  NODE_INDEX: 39
 FRAGMENT_COUNT: 4
@@ -1125,25 +1125,25 @@ FRAGMENT_COUNT: 16
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: i < length
-  TOKENIZED[0]: VAR1 < VAR2
+  TOKENIZED[0]: VAR1 < length
   NODE_ID[1]: 30064771610
   NODE_INDEX[1]: 184
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: (offsetLeft + length <= left.length) && (offsetRight + length <= right.length)
-  TOKENIZED[1]: ( VAR1 + VAR2 <= VAR3 . VAR2 ) && ( VAR4 + VAR2 <= VAR5 . VAR2 )
+  TOKENIZED[1]: ( VAR1 + length <= VAR2 . length ) && ( VAR3 + length <= VAR4 . length )
   NODE_ID[2]: 30064771620
   NODE_INDEX[2]: 185
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: left[offsetLeft + i] != right[offsetRight + i]
-  TOKENIZED[2]: left[offsetLeft + i] != right[offsetRight + i]
+  TOKENIZED[2]: VAR1 [ VAR2 + VAR3 ] != VAR4 [ VAR5 + VAR3 ]
   NODE_ID[3]: 30064771621
   NODE_INDEX[3]: 186
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: left[offsetLeft + i]
-  TOKENIZED[3]: left[offsetLeft + i]
+  TOKENIZED[3]: VAR1 [ VAR2 + VAR3 ]
   NODE_ID[4]: 30064771622
   NODE_INDEX[4]: 187
   EDGE_TYPE_INDEX[4]: 0
@@ -1155,7 +1155,7 @@ FRAGMENT_COUNT: 16
   EDGE_TYPE_INDEX[5]: 0
   TYPE[5]: CALL
   ORIGINAL[5]: right[offsetRight + i]
-  TOKENIZED[5]: right[offsetRight + i]
+  TOKENIZED[5]: VAR1 [ VAR2 + VAR3 ]
   NODE_ID[6]: 30064771624
   NODE_INDEX[6]: 189
   EDGE_TYPE_INDEX[6]: 0
@@ -1167,7 +1167,7 @@ FRAGMENT_COUNT: 16
   EDGE_TYPE_INDEX[7]: 0
   TYPE[7]: CONTROL_STRUCTURE
   ORIGINAL[7]: for (int i = 0; Some(i < length); i++)
-  TOKENIZED[7]: for ( int VAR1 = 0 ; FUN1 ( VAR1 < VAR2 ) ; i++ )
+  TOKENIZED[7]: for ( int VAR1 = 0 ; FUN1 ( VAR1 < length ) ; i++ )
   NODE_ID[8]: 68719477316
   NODE_INDEX[8]: 191
   EDGE_TYPE_INDEX[8]: 2
@@ -1179,7 +1179,7 @@ FRAGMENT_COUNT: 16
   EDGE_TYPE_INDEX[9]: 0
   TYPE[9]: IDENTIFIER
   ORIGINAL[9]: length
-  TOKENIZED[9]: VAR1
+  TOKENIZED[9]: length
   NODE_ID[10]: 68719477319
   NODE_INDEX[10]: 193
   EDGE_TYPE_INDEX[10]: 0
@@ -1223,8 +1223,8 @@ FRAGMENT_COUNT: 3
   NODE_INDEX[0]: 42
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: assert targetSize >= 0 : \
-  TOKENIZED[0]: assert VAR1 >= 0 : \
+  ORIGINAL[0]: assert targetSize >= 0 : "size must be positive (got " + targetSize + "): likely integer overflow?";
+  TOKENIZED[0]: assert VAR1 >= 0 : STR1 + VAR1 + STR2 ;
   NODE_ID[1]: 30064771511
   NODE_INDEX[1]: 199
   EDGE_TYPE_INDEX[1]: 0
@@ -1245,25 +1245,25 @@ FRAGMENT_COUNT: 22
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: array.length < minSize
-  TOKENIZED[0]: VAR1 . VAR2 < VAR3
+  TOKENIZED[0]: VAR1 . length < VAR2
   NODE_ID[1]: 30064771323
   NODE_INDEX[1]: 201
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: array.length
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . length
   NODE_ID[2]: 30064771324
   NODE_INDEX[2]: 202
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: double[] newArray = new double[oversize(minSize, RamUsageEstimator.NUM_BYTES_DOUBLE)]
-  TOKENIZED[2]: double[] VAR1 = new double[oversize ( VAR2 , VAR3 . VAR4 ) ]
+  TOKENIZED[2]: double [ ] VAR1 = new double [ FUN1 ( VAR2 , VAR3 . VAR4 ) ]
   NODE_ID[3]: 30064771325
   NODE_INDEX[3]: 203
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: new double[oversize(minSize, RamUsageEstimator.NUM_BYTES_DOUBLE)]
-  TOKENIZED[3]: new double[oversize ( VAR1 , VAR2 . VAR3 ) ]
+  TOKENIZED[3]: new double [ FUN1 ( VAR1 , VAR2 . VAR3 ) ]
   NODE_ID[4]: 30064771326
   NODE_INDEX[4]: 204
   EDGE_TYPE_INDEX[4]: 0
@@ -1281,19 +1281,19 @@ FRAGMENT_COUNT: 22
   EDGE_TYPE_INDEX[6]: 0
   TYPE[6]: CALL
   ORIGINAL[6]: System.arraycopy(array, 0, newArray, 0, array.length)
-  TOKENIZED[6]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . VAR4 )
+  TOKENIZED[6]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . length )
   NODE_ID[7]: 30064771329
   NODE_INDEX[7]: 207
   EDGE_TYPE_INDEX[7]: 0
   TYPE[7]: CALL
   ORIGINAL[7]: array.length
-  TOKENIZED[7]: VAR1 . VAR2
+  TOKENIZED[7]: VAR1 . length
   NODE_ID[8]: 47244640291
   NODE_INDEX[8]: 208
   EDGE_TYPE_INDEX[8]: 0
   TYPE[8]: CONTROL_STRUCTURE
   ORIGINAL[8]: if (array.length < minSize)
-  TOKENIZED[8]: if ( VAR1 . VAR2 < VAR3 )
+  TOKENIZED[8]: if ( VAR1 . length < VAR2 )
   NODE_ID[9]: 55834574874
   NODE_INDEX[9]: 209
   EDGE_TYPE_INDEX[9]: 0
@@ -1305,7 +1305,7 @@ FRAGMENT_COUNT: 22
   EDGE_TYPE_INDEX[10]: 0
   TYPE[10]: FIELD_IDENTIFIER
   ORIGINAL[10]: length
-  TOKENIZED[10]: VAR1
+  TOKENIZED[10]: length
   NODE_ID[11]: 68719476987
   NODE_INDEX[11]: 211
   EDGE_TYPE_INDEX[11]: 0
@@ -1380,7 +1380,7 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: o1.compareTo(o2)
-  TOKENIZED[0]: VAR1 . FUN1 ( VAR2 )
+  TOKENIZED[0]: VAR1 . compareTo ( VAR2 )
   NODE_ID[1]: 68719477371
   NODE_INDEX[1]: 222
   EDGE_TYPE_INDEX[1]: 0
@@ -1434,13 +1434,13 @@ FRAGMENT_COUNT: 5
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: getShrinkSize(array.length, targetSize, RamUsageEstimator.NUM_BYTES_CHAR)
-  TOKENIZED[1]: FUN1 ( VAR1 . VAR2 , VAR3 , VAR4 . VAR5 )
+  TOKENIZED[1]: FUN1 ( VAR1 . length , VAR2 , VAR3 . VAR4 )
   NODE_ID[2]: 30064771537
   NODE_INDEX[2]: 228
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
   NODE_ID[3]: 68719477209
   NODE_INDEX[3]: 229
   EDGE_TYPE_INDEX[3]: 0
@@ -1472,14 +1472,14 @@ FRAGMENT_COUNT: 5
   NODE_INDEX[2]: 232
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
-  ORIGINAL[2]: $obj7 = new IllegalArgumentException(\
-  TOKENIZED[2]: $obj7 = new FUN1 ( \
+  ORIGINAL[2]: $obj7 = new IllegalArgumentException("invalid array size " + minTargetSize)
+  TOKENIZED[2]: $obj7 = new FUN1 ( STR1 + VAR1 )
   NODE_ID[3]: 30064771266
   NODE_INDEX[3]: 233
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: new IllegalArgumentException(\
-  TOKENIZED[3]: new FUN1 ( \
+  ORIGINAL[3]: new IllegalArgumentException("invalid array size " + minTargetSize)
+  TOKENIZED[3]: new FUN1 ( STR1 + VAR1 )
   NODE_ID[4]: 68719476925
   NODE_INDEX[4]: 234
   EDGE_TYPE_INDEX[4]: 0
@@ -1505,14 +1505,14 @@ FRAGMENT_COUNT: 5
   NODE_INDEX[2]: 236
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
-  ORIGINAL[2]: $obj4 = new NumberFormatException(\
-  TOKENIZED[2]: $obj4 = new FUN1 ( \
+  ORIGINAL[2]: $obj4 = new NumberFormatException("Unable to parse")
+  TOKENIZED[2]: $obj4 = new FUN1 ( STR1 )
   NODE_ID[3]: 30064771245
   NODE_INDEX[3]: 237
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: new NumberFormatException(\
-  TOKENIZED[3]: new FUN1 ( \
+  ORIGINAL[3]: new NumberFormatException("Unable to parse")
+  TOKENIZED[3]: new FUN1 ( STR1 )
   NODE_ID[4]: 68719476901
   NODE_INDEX[4]: 238
   EDGE_TYPE_INDEX[4]: 0
@@ -1548,7 +1548,7 @@ FRAGMENT_COUNT: 2
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: timSort(a, 0, a.length, comp)
-  TOKENIZED[1]: FUN1 ( VAR1 , 0 , VAR1 . VAR2 , VAR3 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 0 , VAR1 . length , VAR2 )
 
 CENTER_NODE: 30064771696  NODE_INDEX: 51
 FRAGMENT_COUNT: 4
@@ -1557,7 +1557,7 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: sort(fromIndex, toIndex)
-  TOKENIZED[0]: FUN1 ( VAR1 , VAR2 )
+  TOKENIZED[0]: sort ( VAR1 , VAR2 )
   NODE_ID[1]: 30064771694
   NODE_INDEX[1]: 241
   EDGE_TYPE_INDEX[1]: 0
@@ -1599,25 +1599,25 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: left.length
-  TOKENIZED[0]: VAR1 . VAR2
+  TOKENIZED[0]: VAR1 . length
   NODE_ID[1]: 30064771626
   NODE_INDEX[1]: 245
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: offsetLeft + length <= left.length
-  TOKENIZED[1]: VAR1 + VAR2 <= VAR3 . VAR2
+  TOKENIZED[1]: VAR1 + length <= VAR2 . length
   NODE_ID[2]: 30064771627
   NODE_INDEX[2]: 246
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: offsetLeft + length
-  TOKENIZED[2]: VAR1 + VAR2
+  TOKENIZED[2]: VAR1 + length
   NODE_ID[3]: 55834574937
   NODE_INDEX[3]: 247
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: FIELD_IDENTIFIER
   ORIGINAL[3]: length
-  TOKENIZED[3]: VAR1
+  TOKENIZED[3]: length
   NODE_ID[4]: 68719477327
   NODE_INDEX[4]: 248
   EDGE_TYPE_INDEX[4]: 2
@@ -1644,13 +1644,13 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: grow(array, 1 + array.length)
-  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . VAR2 )
+  TOKENIZED[1]: FUN1 ( VAR1 , 1 + VAR1 . length )
   NODE_ID[2]: 30064771319
   NODE_INDEX[2]: 251
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
 
 CENTER_NODE: 30064771384  NODE_INDEX: 55
 FRAGMENT_COUNT: 7
@@ -1659,19 +1659,19 @@ FRAGMENT_COUNT: 7
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: getShrinkSize(array.length, targetSize, RamUsageEstimator.NUM_BYTES_LONG)
-  TOKENIZED[0]: FUN1 ( VAR1 . VAR2 , VAR3 , VAR4 . VAR5 )
+  TOKENIZED[0]: FUN1 ( VAR1 . length , VAR2 , VAR3 . VAR4 )
   NODE_ID[1]: 30064771383
   NODE_INDEX[1]: 252
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: int newSize = getShrinkSize(array.length, targetSize, RamUsageEstimator.NUM_BYTES_LONG)
-  TOKENIZED[1]: int VAR1 = FUN1 ( VAR2 . VAR3 , VAR4 , VAR5 . VAR6 )
+  TOKENIZED[1]: int VAR1 = FUN1 ( VAR2 . length , VAR3 , VAR4 . VAR5 )
   NODE_ID[2]: 30064771385
   NODE_INDEX[2]: 253
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
   ORIGINAL[2]: array.length
-  TOKENIZED[2]: VAR1 . VAR2
+  TOKENIZED[2]: VAR1 . length
   NODE_ID[3]: 30064771386
   NODE_INDEX[3]: 254
   EDGE_TYPE_INDEX[3]: 0
@@ -1746,19 +1746,19 @@ FRAGMENT_COUNT: 8
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: array.length < minSize
-  TOKENIZED[1]: VAR1 . VAR2 < VAR3
+  TOKENIZED[1]: VAR1 . length < VAR2
   NODE_ID[2]: 30064771376
   NODE_INDEX[2]: 262
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
   ORIGINAL[2]: System.arraycopy(array, 0, newArray, 0, array.length)
-  TOKENIZED[2]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . VAR4 )
+  TOKENIZED[2]: VAR1 . FUN1 ( VAR2 , 0 , VAR3 , 0 , VAR2 . length )
   NODE_ID[3]: 30064771377
   NODE_INDEX[3]: 263
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: array.length
-  TOKENIZED[3]: VAR1 . VAR2
+  TOKENIZED[3]: VAR1 . length
   NODE_ID[4]: 68719477050
   NODE_INDEX[4]: 264
   EDGE_TYPE_INDEX[4]: 0

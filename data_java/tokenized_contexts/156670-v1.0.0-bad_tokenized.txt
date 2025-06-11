@@ -39,7 +39,7 @@ FRAGMENT_COUNT: 11
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: set[0] > Weapon.CLASS_DESCS.length
-  TOKENIZED[1]: set[0] > VAR1 . VAR2 . VAR3
+  TOKENIZED[1]: VAR1 [ 0 ] > VAR2 . VAR3 . length
   NODE_ID[2]: 30064771928
   NODE_INDEX[2]: 96
   EDGE_TYPE_INDEX[2]: 0
@@ -51,13 +51,13 @@ FRAGMENT_COUNT: 11
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: i < Weapon.CLASS_DESCS.length
-  TOKENIZED[3]: VAR1 < VAR2 . VAR3 . VAR4
+  TOKENIZED[3]: VAR1 < VAR2 . VAR3 . length
   NODE_ID[4]: 30064771930
   NODE_INDEX[4]: 98
   EDGE_TYPE_INDEX[4]: 0
   TYPE[4]: CALL
   ORIGINAL[4]: Weapon.CLASS_DESCS.length
-  TOKENIZED[4]: VAR1 . VAR2 . VAR3
+  TOKENIZED[4]: VAR1 . VAR2 . length
   NODE_ID[5]: 30064771932
   NODE_INDEX[5]: 99
   EDGE_TYPE_INDEX[5]: 1
@@ -129,7 +129,7 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: x < reqs.length
-  TOKENIZED[1]: VAR1 < VAR2 . VAR3
+  TOKENIZED[1]: VAR1 < VAR2 . length
   NODE_ID[2]: 30064771581
   NODE_INDEX[2]: 108
   EDGE_TYPE_INDEX[2]: 0
@@ -140,8 +140,8 @@ FRAGMENT_COUNT: 6
   NODE_INDEX[3]: 109
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: append(CMStrings.capitalizeAndLower(req.first)).append(\
-  TOKENIZED[3]: FUN1 ( VAR1 . FUN2 ( VAR2 . VAR3 ) ) . FUN1 ( \
+  ORIGINAL[3]: append(CMStrings.capitalizeAndLower(req.first)).append(" ").append(req.second.toString()).append("+")
+  TOKENIZED[3]: append ( VAR1 . FUN1 ( VAR2 . first ) ) . append ( STR1 ) . append ( VAR2 . second . toString ( ) ) . append ( STR2 )
   NODE_ID[4]: 68719477246
   NODE_INDEX[4]: 110
   EDGE_TYPE_INDEX[4]: 0
@@ -209,14 +209,14 @@ FRAGMENT_COUNT: 5
   NODE_INDEX[1]: 116
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
-  ORIGINAL[1]: String.format(\
-  TOKENIZED[1]: VAR1 . FUN1 ( \
+  ORIGINAL[1]: String.format("Request Data Processed!\\n\\n" + "Thank you for your contribution.  Please keep up the support.")
+  TOKENIZED[1]: VAR1 . FUN1 ( STR1 + STR2 )
   NODE_ID[2]: 30064771127
   NODE_INDEX[2]: 117
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
-  ORIGINAL[2]: \
-  TOKENIZED[2]: \
+  ORIGINAL[2]: "Request Data Processed!\\n\\n" + "Thank you for your contribution.  Please keep up the support."
+  TOKENIZED[2]: STR1 + STR2
   NODE_ID[3]: 30064771128
   NODE_INDEX[3]: 118
   EDGE_TYPE_INDEX[3]: 0
@@ -279,19 +279,19 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: raceList.length
-  TOKENIZED[0]: VAR1 . VAR2
+  TOKENIZED[0]: VAR1 . length
   NODE_ID[1]: 30064771597
   NODE_INDEX[1]: 124
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: raceList.length == 0
-  TOKENIZED[1]: VAR1 . VAR2 == 0
+  TOKENIZED[1]: VAR1 . length == 0
   NODE_ID[2]: 55834574979
   NODE_INDEX[2]: 125
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: FIELD_IDENTIFIER
   ORIGINAL[2]: length
-  TOKENIZED[2]: VAR1
+  TOKENIZED[2]: length
   NODE_ID[3]: 68719477259
   NODE_INDEX[3]: 126
   EDGE_TYPE_INDEX[3]: 0
@@ -422,14 +422,14 @@ FRAGMENT_COUNT: 10
   NODE_INDEX[3]: 138
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: str.append(\
-  TOKENIZED[3]: VAR1 . FUN1 ( \
+  ORIGINAL[3]: str.append("" + getBonusPracLevel())
+  TOKENIZED[3]: VAR1 . append ( STR1 + FUN1 ( ) )
   NODE_ID[4]: 30064771785
   NODE_INDEX[4]: 139
   EDGE_TYPE_INDEX[4]: 0
   TYPE[4]: CALL
-  ORIGINAL[4]: \
-  TOKENIZED[4]: \
+  ORIGINAL[4]: "" + getBonusPracLevel()
+  TOKENIZED[4]: STR1 + FUN1 ( )
   NODE_ID[5]: 30064771786
   NODE_INDEX[5]: 140
   EDGE_TYPE_INDEX[5]: 0
@@ -509,8 +509,8 @@ FRAGMENT_COUNT: 3
   NODE_INDEX[1]: 148
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
-  ORIGINAL[1]: getTrainsFirstLevel() + \
-  TOKENIZED[1]: FUN1 ( ) + \
+  ORIGINAL[1]: getTrainsFirstLevel() + " +1 per level"
+  TOKENIZED[1]: FUN1 ( ) + STR1
   NODE_ID[2]: 68719476810
   NODE_INDEX[2]: 149
   EDGE_TYPE_INDEX[2]: 0
@@ -564,7 +564,7 @@ FRAGMENT_COUNT: 5
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: (((sourceCode & CMMsg.MINOR_MASK) == CMMsg.TYP_WEAPONATTACK) || ((sourceCode & CMMsg.MINOR_MASK) == CMMsg.TYP_THROW)) && (E instanceof Weapon) && (mob.charStats().getCurrentClass().ID().equals(ID())) && (((requiredWeaponMaterials() != null) && (!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon) E).material() & RawMaterial.MATERIAL_MASK)))) || ((disallowedWeaponClasses(mob) != null) && (disallowedWeaponClasses(mob).contains(Integer.valueOf(((Weapon) E).weaponClassification())))))
-  TOKENIZED[1]: ( ( ( VAR1 & VAR2 . VAR3 ) == VAR2 . VAR4 ) || ( ( VAR1 & VAR2 . VAR3 ) == VAR2 . VAR5 ) ) && ( VAR6 instanceof VAR7 ) && ( VAR8 . FUN1 ( ) . FUN2 ( ) . FUN3 ( ) . FUN4 ( FUN3 ( ) ) ) && ( ( ( FUN5 ( ) != null ) && ( !requiredWeaponMaterials ( ) . FUN6 ( VAR9 . FUN7 ( ( ( VAR7 ) VAR6 ) . FUN8 ( ) & VAR10 . VAR11 ) ) ) ) || ( ( FUN9 ( VAR8 ) != null ) && ( FUN9 ( VAR8 ) . FUN6 ( VAR9 . FUN7 ( ( ( VAR7 ) VAR6 ) . FUN10 ( ) ) ) ) ) )
+  TOKENIZED[1]: ( ( ( VAR1 & VAR2 . VAR3 ) == VAR2 . VAR4 ) || ( ( VAR1 & VAR2 . VAR3 ) == VAR2 . VAR5 ) ) && ( VAR6 instanceof VAR7 ) && ( VAR8 . FUN1 ( ) . FUN2 ( ) . FUN3 ( ) . equals ( FUN3 ( ) ) ) && ( ( ( FUN4 ( ) != null ) && ( !requiredWeaponMaterials ( ) . contains ( VAR9 . FUN5 ( ( ( VAR7 ) VAR6 ) . FUN6 ( ) & VAR10 . VAR11 ) ) ) ) || ( ( FUN7 ( VAR8 ) != null ) && ( FUN7 ( VAR8 ) . contains ( VAR9 . FUN5 ( ( ( VAR7 ) VAR6 ) . FUN8 ( ) ) ) ) ) )
   NODE_ID[2]: 30064772079
   NODE_INDEX[2]: 155
   EDGE_TYPE_INDEX[2]: 0
@@ -612,19 +612,19 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: CMSecurity.SecGroup StdCharClass.empty = new CMSecurity.SecGroup(new CMSecurity.SecFlag[] {})
-  TOKENIZED[0]: VAR1 . VAR2 VAR3 . VAR4 = new VAR1 . FUN1 ( new VAR1 . SecFlag[] { } )
+  TOKENIZED[0]: VAR1 . VAR2 VAR3 . empty = new VAR1 . FUN1 ( new VAR1 . VAR4 [ ] { } )
   NODE_ID[1]: 30064772918
   NODE_INDEX[1]: 160
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: StdCharClass.empty
-  TOKENIZED[1]: VAR1 . VAR2
+  TOKENIZED[1]: VAR1 . empty
   NODE_ID[2]: 30064772919
   NODE_INDEX[2]: 161
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: new CMSecurity.SecGroup(new CMSecurity.SecFlag[] {})
-  TOKENIZED[2]: new VAR1 . FUN1 ( new VAR1 . SecFlag[] { } )
+  TOKENIZED[2]: new VAR1 . FUN1 ( new VAR1 . VAR2 [ ] { } )
 
 CENTER_NODE: 68719477074  NODE_INDEX: 23
 FRAGMENT_COUNT: 3
@@ -654,7 +654,7 @@ FRAGMENT_COUNT: 9
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: CODES.length
-  TOKENIZED[0]: VAR1 . VAR2
+  TOKENIZED[0]: VAR1 . length
   NODE_ID[1]: 30064772852
   NODE_INDEX[1]: 164
   EDGE_TYPE_INDEX[1]: 0
@@ -666,7 +666,7 @@ FRAGMENT_COUNT: 9
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: i < CODES.length
-  TOKENIZED[2]: VAR1 < VAR2 . VAR3
+  TOKENIZED[2]: VAR1 < VAR2 . length
   NODE_ID[3]: 30064772857
   NODE_INDEX[3]: 166
   EDGE_TYPE_INDEX[3]: 0
@@ -678,7 +678,7 @@ FRAGMENT_COUNT: 9
   EDGE_TYPE_INDEX[4]: 0
   TYPE[4]: CALL
   ORIGINAL[4]: !E.getStat(CODES[i]).equals(getStat(CODES[i]))
-  TOKENIZED[4]: !E . FUN1 ( CODES[i] ) . FUN2 ( FUN1 ( CODES[i] ) )
+  TOKENIZED[4]: !E . FUN1 ( VAR1 [ VAR2 ] ) . equals ( FUN1 ( VAR1 [ VAR2 ] ) )
   NODE_ID[5]: 30064772863
   NODE_INDEX[5]: 168
   EDGE_TYPE_INDEX[5]: 0
@@ -696,7 +696,7 @@ FRAGMENT_COUNT: 9
   EDGE_TYPE_INDEX[7]: 0
   TYPE[7]: FIELD_IDENTIFIER
   ORIGINAL[7]: length
-  TOKENIZED[7]: VAR1
+  TOKENIZED[7]: length
   NODE_ID[8]: 68719478136
   NODE_INDEX[8]: 171
   EDGE_TYPE_INDEX[8]: 0
@@ -710,8 +710,8 @@ FRAGMENT_COUNT: 31
   NODE_INDEX[0]: 25
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: !session.getParms().containsKey(\
-  TOKENIZED[0]: !session . FUN1 ( ) . FUN2 ( \
+  ORIGINAL[0]: !session.getParms().containsKey("data")
+  TOKENIZED[0]: !session . FUN1 ( ) . FUN2 ( STR1 )
   NODE_ID[1]: 30064771140
   NODE_INDEX[1]: 172
   EDGE_TYPE_INDEX[1]: 0
@@ -722,14 +722,14 @@ FRAGMENT_COUNT: 31
   NODE_INDEX[2]: 173
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
-  ORIGINAL[2]: getParms().containsKey(\
-  TOKENIZED[2]: FUN1 ( ) . FUN2 ( \
+  ORIGINAL[2]: getParms().containsKey("data")
+  TOKENIZED[2]: FUN1 ( ) . FUN2 ( STR1 )
   NODE_ID[3]: 30064771154
   NODE_INDEX[3]: 174
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: writeErrorResponse(session, Response.Status.BAD_REQUEST, \
-  TOKENIZED[3]: FUN1 ( VAR1 , VAR2 . VAR3 . VAR4 , \
+  ORIGINAL[3]: writeErrorResponse(session, Response.Status.BAD_REQUEST, "Missing required field \\"data\\".")
+  TOKENIZED[3]: FUN1 ( VAR1 , VAR2 . VAR3 . VAR4 , STR1 data\\ STR2 )
   NODE_ID[4]: 30064771155
   NODE_INDEX[4]: 175
   EDGE_TYPE_INDEX[4]: 0
@@ -746,20 +746,20 @@ FRAGMENT_COUNT: 31
   NODE_INDEX[6]: 177
   EDGE_TYPE_INDEX[6]: 0
   TYPE[6]: CALL
-  ORIGINAL[6]: this.data = session.getParms().get(\
-  TOKENIZED[6]: this . VAR1 = VAR2 . FUN1 ( ) . FUN2 ( \
+  ORIGINAL[6]: this.data = session.getParms().get("data")
+  TOKENIZED[6]: this . data = VAR1 . FUN1 ( ) . FUN2 ( STR1 )
   NODE_ID[7]: 30064771158
   NODE_INDEX[7]: 178
   EDGE_TYPE_INDEX[7]: 0
   TYPE[7]: CALL
   ORIGINAL[7]: this.data
-  TOKENIZED[7]: this . VAR1
+  TOKENIZED[7]: this . data
   NODE_ID[8]: 30064771159
   NODE_INDEX[8]: 179
   EDGE_TYPE_INDEX[8]: 0
   TYPE[8]: CALL
-  ORIGINAL[8]: getParms().get(\
-  TOKENIZED[8]: FUN1 ( ) . FUN2 ( \
+  ORIGINAL[8]: getParms().get("data")
+  TOKENIZED[8]: FUN1 ( ) . FUN2 ( STR1 )
   NODE_ID[9]: 30064771160
   NODE_INDEX[9]: 180
   EDGE_TYPE_INDEX[9]: 0
@@ -806,8 +806,8 @@ FRAGMENT_COUNT: 31
   NODE_INDEX[16]: 187
   EDGE_TYPE_INDEX[16]: 0
   TYPE[16]: CONTROL_STRUCTURE
-  ORIGINAL[16]: if (!session.getParms().containsKey(\
-  TOKENIZED[16]: if ( !session . FUN1 ( ) . FUN2 ( \
+  ORIGINAL[16]: if (!session.getParms().containsKey("data"))
+  TOKENIZED[16]: if ( !session . FUN1 ( ) . FUN2 ( STR1 ) )
   NODE_ID[17]: 55834574874
   NODE_INDEX[17]: 188
   EDGE_TYPE_INDEX[17]: 0
@@ -825,7 +825,7 @@ FRAGMENT_COUNT: 31
   EDGE_TYPE_INDEX[19]: 0
   TYPE[19]: FIELD_IDENTIFIER
   ORIGINAL[19]: data
-  TOKENIZED[19]: VAR1
+  TOKENIZED[19]: data
   NODE_ID[20]: 55834574877
   NODE_INDEX[20]: 191
   EDGE_TYPE_INDEX[20]: 0
@@ -1104,13 +1104,13 @@ FRAGMENT_COUNT: 2
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: StdCharClass.empty
-  TOKENIZED[0]: VAR1 . VAR2
+  TOKENIZED[0]: VAR1 . empty
   NODE_ID[1]: 55834574909
   NODE_INDEX[1]: 221
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: FIELD_IDENTIFIER
   ORIGINAL[1]: empty
-  TOKENIZED[1]: VAR1
+  TOKENIZED[1]: empty
 
 CENTER_NODE: 68719478124  NODE_INDEX: 37
 FRAGMENT_COUNT: 3
@@ -1197,7 +1197,7 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: ARMOR_LONGDESC[allowedArmorLevel()]
-  TOKENIZED[0]: ARMOR_LONGDESC[allowedArmorLevel ( ) ]
+  TOKENIZED[0]: VAR1 [ FUN1 ( ) ]
   NODE_ID[1]: 30064771570
   NODE_INDEX[1]: 229
   EDGE_TYPE_INDEX[1]: 0
@@ -1232,14 +1232,14 @@ FRAGMENT_COUNT: 3
   NODE_INDEX[0]: 43
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: \
-  TOKENIZED[0]: \
+  ORIGINAL[0]: "+1 damage per " + getLevelsPerBonusDamage()
+  TOKENIZED[0]: STR1 + FUN1 ( )
   NODE_ID[1]: 30064771791
   NODE_INDEX[1]: 232
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
-  ORIGINAL[1]: \
-  TOKENIZED[1]: \
+  ORIGINAL[1]: "+1 damage per " + getLevelsPerBonusDamage() + " level(s)"
+  TOKENIZED[1]: STR1 + FUN1 ( ) + STR2
   NODE_ID[2]: 30064771793
   NODE_INDEX[2]: 233
   EDGE_TYPE_INDEX[2]: 0
@@ -1253,14 +1253,14 @@ FRAGMENT_COUNT: 3
   NODE_INDEX[0]: 44
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: { \
-  TOKENIZED[0]: { \
+  ORIGINAL[0]: { "CLASS", "PARMS" }
+  TOKENIZED[0]: { STR1 , STR2 }
   NODE_ID[1]: 30064772963
   NODE_INDEX[1]: 234
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
-  ORIGINAL[1]: String[] StdCharClass.CODES = { \
-  TOKENIZED[1]: String[] VAR1 . VAR2 = { \
+  ORIGINAL[1]: String[] StdCharClass.CODES = { "CLASS", "PARMS" }
+  TOKENIZED[1]: VAR1 [ ] VAR2 . VAR3 = { STR1 , STR2 }
   NODE_ID[2]: 30064772964
   NODE_INDEX[2]: 235
   EDGE_TYPE_INDEX[2]: 0
@@ -1371,13 +1371,13 @@ FRAGMENT_COUNT: 5
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: indexOf(getStatCodes(), code.toUpperCase().trim())
-  TOKENIZED[0]: FUN1 ( FUN2 ( ) , VAR1 . FUN3 ( ) . FUN4 ( ) )
+  TOKENIZED[0]: indexOf ( FUN1 ( ) , VAR1 . toUpperCase ( ) . trim ( ) )
   NODE_ID[1]: 30064772838
   NODE_INDEX[1]: 246
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0
-  TOKENIZED[1]: VAR1 . FUN1 ( FUN2 ( ) , VAR2 . FUN3 ( ) . FUN4 ( ) ) >= 0
+  TOKENIZED[1]: VAR1 . indexOf ( FUN1 ( ) , VAR2 . toUpperCase ( ) . trim ( ) ) >= 0
   NODE_ID[2]: 30064772840
   NODE_INDEX[2]: 247
   EDGE_TYPE_INDEX[2]: 2
@@ -1389,7 +1389,7 @@ FRAGMENT_COUNT: 5
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: code.toUpperCase().trim()
-  TOKENIZED[3]: VAR1 . FUN1 ( ) . FUN2 ( )
+  TOKENIZED[3]: VAR1 . toUpperCase ( ) . trim ( )
   NODE_ID[4]: 68719478126
   NODE_INDEX[4]: 249
   EDGE_TYPE_INDEX[4]: 0
@@ -1464,7 +1464,7 @@ FRAGMENT_COUNT: 2
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: i < CODES.length
-  TOKENIZED[1]: VAR1 < VAR2 . VAR3
+  TOKENIZED[1]: VAR1 < VAR2 . length
 
 CENTER_NODE: 68719477076  NODE_INDEX: 53
 FRAGMENT_COUNT: 5
@@ -1572,7 +1572,7 @@ FRAGMENT_COUNT: 3
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: WEAPONS_LONGDESC[allowedWeaponLevel()]
-  TOKENIZED[0]: WEAPONS_LONGDESC[allowedWeaponLevel ( ) ]
+  TOKENIZED[0]: VAR1 [ FUN1 ( ) ]
   NODE_ID[1]: 30064771568
   NODE_INDEX[1]: 269
   EDGE_TYPE_INDEX[1]: 0
@@ -1643,14 +1643,14 @@ FRAGMENT_COUNT: 12
   NODE_INDEX[2]: 277
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
-  ORIGINAL[2]: str.append(\
-  TOKENIZED[2]: VAR1 . FUN1 ( \
+  ORIGINAL[2]: str.append("+" + getBonusAttackLevel())
+  TOKENIZED[2]: VAR1 . append ( STR1 + FUN1 ( ) )
   NODE_ID[3]: 30064771905
   NODE_INDEX[3]: 278
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: \
-  TOKENIZED[3]: \
+  ORIGINAL[3]: "+" + getBonusAttackLevel()
+  TOKENIZED[3]: STR1 + FUN1 ( )
   NODE_ID[4]: 30064771906
   NODE_INDEX[4]: 279
   EDGE_TYPE_INDEX[4]: 0
@@ -1746,13 +1746,13 @@ FRAGMENT_COUNT: 4
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
   ORIGINAL[1]: getStatCodes().length
-  TOKENIZED[1]: FUN1 ( ) . VAR1
+  TOKENIZED[1]: FUN1 ( ) . length
   NODE_ID[2]: 55834575099
   NODE_INDEX[2]: 292
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: FIELD_IDENTIFIER
   ORIGINAL[2]: length
-  TOKENIZED[2]: VAR1
+  TOKENIZED[2]: length
   NODE_ID[3]: 68719476924
   NODE_INDEX[3]: 293
   EDGE_TYPE_INDEX[3]: 0
@@ -1782,7 +1782,7 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: getCurrentClass().ID().equals(ID())
-  TOKENIZED[1]: FUN1 ( ) . FUN2 ( ) . FUN3 ( FUN2 ( ) )
+  TOKENIZED[1]: FUN1 ( ) . FUN2 ( ) . equals ( FUN2 ( ) )
   NODE_ID[2]: 30064772685
   NODE_INDEX[2]: 295
   EDGE_TYPE_INDEX[2]: 2
@@ -1826,14 +1826,14 @@ FRAGMENT_COUNT: 5
   NODE_INDEX[2]: 300
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
-  ORIGINAL[2]: $obj1 = new IOException(\
-  TOKENIZED[2]: $obj1 = new FUN1 ( \
+  ORIGINAL[2]: $obj1 = new IOException("HTTP Taint Source: Wait barrier broken.", e)
+  TOKENIZED[2]: $obj1 = new FUN1 ( STR1 , VAR1 )
   NODE_ID[3]: 30064771231
   NODE_INDEX[3]: 301
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
-  ORIGINAL[3]: new IOException(\
-  TOKENIZED[3]: new FUN1 ( \
+  ORIGINAL[3]: new IOException("HTTP Taint Source: Wait barrier broken.", e)
+  TOKENIZED[3]: new FUN1 ( STR1 , VAR1 )
   NODE_ID[4]: 68719477057
   NODE_INDEX[4]: 302
   EDGE_TYPE_INDEX[4]: 0
@@ -1863,19 +1863,19 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: raceList[0]
-  TOKENIZED[0]: raceList[0]
+  TOKENIZED[0]: VAR1 [ 0 ]
   NODE_ID[1]: 30064771545
   NODE_INDEX[1]: 304
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: raceList.length == 2
-  TOKENIZED[1]: VAR1 . VAR2 == 2
+  TOKENIZED[1]: VAR1 . length == 2
   NODE_ID[2]: 30064771550
   NODE_INDEX[2]: 305
   EDGE_TYPE_INDEX[2]: 0
   TYPE[2]: CALL
   ORIGINAL[2]: capitalizeAndLower(raceList[0])
-  TOKENIZED[2]: FUN1 ( raceList[0] )
+  TOKENIZED[2]: FUN1 ( VAR1 [ 0 ] )
   NODE_ID[3]: 68719477221
   NODE_INDEX[3]: 306
   EDGE_TYPE_INDEX[3]: 0
@@ -2051,14 +2051,14 @@ FRAGMENT_COUNT: 2
   NODE_INDEX[0]: 72
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: { \
-  TOKENIZED[0]: { \
+  ORIGINAL[0]: { "@x4", "Dex" }
+  TOKENIZED[0]: { STR1 , STR2 }
   NODE_ID[1]: 30064772945
   NODE_INDEX[1]: 325
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
-  ORIGINAL[1]: { { \
-  TOKENIZED[1]: { { \
+  ORIGINAL[1]: { { "@x1", "Lvl" }, { "(@x2<@x3)", "Str" }, { "@x2<@x3", "Str" }, { "(@x4<@x5)", "Dex" }, { "@x4<@x5", "Dex" }, { "(@x6<@x7)", "Con" }, { "@x6<@x7", "Con" }, { "@x2", "Str" }, { "@x3", "Str" }, { "@x4", "Dex" }, { "@x5", "Dex" }, { "@x6", "Con" }, { "@x7", "Con" }, { "@x8", "Int" }, { "@x9", "Wis" }, { "1?", "d" }, { "*", "X" } }
+  TOKENIZED[1]: { { STR1 , STR2 } , { STR3 , STR4 } , { STR5 , STR4 } , { STR6 , STR7 } , { STR8 , STR7 } , { STR9 , STR10 } , { STR11 , STR10 } , { STR12 , STR4 } , { STR13 , STR4 } , { STR14 , STR7 } , { STR15 , STR7 } , { STR16 , STR10 } , { STR17 , STR10 } , { STR18 , STR19 } , { STR20 , STR21 } , { STR22 , STR23 } , { STR24 , STR25 } }
 
 CENTER_NODE: 47244640257  NODE_INDEX: 73
 FRAGMENT_COUNT: 3
@@ -2180,14 +2180,14 @@ FRAGMENT_COUNT: 2
   NODE_INDEX[0]: 79
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
-  ORIGINAL[0]: { \
-  TOKENIZED[0]: { \
+  ORIGINAL[0]: { "@x6<@x7", "Con" }
+  TOKENIZED[0]: { STR1 , STR2 }
   NODE_ID[1]: 30064772925
   NODE_INDEX[1]: 337
   EDGE_TYPE_INDEX[1]: 2
   TYPE[1]: CALL
-  ORIGINAL[1]: { { \
-  TOKENIZED[1]: { { \
+  ORIGINAL[1]: { { "@x1", "Lvl" }, { "(@x2<@x3)", "Str" }, { "@x2<@x3", "Str" }, { "(@x4<@x5)", "Dex" }, { "@x4<@x5", "Dex" }, { "(@x6<@x7)", "Con" }, { "@x6<@x7", "Con" }, { "@x2", "Str" }, { "@x3", "Str" }, { "@x4", "Dex" }, { "@x5", "Dex" }, { "@x6", "Con" }, { "@x7", "Con" }, { "@x8", "Int" }, { "@x9", "Wis" }, { "1?", "d" }, { "*", "X" } }
+  TOKENIZED[1]: { { STR1 , STR2 } , { STR3 , STR4 } , { STR5 , STR4 } , { STR6 , STR7 } , { STR8 , STR7 } , { STR9 , STR10 } , { STR11 , STR10 } , { STR12 , STR4 } , { STR13 , STR4 } , { STR14 , STR7 } , { STR15 , STR7 } , { STR16 , STR10 } , { STR17 , STR10 } , { STR18 , STR19 } , { STR20 , STR21 } , { STR22 , STR23 } , { STR24 , STR25 } }
 
 CENTER_NODE: 30064771247  NODE_INDEX: 80
 FRAGMENT_COUNT: 5
@@ -2367,7 +2367,7 @@ FRAGMENT_COUNT: 18
   EDGE_TYPE_INDEX[0]: 0
   TYPE[0]: CALL
   ORIGINAL[0]: set[0] > Weapon.CLASS_DESCS.length
-  TOKENIZED[0]: set[0] > VAR1 . VAR2 . VAR3
+  TOKENIZED[0]: VAR1 [ 0 ] > VAR2 . VAR3 . length
   NODE_ID[1]: 30064771944
   NODE_INDEX[1]: 359
   EDGE_TYPE_INDEX[1]: 0
@@ -2379,13 +2379,13 @@ FRAGMENT_COUNT: 18
   EDGE_TYPE_INDEX[2]: 2
   TYPE[2]: CALL
   ORIGINAL[2]: set[0]
-  TOKENIZED[2]: set[0]
+  TOKENIZED[2]: VAR1 [ 0 ]
   NODE_ID[3]: 30064771953
   NODE_INDEX[3]: 361
   EDGE_TYPE_INDEX[3]: 0
   TYPE[3]: CALL
   ORIGINAL[3]: Weapon.CLASS_DESCS.length
-  TOKENIZED[3]: VAR1 . VAR2 . VAR3
+  TOKENIZED[3]: VAR1 . VAR2 . length
   NODE_ID[4]: 30064771955
   NODE_INDEX[4]: 362
   EDGE_TYPE_INDEX[4]: 0
@@ -2415,25 +2415,25 @@ FRAGMENT_COUNT: 18
   EDGE_TYPE_INDEX[8]: 0
   TYPE[8]: CALL
   ORIGINAL[8]: s < set.length
-  TOKENIZED[8]: VAR1 < VAR2 . VAR3
+  TOKENIZED[8]: VAR1 < VAR2 . length
   NODE_ID[9]: 30064771960
   NODE_INDEX[9]: 367
   EDGE_TYPE_INDEX[9]: 0
   TYPE[9]: CALL
   ORIGINAL[9]: set.length
-  TOKENIZED[9]: VAR1 . VAR2
+  TOKENIZED[9]: VAR1 . length
   NODE_ID[10]: 47244640378
   NODE_INDEX[10]: 368
   EDGE_TYPE_INDEX[10]: 0
   TYPE[10]: CONTROL_STRUCTURE
   ORIGINAL[10]: if (set[0] > Weapon.CLASS_DESCS.length)
-  TOKENIZED[10]: if ( set[0] > VAR1 . VAR2 . VAR3 )
+  TOKENIZED[10]: if ( VAR1 [ 0 ] > VAR2 . VAR3 . length )
   NODE_ID[11]: 55834575033
   NODE_INDEX[11]: 369
   EDGE_TYPE_INDEX[11]: 0
   TYPE[11]: FIELD_IDENTIFIER
   ORIGINAL[11]: length
-  TOKENIZED[11]: VAR1
+  TOKENIZED[11]: length
   NODE_ID[12]: 68719477509
   NODE_INDEX[12]: 370
   EDGE_TYPE_INDEX[12]: 0
@@ -2564,8 +2564,8 @@ FRAGMENT_COUNT: 7
   NODE_INDEX[1]: 385
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
-  ORIGINAL[1]: (allowedArmorLevel() != CharClass.ARMOR_ANY) && ((requiredArmorSourceMinor() < 0) || (sourceCode & CMMsg.MINOR_MASK) == requiredArmorSourceMinor()) && (isQualifyingAuthority(mob, (Ability) E)) && (mob.isMine(E)) && (!E.ID().equals(\
-  TOKENIZED[1]: ( FUN1 ( ) != VAR1 . VAR2 ) && ( ( FUN2 ( ) < 0 ) || ( VAR3 & VAR4 . VAR5 ) == FUN2 ( ) ) && ( FUN3 ( VAR6 , ( VAR7 ) VAR8 ) ) && ( VAR6 . FUN4 ( VAR8 ) ) && ( !E . FUN5 ( ) . FUN6 ( \
+  ORIGINAL[1]: (allowedArmorLevel() != CharClass.ARMOR_ANY) && ((requiredArmorSourceMinor() < 0) || (sourceCode & CMMsg.MINOR_MASK) == requiredArmorSourceMinor()) && (isQualifyingAuthority(mob, (Ability) E)) && (mob.isMine(E)) && (!E.ID().equals("Skill_Recall")) && ((((Ability) E).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_COMMON_SKILL)
+  TOKENIZED[1]: ( FUN1 ( ) != VAR1 . VAR2 ) && ( ( FUN2 ( ) < 0 ) || ( VAR3 & VAR4 . VAR5 ) == FUN2 ( ) ) && ( FUN3 ( VAR6 , ( VAR7 ) VAR8 ) ) && ( VAR6 . FUN4 ( VAR8 ) ) && ( !E . FUN5 ( ) . equals ( STR1 ) ) && ( ( ( ( VAR7 ) VAR8 ) . FUN6 ( ) & VAR7 . VAR9 ) != VAR7 . VAR10 )
   NODE_ID[2]: 30064772022
   NODE_INDEX[2]: 386
   EDGE_TYPE_INDEX[2]: 2
@@ -2643,7 +2643,7 @@ FRAGMENT_COUNT: 6
   EDGE_TYPE_INDEX[1]: 0
   TYPE[1]: CALL
   ORIGINAL[1]: (mob.getVictim() == killed) || (followers.contains(mob))
-  TOKENIZED[1]: ( VAR1 . FUN1 ( ) == VAR2 ) || ( VAR3 . FUN2 ( VAR1 ) )
+  TOKENIZED[1]: ( VAR1 . FUN1 ( ) == VAR2 ) || ( VAR3 . contains ( VAR1 ) )
   NODE_ID[2]: 30064772828
   NODE_INDEX[2]: 396
   EDGE_TYPE_INDEX[2]: 2

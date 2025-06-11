@@ -7,7 +7,7 @@ import torch
 from torch_geometric.data import Data
 
 # ———————— Cấu hình đường dẫn ————————
-BASE        = "data_java"
+BASE        = "data_cpp"
 CTX_FOLDER  = os.path.join(BASE, "subgraph_contexts")
 OUT_FOLDER  = os.path.join(BASE, "processed_subgraphs")
 MODEL_PATH  = os.path.join(BASE, "model", "word2vec.model")

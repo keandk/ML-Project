@@ -1,171 +1,325 @@
-# Pipeline
- 
-1. get_samples.py: Download and extract malicious code samples from SARD dataset
-2. process_c_cpgs.sh (or process_java_cpgs.sh): Generates Code Property Graphs (CPGs) from source code using Joern (have to run on Linux)
-3. create_vuln_char_table.py: Create table mapping node types to malicious characteristics
-4. select_centernode.py: Select center nodes that represent malicious code patterns
-5. subgraph_building_and_tokenizing.py: buile and tokenize subgraphs (1-hop) from CPGs from malicious center nodes
-6. subgraph_embedding.py: Generate embeddings (from node represetion and edge represiontation) for malicious code subgraphs
+# RGCN-Based Vulnerability Detection in Source Code
 
-# Joern Installation and CPG Export Guide
+A deep learning approach for automated vulnerability detection in C/C++ and Java source code using Relational Graph Convolutional Networks (RGCN) applied to Code Property Graphs (CPGs).
 
-This guide explains how to install Joern and use it to generate Code Property Graphs (CPGs) from Java source code.
+## Overview
 
-## Prerequisites
+This project implements a novel vulnerability detection system that:
+- Extracts **Code Property Graphs (CPGs)** from source code using Joern
+- Identifies **vulnerable code patterns** through statistical analysis  
+- Builds **1-hop subgraphs** around vulnerability center nodes
+- Learns **semantic representations** using Word2Vec on tokenized code
+- Classifies **vulnerable vs. non-vulnerable** code using RGCN neural networks
 
-- Linux/WSL environment
-- Java Development Kit (JDK) 17 or later (Installation instructions below)
-- Python 3.x
-- curl
-- Git
+The system achieves strong performance with **97.32% F1-score** on C/C++ datasets and **82.51% F1-score** on Java datasets.
 
-To install Java (JDK 17):
+## Architecture
+
+### Data Processing Pipeline
+
+```
+Source Code → CPG Generation → Center Node Selection → Subgraph Extraction → 
+Tokenization → Word2Vec Embedding → RGCN Training → Vulnerability Classification
+```
+
+### Key Components
+
+1. **CPG Generation**: Uses Joern to extract structural representations
+2. **Vulnerability Analysis**: Statistical identification of malicious code patterns  
+3. **Subgraph Building**: 1-hop neighborhood extraction around center nodes
+4. **Feature Learning**: Word2Vec embeddings for semantic code representation
+5. **RGCN Classification**: Graph neural network for vulnerability detection
+
+## Methodology
+
+### Graph Representation
+- **Nodes**: Code elements (variables, function calls, control structures)
+- **Edges**: Three types - AST (syntax), CFG (control flow), DDG (data dependencies)  
+- **Features**: Concatenation of vulnerability type embeddings and Word2Vec code vectors
+
+### Model Architecture
+- **Input**: Subgraph with node features (vulnerability type + code embeddings)
+- **RGCN Layers**: Two relational convolution layers with 128 hidden dimensions
+- **Aggregation**: Global mean pooling over subgraph nodes
+- **Output**: Binary classification (vulnerable/non-vulnerable)
+
+### Training Configuration
+- **Optimizer**: Adam with learning rate 1e-3
+- **Regularization**: Dropout (0.5) + Weight decay (5e-4)
+- **Early Stopping**: Patience of 10 epochs on validation loss
+- **Data Split**: 80% train, 10% validation, 10% test
+
+## Setup and Installation
+
+### Prerequisites
+
+- **Operating System**: Linux/WSL (required for Joern)
+- **Python**: 3.8+ with uv package manager
+- **Java**: JDK 17 or later
+- **Memory**: 8GB+ RAM recommended for large datasets
+
+### Environment Setup
+
 ```bash
-# Update package list
-sudo apt update
+# Clone repository
+git clone <repository-url>
+cd ML-Project
 
+# Create Python environment using uv
+uv venv
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
+
+# Install dependencies
+uv pip install torch torch-geometric gensim scikit-learn pandas numpy tqdm pydot networkx matplotlib requests
+```
+
+### Joern Installation
+
+```bash
+# Download Joern installation script
+curl -L "https://github.com/joernio/joern/releases/latest/download/joern-install.sh" -o joern-install.sh
+chmod +x joern-install.sh
+
+# Install Joern
+./joern-install.sh
+
+# Add to PATH
+echo 'export PATH="$PATH:$HOME/joern/joern-cli"' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify installation
+joern --version
+```
+
+### Java Development Kit Setup
+
+```bash
 # Install OpenJDK 17
+sudo apt update
 sudo apt install openjdk-17-jdk
+
+# Set JAVA_HOME
+echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> ~/.bashrc
+source ~/.bashrc
 
 # Verify installation
 java -version
-javac -version
-
-# Set up JAVA_HOME
-sudo update-alternatives --config java
-echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> ~/.bashrc
-source ~/.bashrc
 ```
 
-## Installation Steps
+## Usage
 
-1. Install Joern:
+### Complete Pipeline
+
+Follow these steps to run the full vulnerability detection pipeline:
+
+#### 1. Data Collection
+Download vulnerable and non-vulnerable code samples from SARD dataset:
+
 ```bash
-# Download the installation script
-curl -L "https://github.com/joernio/joern/releases/latest/download/joern-install.sh" -o joern-install.sh
-
-# Make it executable
-chmod +x joern-install.sh
-
-# Run installation (you can specify a custom installation directory with --install-dir)
-./joern-install.sh
+python get_samples.py
 ```
 
-2. Add Joern to your PATH:
+This downloads samples into `data_{language}/` directories with separate folders for source code, JSON metadata, and compressed files.
+
+#### 2. CPG Generation
+Generate Code Property Graphs using Joern:
+
 ```bash
-# Add this line to your ~/.bashrc or ~/.zshrc
-export PATH="$PATH:/path/to/joern/joern-cli"
+# For C/C++ code
+chmod +x process_c_cpgs.sh
+./process_c_cpgs.sh
 
-# Reload your shell configuration
-source ~/.bashrc  # or source ~/.zshrc
-```
-
-## Generating CPGs
-
-1. Make the processing script executable:
-```bash
+# For Java code  
 chmod +x process_java_cpgs.sh
-```
-
-2. Run the script:
-```bash
 ./process_java_cpgs.sh
 ```
 
-The script will:
-- Create a `cpg-output` directory if it doesn't exist
-- Process each Java project directory in `data/java-src`
-- Generate CPG files in DOT format for each project
+Output: CPG files in DOT format under `data_{language}/cpg-output/`
 
-## Script Details
+#### 3. Vulnerability Analysis
+Create vulnerability characteristic mapping:
 
-The `process_java_cpgs.sh` script:
 ```bash
-#!/bin/bash
-OUTPUT_DIR="/cpg-output"
-mkdir -p "$OUTPUT_DIR"
-
-for dir in /data/java-src/*/; do
-  project_name=$(basename "$dir")
-  echo "Processing $project_name..."
-  
-  # Parse the Java code
-  joern-parse "$dir"
-  
-  # Export the CPG to various formats
-  joern-export --repr all --format dot --out "$OUTPUT_DIR/$project_name"
-done
+python create_vuln_char_table.py
 ```
 
-## Available Export Formats
+Output: `vuln-char-table-final.csv` with vulnerability type mappings
 
-You can modify the script to export CPGs in different formats:
+#### 4. Center Node Selection
+Identify nodes representing vulnerability patterns:
 
-- DOT format (Graphviz): `--format dot`
-- GraphML format: `--format graphml`
-- GraphSON format: `--format graphson`
-- Neo4j CSV format: `--format neo4jcsv`
-
-## Available Graph Representations
-
-The following representations can be exported:
-
-- Abstract Syntax Trees (AST): `--repr ast`
-- Control Flow Graphs (CFG): `--repr cfg`
-- Control Dependence Graphs (CDG): `--repr cdg`
-- Data Dependence Graphs (DDG): `--repr ddg`
-- Program Dependence Graphs (PDG): `--repr pdg`
-- Code Property Graphs (CPG14): `--repr cpg14`
-- All representations: `--repr all`
-
-## Interactive Usage
-
-You can also use Joern interactively:
-
-1. Start Joern:
 ```bash
-joern
+python select_centernode.py
 ```
 
-2. Import code:
-```scala
-importCode("/path/to/java/src", "project-name", [], "java")
+Output: `center_nodes_result.json` with selected vulnerability-relevant nodes
+
+#### 5. Subgraph Extraction and Tokenization
+Build 1-hop subgraphs and tokenize code:
+
+```bash
+python subgraph_building_and_tokenizing.py
 ```
 
-3. Generate data flow:
-```scala
-run.ossdataflow
+Output: 
+- `subgraph_contexts/`: Raw subgraph files
+- `tokenized_contexts/`: Processed and tokenized code
+
+#### 6. Word2Vec Training
+Train semantic embeddings on tokenized code:
+
+```bash
+python word2vec.py
 ```
 
-4. Export specific representations:
-```scala
-run.dumpast
-run.dumpcfg
-run.dumpcdg
-run.dumpddg
-run.dumppdg
-run.dumpcpg14
+Output: `model/word2vec.model` with 512-dimensional code embeddings
+
+#### 7. Graph Embedding
+Convert subgraphs to PyTorch Geometric format:
+
+```bash
+python subgraph_embedding.py
 ```
+
+Output: `processed_subgraphs/all_subgraphs_pyg.pt` ready for training
+
+#### 8. Model Training
+Train the RGCN vulnerability classifier:
+
+```bash
+python train.py
+```
+
+Output: 
+- `best_rgcn.pt`: Best model checkpoint
+- Training logs with validation metrics
+- Final test set evaluation
+
+### Configuration
+
+Key parameters can be modified in individual scripts:
+
+- **Language**: Set `LANGUAGE = "cpp"` or `"java"` in scripts
+- **Sample Size**: Modify limits in `get_samples.py`
+- **Model Architecture**: Adjust hidden dimensions, layers in `train.py`
+- **Training**: Change learning rate, epochs, regularization in `train.py`
+
+## Results
+
+### Performance Metrics
+
+| Dataset | Class    | Precision | Recall | F1-Score   |
+| ------- | -------- | --------- | ------ | ---------- |
+| C/C++   | 0 (Safe) | 84.10%    | 90.38% | 87.13%     |
+| C/C++   | 1 (Vuln) | 98.05%    | 96.59% | **97.32%** |
+| Java    | 0 (Safe) | 62.85%    | 87.65% | 73.21%     |
+| Java    | 1 (Vuln) | 92.45%    | 74.49% | **82.51%** |
+
+### Error Analysis
+- **C/C++**: Low false positive rate (1.95%) and false negative rate (3.41%)
+- **Java**: Higher false positive rate (7.55%) due to language complexity
+- **Overall**: Strong performance on vulnerability detection (Class 1)
+
+### Visualizations
+Generated performance charts include:
+- `performance_comparison_overall.png`: Complete metrics comparison
+- `precision_comparison.png`: Precision across datasets
+- `recall_comparison.png`: Recall analysis
+- `f1_score_comparison.png`: F1-score comparison
+- `class0_error_rates.png` & `class1_error_rates.png`: Error rate analysis
+
+## Project Structure
+
+```
+ML-Project/
+├── README.md                              # This documentation
+├── get_samples.py                         # SARD dataset collection
+├── process_c_cpgs.sh                      # C/C++ CPG generation
+├── process_java_cpgs.sh                   # Java CPG generation  
+├── create_vuln_char_table.py              # Vulnerability mapping
+├── select_centernode.py                   # Center node identification
+├── subgraph_building_and_tokenizing.py    # Subgraph extraction
+├── word2vec.py                            # Semantic embedding training
+├── subgraph_embedding.py                  # Graph data preparation
+├── train.py                               # RGCN model training
+├── plot.py                                # Performance visualization
+├── feature_learning.py                    # Feature extraction utilities
+├── extractToken.py                        # Code tokenization utilities
+├── data_c/                                # C/C++ dataset and outputs
+├── data_cpp/                              # C++ specific data
+├── data_java/                             # Java dataset and outputs
+├── torch-rgcn/                            # RGCN implementation library
+└── docs/                                  # Additional documentation
+```
+
+## Technical Details
+
+### Vulnerability Characteristics
+The system identifies these vulnerability patterns:
+- **Function calls**: Potentially unsafe API usage
+- **Memory operations**: malloc/free, buffer operations
+- **Type operations**: Casting, type checking
+- **Control structures**: Conditional logic, loops
+- **Data access**: Array indexing, field access
+- **Assignment operations**: Variable modifications
+
+### Graph Neural Network
+- **Architecture**: Relational GCN with message passing
+- **Edge Types**: AST (type=2), CFG (type=1), DDG (type=0)  
+- **Aggregation**: Neighbor feature averaging with edge-type weighting
+- **Activation**: ReLU between layers
+- **Output**: Softmax classification over vulnerability classes
+
+### Data Validation
+- **Edge Index Validation**: Ensures graph connectivity integrity
+- **Feature Consistency**: Validates node feature dimensions
+- **Label Distribution**: Balanced sampling for training stability
 
 ## Troubleshooting
 
-1. If Joern fails to parse Java code:
-   - Ensure you have JDK 17 or later installed
-   - Try enabling type recovery: `--enable-type-recovery`
-   - Check if the Java code compiles independently
+### Common Issues
 
-2. If the export fails:
-   - Check if the output directory exists and has write permissions
-   - Ensure enough disk space is available
-   - Check Joern logs for specific error messages
+**Joern Installation Problems**:
+```bash
+# Ensure Java 17+ is installed and JAVA_HOME is set
+java -version
+echo $JAVA_HOME
 
-3. Memory issues:
-   - Increase Java heap size: `export JAVA_OPTS="-Xmx8g"`
-   - Process fewer projects at a time
+# Check Joern binary permissions
+ls -la $(which joern)
+```
 
-## Additional Resources
+**Memory Issues During Processing**:
+```bash
+# Increase Java heap size
+export JAVA_OPTS="-Xmx8g"
 
-- [Joern Documentation](https://docs.joern.io)
-- [Code Property Graph Documentation](https://docs.joern.io/code-property-graph)
-- [Java Frontend Documentation](https://docs.joern.io/frontends/java)
-- [Export Documentation](https://docs.joern.io/export)
+# Process smaller batches
+# Modify batch sizes in processing scripts
+```
+
+**PyTorch Geometric Installation**:
+```bash
+# Install with specific CUDA version if needed
+uv pip install torch-geometric -f https://data.pyg.org/whl/torch-2.0.0+cpu.html
+```
+
+**Missing Dependencies**:
+```bash
+# Install system dependencies
+sudo apt install build-essential python3-dev
+
+# Reinstall Python packages
+uv pip install --force-reinstall torch torch-geometric
+```
+
+
+
+
+## Acknowledgments
+
+- **Joern**: Code analysis platform for CPG generation
+- **PyTorch Geometric**: Graph neural network framework
+- **SARD Dataset**: NIST Software Assurance Reference Dataset
+- **Gensim**: Word2Vec implementation for semantic embeddings
